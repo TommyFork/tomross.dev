@@ -216,9 +216,9 @@ export default function WorkContent() {
 
   return (
     <MotionConfig transition={baseTransition}>
-      <div className="mx-auto flex w-full max-w-6xl px-6 sm:px-8 lg:px-12">
-        <aside className="relative hidden shrink-0 justify-center pr-6 lg:flex">
-          <div className="sticky top-40 flex flex-col items-center">
+      <div className="mx-auto flex w-full max-w-5xl px-6">
+        <aside className="relative hidden shrink-0 lg:flex lg:pr-6">
+          <div className="sticky top-1/2 -translate-y-1/2 flex flex-col items-center">
             <div className="flex flex-col items-center gap-4 rounded-full bg-white/90 px-3 py-5 shadow-[0_24px_60px_rgba(57,57,118,0.12)] backdrop-blur">
               {PROJECT_SECTIONS.map((section, index) => {
                 const isActive = index === activeSection;
@@ -252,56 +252,6 @@ export default function WorkContent() {
         </aside>
 
         <main className="flex flex-1 flex-col gap-y-36 py-14 md:gap-y-48 md:py-20 lg:gap-y-56 lg:py-24">
-          <section className="mx-auto flex max-w-3xl flex-col items-center gap-6 text-center">
-            <motion.span
-              className="text-sm font-semibold uppercase tracking-[0.3em] text-[var(--brightbook-dark-blue)]"
-              initial={{ opacity: 0, y: 12 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, ease: [0.33, 1, 0.68, 1] }}
-            >
-              Featured Work
-            </motion.span>
-            <motion.h1
-              className="text-3xl font-semibold leading-tight text-gray-900 sm:text-4xl md:text-5xl"
-              initial={{ opacity: 0, y: 16 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.65, ease: [0.25, 1, 0.5, 1], delay: 0.05 }}
-            >
-              Building thoughtful tools for learning, equity, and community
-            </motion.h1>
-            <motion.p
-              className="max-w-2xl text-base leading-7 text-gray-600 sm:text-lg"
-              initial={{ opacity: 0, y: 18 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.7, ease: [0.25, 1, 0.5, 1], delay: 0.1 }}
-            >
-              I lead product, design, and engineering across mission-driven teams, focusing on work that makes education more humane and accessible. Here’s a look at a few projects I’ve been building recently.
-            </motion.p>
-            <motion.button
-              type="button"
-              onClick={() => handleScrollToSection(PROJECT_SECTIONS[0].id)}
-              className="group inline-flex h-14 w-14 items-center justify-center rounded-full border border-[var(--brightbook-blue)]/30 bg-white text-[var(--brightbook-dark-blue)] shadow-[0_18px_40px_rgba(57,57,118,0.12)] transition-transform hover:-translate-y-1"
-              aria-label="Scroll to projects"
-              animate={{ y: [0, 6, 0] }}
-              transition={{ repeat: Infinity, duration: 2.8, ease: "easeInOut" }}
-            >
-              <svg
-                aria-hidden
-                viewBox="0 0 24 24"
-                className="h-5 w-5 transition-transform group-hover:translate-y-0.5"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="1.6"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M12 5v14m0 0-5-5m5 5 5-5"
-                />
-              </svg>
-            </motion.button>
-          </section>
-
           <AnimatedProjectSection id={PROJECT_SECTIONS[0].id}>
             <ProjectPortfolioCard
               logoUrl="/brightbook/BrightBook-Logo.svg"
@@ -555,6 +505,7 @@ export default function WorkContent() {
             }
           />
         </AnimatedProjectSection>
+
         </main>
       </div>
     </MotionConfig>
