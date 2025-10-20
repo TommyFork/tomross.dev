@@ -46,3 +46,19 @@ body {
   0%, 100% { transform: translateY(0); }
   50% { transform: translateY(6px); }
 }
+
+.contact-genie {
+  clip-path: inset(100% 48% 0 48% round 32px);
+  transform: translateY(24px) scale(0.95);
+  opacity: 0;
+}
+
+.contact-genie[data-state="open"] {
+  clip-path: inset(0 0 0 0 round 32px);
+  transform: translateY(0) scale(1);
+  opacity: 1;
+}
+
+.contact-genie[data-state="closed"] {
+  pointer-events: none;
+}
