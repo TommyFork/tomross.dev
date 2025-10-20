@@ -1,0 +1,10 @@
+<svg width="160" height="160" viewBox="0 0 160 160" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="grad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#00AAFF" />
+      <stop offset="100%" stop-color="#0066CC" />
+    </linearGradient>
+  </defs>
+  <circle cx="80" cy="80" r="76" fill="url(#grad)" />
+  <text x="50%" y="55%" dominant-baseline="middle" text-anchor="middle" fill="white" font-family="'Inter', 'Helvetica Neue', Arial, sans-serif" font-size="64" font-weight="600">TR</text>
+</svg>
