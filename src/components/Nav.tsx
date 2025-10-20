@@ -48,36 +48,42 @@ export default function Nav() {
   };
 
   const brandClasses =
-    "text-2xl font-semibold tracking-tight text-neutral-900 transition-all duration-500 hover:scale-[1.02] hover:text-neutral-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-neutral-800/40" +
+    "text-2xl font-semibold tracking-tight text-neutral-950 transition-all duration-500 hover:scale-[1.02] hover:text-neutral-800 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-neutral-800/40" +
     (isScrolled ? "" : " md:text-3xl");
 
   const renderBackdrop = (active: boolean) => (
     <div
       aria-hidden
       className="pointer-events-none absolute inset-0 overflow-hidden rounded-[inherit] opacity-0 transition-opacity duration-700"
-      style={{ opacity: active ? 0.95 : 0 }}
+      style={{ opacity: active ? 1 : 0 }}
     >
-      <div className="absolute inset-0 bg-gradient-to-br from-white/60 via-white/35 to-white/25" />
-      <div className="absolute inset-0 mix-blend-screen opacity-80">
-        <div className="absolute -inset-24 animate-[liquidDrift_16s_ease-in-out_infinite] bg-[radial-gradient(circle_at_15%_20%,rgba(255,255,255,0.85),transparent_55%),radial-gradient(circle_at_70%_25%,rgba(148,163,184,0.3),transparent_60%),radial-gradient(circle_at_50%_80%,rgba(226,232,240,0.35),transparent_60%)]" />
-        <div className="absolute -inset-32 animate-[liquidPulse_22s_ease-in-out_infinite] bg-[radial-gradient(circle_at_20%_80%,rgba(125,211,252,0.35),transparent_60%),radial-gradient(circle_at_80%_60%,rgba(94,234,212,0.3),transparent_60%)]" />
+      <div className="absolute inset-0 bg-[radial-gradient(120%_120%_at_15%_0%,rgba(255,255,255,0.75),transparent_55%),radial-gradient(120%_140%_at_85%_120%,rgba(226,232,240,0.45),transparent_65%),linear-gradient(135deg,rgba(148,163,184,0.25),rgba(255,255,255,0.1))]" />
+      <div className="absolute inset-0 mix-blend-soft-light opacity-90">
+        <div className="absolute -inset-28 animate-[liquidCurrent_18s_cubic-bezier(0.65,0,0.35,1)_infinite] bg-[radial-gradient(circle_at_20%_30%,rgba(59,130,246,0.22),transparent_60%),radial-gradient(circle_at_75%_20%,rgba(14,165,233,0.18),transparent_65%),radial-gradient(circle_at_35%_85%,rgba(16,185,129,0.2),transparent_60%)]" />
+        <div className="absolute -inset-32 animate-[liquidGlow_24s_cubic-bezier(0.37,0,0.63,1)_infinite] bg-[radial-gradient(circle_at_80%_80%,rgba(244,114,182,0.18),transparent_65%),radial-gradient(circle_at_15%_85%,rgba(147,197,253,0.25),transparent_60%)]" />
       </div>
-      <div className="absolute inset-[1px] rounded-[inherit] border border-white/50" />
+      <div className="absolute inset-0">
+        <div className="absolute inset-x-3 top-0 h-px bg-white/60 blur-[1px]" />
+        <div className="absolute inset-x-6 top-1 h-px bg-white/20" />
+        <div className="absolute inset-x-4 bottom-0 h-[2px] bg-white/15 blur-[2px]" />
+      </div>
+      <div className="absolute inset-0 bg-[url('data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' width=\'160\' height=\'160\' viewBox=\'0 0 160 160\'%3E%3Crect width=\'1\' height=\'1\' x=\'24\' y=\'32\' fill=\'rgba(255,255,255,0.22)\'/%3E%3Crect width=\'1\' height=\'1\' x=\'112\' y=\'120\' fill=\'rgba(255,255,255,0.18)\'/%3E%3Crect width=\'1\' height=\'1\' x=\'64\' y=\'72\' fill=\'rgba(255,255,255,0.16)\'/%3E%3C/svg%3E')] opacity-40" />
+      <div className="absolute inset-[1px] rounded-[inherit] border border-white/50 shadow-[inset_0_1px_0_rgba(255,255,255,0.5)]" />
     </div>
   );
 
   return (
     <header className="sticky top-0 z-50">
       <div
-        className={`mx-auto max-w-5xl transition-all duration-500 ease-[cubic-bezier(0.19,1,0.22,1)] ${
-          isScrolled ? "px-6 pt-4" : "px-0 pt-0"
+        className={`mx-auto max-w-5xl px-0 transition-[padding,transform] duration-500 ease-[cubic-bezier(0.19,1,0.22,1)] ${
+          isScrolled ? "pt-4" : "pt-2"
         }`}
       >
         <nav
-          className={`relative flex items-center justify-between transition-all duration-500 ease-[cubic-bezier(0.19,1,0.22,1)] ${
+          className={`relative flex items-center justify-between transition-[padding,background-color,border-color,box-shadow] duration-500 ease-[cubic-bezier(0.19,1,0.22,1)] ${
             isScrolled
-              ? "gap-3 rounded-2xl border border-white/45 bg-white/30 px-4 py-3 shadow-[0_30px_80px_-45px_rgba(15,23,42,0.85)] backdrop-blur-[28px] backdrop-saturate-[1.35]"
-              : "border-transparent bg-transparent px-0 py-7"
+              ? "gap-3 rounded-2xl border border-white/45 bg-white/20 px-4 py-3 shadow-[0_30px_80px_-45px_rgba(15,23,42,0.7)] backdrop-blur-[30px] backdrop-saturate-[1.5]"
+              : "border-transparent bg-transparent px-0 py-6"
           }`}
         >
           {renderBackdrop(isScrolled)}
@@ -121,10 +127,10 @@ export default function Nav() {
                     href={item.href}
                     onClick={() => handleNavClick(item.href)}
                     onMouseEnter={() => router.prefetch(item.href)}
-                    className={`rounded-full px-3 py-1.5 transition-all duration-300 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-neutral-800/40 ${
+                    className={`rounded-full px-3 py-1.5 text-neutral-900 transition-all duration-300 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-neutral-800/40 ${
                       active
-                        ? "bg-neutral-900/10 text-neutral-900 shadow-[0_6px_20px_-12px_rgba(15,23,42,0.45)]"
-                        : "text-neutral-500 hover:bg-neutral-900/5 hover:text-neutral-800"
+                        ? "bg-neutral-900/10 shadow-[0_6px_20px_-12px_rgba(15,23,42,0.35)]"
+                        : "text-neutral-700 hover:bg-neutral-900/5 hover:text-neutral-950"
                     }`}
                   >
                     {item.label}
@@ -141,7 +147,7 @@ export default function Nav() {
           >
             <div className="relative px-4 py-4">
               {renderBackdrop(true)}
-              <ul className="flex flex-col gap-2 text-base font-medium text-neutral-700">
+              <ul className="flex flex-col gap-2 text-base font-medium text-neutral-900">
                 {links.map((item) => {
                   const active = activeHref === item.href;
                   return (
@@ -151,8 +157,8 @@ export default function Nav() {
                         onClick={() => handleNavClick(item.href)}
                         className={`block rounded-xl px-3 py-2 transition-all duration-300 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-neutral-800/40 ${
                           active
-                            ? "bg-neutral-900/10 text-neutral-900"
-                            : "text-neutral-600 hover:bg-neutral-900/5 hover:text-neutral-900"
+                            ? "bg-neutral-900/10 text-neutral-950"
+                            : "text-neutral-700 hover:bg-neutral-900/5 hover:text-neutral-950"
                         }`}
                       >
                         {item.label}
@@ -166,31 +172,31 @@ export default function Nav() {
         </nav>
       </div>
       <style jsx global>{`
-        @keyframes liquidDrift {
+        @keyframes liquidCurrent {
           0% {
-            transform: translate3d(-4%, -6%, 0) scale(1.05) rotate(0deg);
+            transform: translate3d(-6%, -8%, 0) scale(1.05);
           }
           50% {
-            transform: translate3d(6%, 5%, 0) scale(1.12) rotate(1deg);
+            transform: translate3d(6%, 5%, 0) scale(1.12);
           }
           100% {
-            transform: translate3d(-4%, -6%, 0) scale(1.05) rotate(0deg);
+            transform: translate3d(-6%, -8%, 0) scale(1.05);
           }
         }
 
-        @keyframes liquidPulse {
+        @keyframes liquidGlow {
           0% {
-            transform: translate3d(8%, -8%, 0) scale(1);
+            transform: translate3d(4%, 6%, 0) scale(1);
             opacity: 0.35;
           }
           40% {
-            opacity: 0.6;
+            opacity: 0.55;
           }
           50% {
-            transform: translate3d(-6%, 6%, 0) scale(1.15);
+            transform: translate3d(-5%, -4%, 0) scale(1.18);
           }
           100% {
-            transform: translate3d(8%, -8%, 0) scale(1);
+            transform: translate3d(4%, 6%, 0) scale(1);
             opacity: 0.35;
           }
         }
