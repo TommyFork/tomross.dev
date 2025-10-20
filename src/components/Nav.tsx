@@ -57,18 +57,19 @@ export default function Nav() {
       className="pointer-events-none absolute inset-0 overflow-hidden rounded-[inherit] opacity-0 transition-opacity duration-700"
       style={{ opacity: active ? 1 : 0 }}
     >
-      <div className="absolute inset-0 bg-[radial-gradient(120%_120%_at_15%_0%,rgba(255,255,255,0.75),transparent_55%),radial-gradient(120%_140%_at_85%_120%,rgba(226,232,240,0.45),transparent_65%),linear-gradient(135deg,rgba(148,163,184,0.25),rgba(255,255,255,0.1))]" />
-      <div className="absolute inset-0 mix-blend-soft-light opacity-90">
-        <div className="absolute -inset-28 animate-[liquidCurrent_18s_cubic-bezier(0.65,0,0.35,1)_infinite] bg-[radial-gradient(circle_at_20%_30%,rgba(59,130,246,0.22),transparent_60%),radial-gradient(circle_at_75%_20%,rgba(14,165,233,0.18),transparent_65%),radial-gradient(circle_at_35%_85%,rgba(16,185,129,0.2),transparent_60%)]" />
-        <div className="absolute -inset-32 animate-[liquidGlow_24s_cubic-bezier(0.37,0,0.63,1)_infinite] bg-[radial-gradient(circle_at_80%_80%,rgba(244,114,182,0.18),transparent_65%),radial-gradient(circle_at_15%_85%,rgba(147,197,253,0.25),transparent_60%)]" />
+      <div className="absolute inset-0 bg-[radial-gradient(140%_160%_at_10%_-10%,rgba(255,255,255,0.92),transparent_60%),radial-gradient(160%_160%_at_90%_120%,rgba(244,247,255,0.7),transparent_68%),linear-gradient(135deg,rgba(255,255,255,0.65),rgba(247,250,255,0.35))]" />
+      <div className="absolute inset-0 mix-blend-screen opacity-90">
+        <div className="absolute -inset-28 animate-[liquidCurrent_18s_cubic-bezier(0.65,0,0.35,1)_infinite] bg-[radial-gradient(circle_at_20%_30%,rgba(147,197,253,0.26),transparent_60%),radial-gradient(circle_at_75%_15%,rgba(186,230,253,0.24),transparent_68%),radial-gradient(circle_at_35%_80%,rgba(167,243,208,0.22),transparent_62%)]" />
+        <div className="absolute -inset-32 animate-[liquidGlow_24s_cubic-bezier(0.37,0,0.63,1)_infinite] bg-[radial-gradient(circle_at_80%_85%,rgba(254,205,211,0.22),transparent_70%),radial-gradient(circle_at_15%_90%,rgba(221,214,254,0.2),transparent_60%)]" />
       </div>
       <div className="absolute inset-0">
-        <div className="absolute inset-x-3 top-0 h-px bg-white/60 blur-[1px]" />
-        <div className="absolute inset-x-6 top-1 h-px bg-white/20" />
-        <div className="absolute inset-x-4 bottom-0 h-[2px] bg-white/15 blur-[2px]" />
+        <div className="absolute inset-x-3 top-0 h-px bg-white/70 blur-[1px]" />
+        <div className="absolute inset-x-6 top-1 h-px bg-white/30" />
+        <div className="absolute inset-x-4 bottom-0 h-[2px] bg-white/25 blur-[2px]" />
       </div>
-      <div className="absolute inset-0 bg-[url('data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' width=\'160\' height=\'160\' viewBox=\'0 0 160 160\'%3E%3Crect width=\'1\' height=\'1\' x=\'24\' y=\'32\' fill=\'rgba(255,255,255,0.22)\'/%3E%3Crect width=\'1\' height=\'1\' x=\'112\' y=\'120\' fill=\'rgba(255,255,255,0.18)\'/%3E%3Crect width=\'1\' height=\'1\' x=\'64\' y=\'72\' fill=\'rgba(255,255,255,0.16)\'/%3E%3C/svg%3E')] opacity-40" />
-      <div className="absolute inset-[1px] rounded-[inherit] border border-white/50 shadow-[inset_0_1px_0_rgba(255,255,255,0.5)]" />
+      <div className="absolute inset-0 bg-[linear-gradient(115deg,rgba(255,255,255,0.18)_0%,rgba(255,255,255,0.06)_40%,rgba(255,255,255,0.2)_100%)] opacity-70" />
+      <div className="absolute inset-0 bg-[url('data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' width=\'160\' height=\'160\' viewBox=\'0 0 160 160\'%3E%3Crect width=\'1\' height=\'1\' x=\'24\' y=\'32\' fill=\'rgba(255,255,255,0.16)\'/%3E%3Crect width=\'1\' height=\'1\' x=\'112\' y=\'120\' fill=\'rgba(255,255,255,0.12)\'/%3E%3Crect width=\'1\' height=\'1\' x=\'64\' y=\'72\' fill=\'rgba(255,255,255,0.1)\'/%3E%3C/svg%3E')] opacity-40" />
+      <div className="absolute inset-[1px] rounded-[inherit] border border-white/60 shadow-[inset_0_1px_0_rgba(255,255,255,0.55)]" />
     </div>
   );
 
@@ -82,7 +83,7 @@ export default function Nav() {
         <nav
           className={`relative flex items-center justify-between transition-[padding,background-color,border-color,box-shadow] duration-500 ease-[cubic-bezier(0.19,1,0.22,1)] ${
             isScrolled
-              ? "gap-3 rounded-2xl border border-white/45 bg-white/20 px-4 py-3 shadow-[0_30px_80px_-45px_rgba(15,23,42,0.7)] backdrop-blur-[30px] backdrop-saturate-[1.5]"
+              ? "gap-3 rounded-2xl border border-white/60 bg-[color-mix(in_srgb,var(--color-background)_88%,transparent)] px-4 py-3 shadow-[0_30px_85px_-50px_rgba(15,23,42,0.45)] backdrop-blur-[36px] backdrop-saturate-[1.7]"
               : "border-transparent bg-transparent px-0 py-6"
           }`}
         >
@@ -140,7 +141,7 @@ export default function Nav() {
             })}
           </ul>
           <div
-            className={`absolute left-0 right-0 top-full mt-3 overflow-hidden rounded-2xl border border-white/45 bg-white/45 shadow-[0_30px_80px_-45px_rgba(15,23,42,0.85)] backdrop-blur-[28px] backdrop-saturate-[1.35] transition-[max-height,opacity,transform] duration-500 md:hidden ${
+            className={`absolute left-0 right-0 top-full mt-3 overflow-hidden rounded-2xl border border-white/60 bg-[color-mix(in_srgb,var(--color-background)_90%,transparent)] shadow-[0_30px_85px_-55px_rgba(15,23,42,0.48)] backdrop-blur-[36px] backdrop-saturate-[1.6] transition-[max-height,opacity,transform] duration-500 md:hidden ${
               menuOpen ? "max-h-64 opacity-100" : "max-h-0 opacity-0"
             } ${isScrolled ? "translate-y-0" : "translate-y-1"}`}
             style={{ pointerEvents: menuOpen ? "auto" : "none" }}
