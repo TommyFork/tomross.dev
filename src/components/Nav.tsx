@@ -1,5 +1,7 @@
 "use client";
 
+import type { MouseEvent } from "react";
+
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
@@ -14,6 +16,11 @@ const links = [
 export default function Nav() {
   const pathname = usePathname();
   const { openModal } = useContactModal();
+
+  const handleOpenModal = (event: MouseEvent<HTMLButtonElement>) => {
+    const trigger = event.currentTarget;
+    openModal({ triggerRect: trigger.getBoundingClientRect(), trigger });
+  };
 
   return (
     <header className="py-6">
@@ -44,7 +51,7 @@ export default function Nav() {
           </ul>
           <button
             type="button"
-            onClick={openModal}
+            onClick={handleOpenModal}
             className="inline-flex items-center justify-center rounded-full border border-neutral-200 bg-white px-4 py-2 text-sm font-medium text-neutral-600 shadow-sm transition hover:-translate-y-[1px] hover:border-neutral-300 hover:shadow-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-400 dark:border-neutral-700 dark:bg-neutral-950 dark:text-neutral-200"
           >
             Let’s chat

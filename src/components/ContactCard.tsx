@@ -1,10 +1,17 @@
 "use client";
 
+import type { MouseEvent } from "react";
+
 import EmailReveal from "@/components/EmailReveal";
 import { useContactModal } from "@/components/ContactModalContext";
 
 export default function ContactCard({ title = "Contact" }: { title?: string }) {
   const { openModal } = useContactModal();
+
+  const handleOpenModal = (event: MouseEvent<HTMLButtonElement>) => {
+    const trigger = event.currentTarget;
+    openModal({ triggerRect: trigger.getBoundingClientRect(), trigger });
+  };
 
   return (
     <div className="relative overflow-hidden rounded-2xl border border-neutral-200 bg-white p-6 shadow-sm transition-colors dark:border-neutral-800 dark:bg-neutral-950">
@@ -22,7 +29,7 @@ export default function ContactCard({ title = "Contact" }: { title?: string }) {
         <div className="mt-5 flex flex-col gap-3 sm:flex-row sm:items-center">
           <button
             type="button"
-            onClick={openModal}
+            onClick={handleOpenModal}
             className="inline-flex items-center justify-center rounded-full bg-gradient-to-r from-sky-500 via-blue-500 to-emerald-400 px-5 py-2 text-sm font-medium text-white shadow-lg shadow-sky-500/30 transition hover:shadow-xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-sky-500"
           >
             Open contact modal ↗
