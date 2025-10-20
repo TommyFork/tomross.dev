@@ -183,34 +183,57 @@ export default function WorkContent() {
   };
 
   useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        const visible = entries
-          .filter((entry) => entry.isIntersecting)
-          .sort((a, b) => b.intersectionRatio - a.intersectionRatio);
-        if (visible.length > 0) {
-          const topId = visible[0].target.id;
-          const index = PROJECT_SECTIONS.findIndex((section) => section.id === topId);
-          if (index !== -1) {
-            setActiveSection(index);
-          }
-        }
-      },
-      {
-        threshold: [0.35, 0.6],
-        rootMargin: "-25% 0px -25% 0px",
-      },
-    );
-
-    const elements = PROJECT_SECTIONS.map((section) =>
+    const sectionElements = PROJECT_SECTIONS.map((section) =>
       document.getElementById(section.id),
     ).filter((el): el is HTMLElement => Boolean(el));
 
-    elements.forEach((el) => observer.observe(el));
+    if (!sectionElements.length) {
+      return;
+    }
+
+    let frameId: number | null = null;
+
+    const updateActiveSection = () => {
+      frameId = null;
+      const viewportCenter = window.innerHeight / 2;
+      let closestIndex = 0;
+      let smallestDistance = Number.POSITIVE_INFINITY;
+
+      sectionElements.forEach((el, index) => {
+        const rect = el.getBoundingClientRect();
+        const sectionCenter = rect.top + rect.height / 2;
+        const distance = Math.abs(sectionCenter - viewportCenter);
+
+        if (distance < smallestDistance) {
+          closestIndex = index;
+          smallestDistance = distance;
+        }
+      });
+
+      setActiveSection((current) =>
+        current === closestIndex ? current : closestIndex,
+      );
+    };
+
+    const requestUpdate = () => {
+      if (frameId != null) {
+        return;
+      }
+
+      frameId = window.requestAnimationFrame(updateActiveSection);
+    };
+
+    updateActiveSection();
+
+    window.addEventListener("scroll", requestUpdate, { passive: true });
+    window.addEventListener("resize", requestUpdate);
 
     return () => {
-      elements.forEach((el) => observer.unobserve(el));
-      observer.disconnect();
+      if (frameId != null) {
+        window.cancelAnimationFrame(frameId);
+      }
+      window.removeEventListener("scroll", requestUpdate);
+      window.removeEventListener("resize", requestUpdate);
     };
   }, []);
 
