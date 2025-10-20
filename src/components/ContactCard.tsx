@@ -5,7 +5,7 @@ import type { MouseEvent } from "react";
 import EmailReveal from "@/components/EmailReveal";
 import { useContactModal } from "@/components/ContactModalContext";
 
-export default function ContactCard({ title = "Contact" }: { title?: string }) {
+export default function ContactCard() {
   const { openModal } = useContactModal();
 
   const handleOpenModal = (event: MouseEvent<HTMLButtonElement>) => {
@@ -15,8 +15,7 @@ export default function ContactCard({ title = "Contact" }: { title?: string }) {
 
   return (
     <div className="rounded-2xl border border-neutral-200 bg-white p-6 shadow-sm">
-      <p className="text-xs font-medium uppercase tracking-[0.18em] text-neutral-400">{title}</p>
-      <h2 className="mt-3 text-xl font-medium tracking-tight text-neutral-900">Let’s build something together</h2>
+      <h2 className="text-xl font-medium tracking-tight text-neutral-900">Let’s build something together</h2>
       <p className="mt-3 text-sm leading-relaxed text-neutral-600">
         Whether you’re refining a product direction, polishing UI, or need a partner to keep momentum, I’d love to hear what you’re working on.
       </p>

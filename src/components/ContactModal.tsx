@@ -270,29 +270,12 @@ export default function ContactModal({
           <span className="text-lg leading-none">×</span>
         </button>
         <div className="p-6 sm:p-8">
-          <p className="text-xs font-medium uppercase tracking-[0.18em] text-neutral-400">Contact</p>
-          <h2 id="contact-modal-title" className="mt-2 text-2xl font-medium tracking-tight text-neutral-900">
-            Looking to chat or collaborate?
+          <h2 id="contact-modal-title" className="text-2xl font-medium tracking-tight text-neutral-900">
+            Let’s build something together
           </h2>
           <p className="mt-3 text-sm leading-relaxed text-neutral-600">
-            I’m currently partnering with teams on thoughtful product design and solid engineering. Tell me what you’re exploring and we’ll set up time to dive in.
+            If you’re exploring a new product direction or need a partner to ship polished web experiences, I’d love to hear what you’re working on.
           </p>
-          <div className="mt-6 space-y-4">
-            <div className="flex items-start gap-3 rounded-xl border border-neutral-200 bg-neutral-50 px-4 py-3 text-sm text-neutral-600">
-              <span className="mt-1 h-2.5 w-2.5 rounded-full bg-neutral-400" aria-hidden />
-              <div>
-                <p className="font-medium text-neutral-900">Product &amp; interface work</p>
-                <p className="mt-1 leading-relaxed">Designing and building focused web experiences that feel considered and fast.</p>
-              </div>
-            </div>
-            <div className="flex items-start gap-3 rounded-xl border border-neutral-200 bg-neutral-50 px-4 py-3 text-sm text-neutral-600">
-              <span className="mt-1 h-2.5 w-2.5 rounded-full bg-neutral-400" aria-hidden />
-              <div>
-                <p className="font-medium text-neutral-900">Collaborative engagements</p>
-                <p className="mt-1 leading-relaxed">Pairing with teams to refine scope, tidy systems, and keep momentum high.</p>
-              </div>
-            </div>
-          </div>
           <div className="mt-6 flex flex-col gap-3 sm:flex-row sm:items-center">
             <a
               href={mailtoHref}
@@ -370,41 +353,10 @@ function buildModalKeyframes(
 
   const overshootScaleX = Math.max(1, clamp(scaleX * 1.06, 0.72, 1.1));
   const overshootScaleY = Math.max(1, clamp(scaleY * 1.06, 0.72, 1.1));
-  const releaseScaleX = clamp(scaleX * 0.92, 0.32, 1);
-  const releaseScaleY = clamp(scaleY * 0.92, 0.32, 1);
 
   const roundedRadius = Math.max(anchorRect.width, anchorRect.height) / 2;
 
-  if (mode === "close") {
-    return [
-      {
-        offset: 0,
-        opacity: 1,
-        transform: "translate(0, 0) scale(1)",
-        borderRadius: "24px",
-        filter: "blur(0)",
-        boxShadow: "0 20px 60px -28px rgba(15,23,42,0.18)",
-      },
-      {
-        offset: 0.7,
-        opacity: 1,
-        transform: `translate(${translateX * 0.12}px, ${translateY * 0.16}px) scale(${releaseScaleX}, ${releaseScaleY})`,
-        borderRadius: "28px",
-        filter: "blur(4px)",
-        boxShadow: "0 12px 40px -30px rgba(15,23,42,0.14)",
-      },
-      {
-        offset: 1,
-        opacity: 0,
-        transform: `translate(${translateX}px, ${translateY}px) scale(${scaleX}, ${scaleY})`,
-        borderRadius: `${roundedRadius}px`,
-        filter: "blur(10px)",
-        boxShadow: "0 0 0 rgba(15,23,42,0)",
-      },
-    ];
-  }
-
-  return [
+  const baseKeyframes: Keyframe[] = [
     {
       offset: 0,
       opacity: 0,
@@ -414,11 +366,11 @@ function buildModalKeyframes(
       boxShadow: "0 0 0 rgba(15,23,42,0.08)",
     },
     {
-      offset: 0.58,
+      offset: 0.56,
       opacity: 1,
-      transform: `translate(${translateX * 0.12}px, ${translateY * 0.18}px) scale(${overshootScaleX}, ${overshootScaleY})`,
+      transform: `translate(${translateX * 0.16}px, ${translateY * 0.18}px) scale(${overshootScaleX}, ${overshootScaleY})`,
       borderRadius: "26px",
-      filter: "blur(2px)",
+      filter: "blur(1.5px)",
       boxShadow: "0 18px 50px -26px rgba(15,23,42,0.18)",
     },
     {
@@ -430,6 +382,47 @@ function buildModalKeyframes(
       boxShadow: "0 24px 60px -28px rgba(15,23,42,0.18)",
     },
   ];
+
+  if (mode === "open") {
+    return baseKeyframes;
+  }
+
+  const reversed = baseKeyframes
+    .map((frame) => ({ ...frame }))
+    .reverse()
+    .map((frame) => {
+      if (typeof frame.offset === "number") {
+        return {
+          ...frame,
+          offset: Number((1 - frame.offset).toFixed(2)),
+        } as Keyframe;
+      }
+
+      return frame;
+    })
+    .map((frame, index, array) => {
+      if (index === array.length - 1) {
+        return {
+          ...frame,
+          offset: 1,
+          opacity: 0,
+          boxShadow: "0 0 0 rgba(15,23,42,0)",
+          filter: "blur(10px)",
+        } as Keyframe;
+      }
+
+      if (index === 0) {
+        return {
+          ...frame,
+          offset: 0,
+          opacity: 1,
+        } as Keyframe;
+      }
+
+      return frame;
+    });
+
+  return reversed;
 }
 
 function buildBackdropKeyframes(mode: "open" | "close"): Keyframe[] {
