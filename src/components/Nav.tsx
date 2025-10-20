@@ -16,6 +16,7 @@ export default function Nav() {
   const router = useRouter();
   const [isScrolled, setIsScrolled] = useState(false);
   const [pendingHref, setPendingHref] = useState<string | null>(null);
+  const [menuOpen, setMenuOpen] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -36,13 +37,29 @@ export default function Nav() {
 
   useEffect(() => {
     setPendingHref(null);
+    setMenuOpen(false);
   }, [pathname]);
 
   const activeHref = useMemo(() => pendingHref ?? pathname, [pendingHref, pathname]);
 
+  const handleNavClick = (href: string) => {
+    setPendingHref(href);
+    setMenuOpen(false);
+  };
+
   const brandClasses =
     "text-2xl font-semibold tracking-tight text-neutral-900 transition-all duration-500 hover:scale-[1.02] hover:text-neutral-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-neutral-800/40" +
     (isScrolled ? "" : " md:text-3xl");
+
+  const renderBackdrop = (active: boolean) => (
+    <div
+      aria-hidden
+      className="pointer-events-none absolute inset-0 overflow-hidden rounded-[inherit] opacity-0 transition-opacity duration-500 [mask-image:radial-gradient(circle_at_center,black,transparent)]"
+      style={{ opacity: active ? 1 : 0 }}
+    >
+      <div className="absolute -inset-24 animate-[liquidShift_12s_ease-in-out_infinite] bg-[radial-gradient(circle_at_20%_20%,rgba(255,255,255,0.9),transparent_55%),radial-gradient(circle_at_80%_30%,rgba(148,163,184,0.25),transparent_60%),radial-gradient(circle_at_50%_80%,rgba(226,232,240,0.35),transparent_60%)]" />
+    </div>
+  );
 
   return (
     <header
@@ -56,23 +73,52 @@ export default function Nav() {
         }`}
       >
         <nav
-          className={`flex items-center justify-between transition-all duration-500 ${
+          className={`relative flex items-center justify-between transition-all duration-500 ${
             isScrolled
-              ? "gap-4 rounded-3xl border border-white/30 bg-white/60 px-5 py-3 shadow-[0_12px_40px_-20px_rgba(15,23,42,0.45)] backdrop-blur-2xl backdrop-saturate-150"
+              ? "gap-3 rounded-[14px] border border-white/50 bg-white/45 px-4 py-3 shadow-[0_20px_60px_-30px_rgba(15,23,42,0.65)] backdrop-blur-2xl backdrop-saturate-[1.35]"
               : "border-transparent bg-transparent px-0 py-7"
           }`}
         >
-          <Link href="/" className={brandClasses}>
+          {renderBackdrop(isScrolled)}
+          <Link href="/" className={brandClasses} onClick={() => setMenuOpen(false)}>
             Tom Ross
           </Link>
-          <ul className="flex items-center gap-3 text-sm font-medium">
+          <button
+            type="button"
+            className="relative flex h-10 w-10 flex-col items-center justify-center gap-1.5 rounded-full border border-neutral-200 text-sm font-medium text-neutral-700 transition-all duration-300 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-neutral-800/40 md:hidden"
+            onClick={() => setMenuOpen((prev) => !prev)}
+            aria-expanded={menuOpen}
+            aria-label="Toggle navigation menu"
+          >
+            <span className="sr-only">Toggle navigation</span>
+            <span
+              className={`block h-[2px] w-5 origin-center rounded-full bg-current transition-transform duration-300 ${
+                menuOpen ? "translate-y-[6px] rotate-45" : ""
+              }`}
+            />
+            <span
+              className={`block h-[2px] w-5 origin-center rounded-full bg-current transition-opacity duration-300 ${
+                menuOpen ? "opacity-0" : "opacity-100"
+              }`}
+            />
+            <span
+              className={`block h-[2px] w-5 origin-center rounded-full bg-current transition-transform duration-300 ${
+                menuOpen ? "-translate-y-[6px] -rotate-45" : ""
+              }`}
+            />
+          </button>
+          <ul
+            className={`hidden items-center gap-3 text-sm font-medium md:flex ${
+              isScrolled ? "pr-1" : ""
+            }`}
+          >
             {links.map((item) => {
               const active = activeHref === item.href;
               return (
                 <li key={item.href}>
                   <Link
                     href={item.href}
-                    onClick={() => setPendingHref(item.href)}
+                    onClick={() => handleNavClick(item.href)}
                     onMouseEnter={() => router.prefetch(item.href)}
                     className={`rounded-full px-3 py-1.5 transition-all duration-300 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-neutral-800/40 ${
                       active
@@ -86,8 +132,51 @@ export default function Nav() {
               );
             })}
           </ul>
+          <div
+            className={`absolute left-0 right-0 top-full mt-3 overflow-hidden rounded-[14px] border border-white/45 bg-white/70 shadow-[0_16px_50px_-35px_rgba(15,23,42,0.7)] backdrop-blur-2xl backdrop-saturate-[1.35] transition-[max-height,opacity,transform] duration-500 md:hidden ${
+              menuOpen ? "max-h-64 opacity-100" : "max-h-0 opacity-0"
+            } ${isScrolled ? "translate-y-0" : "translate-y-1"}`}
+            style={{ pointerEvents: menuOpen ? "auto" : "none" }}
+          >
+            <div className="relative px-4 py-4">
+              {renderBackdrop(true)}
+              <ul className="flex flex-col gap-2 text-base font-medium text-neutral-700">
+                {links.map((item) => {
+                  const active = activeHref === item.href;
+                  return (
+                    <li key={item.href}>
+                      <Link
+                        href={item.href}
+                        onClick={() => handleNavClick(item.href)}
+                        className={`block rounded-xl px-3 py-2 transition-all duration-300 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-neutral-800/40 ${
+                          active
+                            ? "bg-neutral-900/10 text-neutral-900"
+                            : "text-neutral-600 hover:bg-neutral-900/5 hover:text-neutral-900"
+                        }`}
+                      >
+                        {item.label}
+                      </Link>
+                    </li>
+                  );
+                })}
+              </ul>
+            </div>
+          </div>
         </nav>
       </div>
+      <style jsx global>{`
+        @keyframes liquidShift {
+          0% {
+            transform: translate3d(-5%, -5%, 0) scale(1.05);
+          }
+          50% {
+            transform: translate3d(5%, 6%, 0) scale(1.1);
+          }
+          100% {
+            transform: translate3d(-5%, -5%, 0) scale(1.05);
+          }
+        }
+      `}</style>
     </header>
   );
 }
