@@ -1,6 +1,12 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import {
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+  type CSSProperties,
+} from "react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 
@@ -17,6 +23,8 @@ export default function Nav() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [pendingHref, setPendingHref] = useState<string | null>(null);
   const [menuOpen, setMenuOpen] = useState(false);
+  const [sampledColor, setSampledColor] = useState<string | null>(null);
+  const navRef = useRef<HTMLElement>(null);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -40,6 +48,78 @@ export default function Nav() {
     setMenuOpen(false);
   }, [pathname]);
 
+  useEffect(() => {
+    const navEl = navRef.current;
+    if (!navEl || typeof window === "undefined") {
+      return;
+    }
+
+    let frame = 0;
+
+    const resolveColor = (element: Element | null): string | null => {
+      let current: HTMLElement | null = element as HTMLElement | null;
+      const isTransparent = (value: string | null) => {
+        if (!value) return true;
+        if (value === "transparent") return true;
+        if (value === "rgba(0, 0, 0, 0)" || value === "rgba(0,0,0,0)") return true;
+        if (value === "hsla(0, 0%, 0%, 0)" || value === "hsla(0,0%,0%,0)") return true;
+        if (value === "" || value === "initial") return true;
+        return false;
+      };
+
+      while (current && current !== document.documentElement) {
+        const style = window.getComputedStyle(current);
+        if (!isTransparent(style.backgroundColor)) {
+          return style.backgroundColor;
+        }
+        if (style.backgroundImage && style.backgroundImage !== "none") {
+          const bodyColor = window.getComputedStyle(document.body).backgroundColor;
+          return bodyColor || null;
+        }
+        current = current.parentElement;
+      }
+
+      const bodyColor = window.getComputedStyle(document.body).backgroundColor;
+      if (bodyColor && !isTransparent(bodyColor)) {
+        return bodyColor;
+      }
+
+      return null;
+    };
+
+    const sampleUnderlyingColor = () => {
+      const rect = navEl.getBoundingClientRect();
+      const sampleX = rect.left + rect.width / 2;
+      const sampleY = rect.top + rect.height / 2;
+
+      const previousPointer = navEl.style.pointerEvents;
+      navEl.style.pointerEvents = "none";
+      const element = document.elementFromPoint(sampleX, sampleY);
+      navEl.style.pointerEvents = previousPointer;
+
+      const color = resolveColor(element);
+      if (color) {
+        setSampledColor((prev) => (prev === color ? prev : color));
+      }
+    };
+
+    const requestSample = () => {
+      cancelAnimationFrame(frame);
+      frame = requestAnimationFrame(sampleUnderlyingColor);
+    };
+
+    requestSample();
+
+    window.addEventListener("scroll", requestSample, { passive: true });
+    window.addEventListener("resize", requestSample);
+
+    return () => {
+      cancelAnimationFrame(frame);
+      window.removeEventListener("scroll", requestSample);
+      window.removeEventListener("resize", requestSample);
+    };
+  }, [pathname]);
+
   const activeHref = useMemo(() => pendingHref ?? pathname, [pendingHref, pathname]);
 
   const handleNavClick = (href: string) => {
@@ -51,13 +131,22 @@ export default function Nav() {
     "text-2xl font-semibold tracking-tight text-neutral-950 transition-all duration-500 hover:scale-[1.02] hover:text-neutral-800 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-neutral-800/40" +
     (isScrolled ? "" : " md:text-3xl");
 
+  const glassVariables: CSSProperties = sampledColor
+    ? {
+        ["--glass-source" as const]: sampledColor,
+      }
+    : {};
+
   const renderBackdrop = (active: boolean) => (
     <div
       aria-hidden
       className="pointer-events-none absolute inset-0 overflow-hidden rounded-[inherit] opacity-0 transition-opacity duration-700"
-      style={{ opacity: active ? 1 : 0 }}
+      style={{
+        opacity: active ? 1 : 0,
+        ...glassVariables,
+      }}
     >
-      <div className="absolute inset-0 bg-[radial-gradient(140%_160%_at_10%_-10%,rgba(255,255,255,0.92),transparent_60%),radial-gradient(160%_160%_at_90%_120%,rgba(244,247,255,0.7),transparent_68%),linear-gradient(135deg,rgba(255,255,255,0.65),rgba(247,250,255,0.35))]" />
+      <div className="absolute inset-0 bg-[color-mix(in_srgb,var(--glass-source,rgba(241,245,249,1))_50%,rgba(255,255,255,0.45))]" />
       <div className="absolute inset-0 mix-blend-screen opacity-90">
         <div className="absolute -inset-28 animate-[liquidCurrent_18s_cubic-bezier(0.65,0,0.35,1)_infinite] bg-[radial-gradient(circle_at_20%_30%,rgba(147,197,253,0.26),transparent_60%),radial-gradient(circle_at_75%_15%,rgba(186,230,253,0.24),transparent_68%),radial-gradient(circle_at_35%_80%,rgba(167,243,208,0.22),transparent_62%)]" />
         <div className="absolute -inset-32 animate-[liquidGlow_24s_cubic-bezier(0.37,0,0.63,1)_infinite] bg-[radial-gradient(circle_at_80%_85%,rgba(254,205,211,0.22),transparent_70%),radial-gradient(circle_at_15%_90%,rgba(221,214,254,0.2),transparent_60%)]" />
@@ -67,14 +156,14 @@ export default function Nav() {
         <div className="absolute inset-x-6 top-1 h-px bg-white/30" />
         <div className="absolute inset-x-4 bottom-0 h-[2px] bg-white/25 blur-[2px]" />
       </div>
-      <div className="absolute inset-0 bg-[linear-gradient(115deg,rgba(255,255,255,0.18)_0%,rgba(255,255,255,0.06)_40%,rgba(255,255,255,0.2)_100%)] opacity-70" />
+      <div className="absolute inset-0 bg-[linear-gradient(115deg,rgba(255,255,255,0.26)_0%,rgba(255,255,255,0.08)_45%,rgba(255,255,255,0.28)_100%)] opacity-70" />
       <div className="absolute inset-0 bg-[url('data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' width=\'160\' height=\'160\' viewBox=\'0 0 160 160\'%3E%3Crect width=\'1\' height=\'1\' x=\'24\' y=\'32\' fill=\'rgba(255,255,255,0.16)\'/%3E%3Crect width=\'1\' height=\'1\' x=\'112\' y=\'120\' fill=\'rgba(255,255,255,0.12)\'/%3E%3Crect width=\'1\' height=\'1\' x=\'64\' y=\'72\' fill=\'rgba(255,255,255,0.1)\'/%3E%3C/svg%3E')] opacity-40" />
       <div className="absolute inset-[1px] rounded-[inherit] border border-white/60 shadow-[inset_0_1px_0_rgba(255,255,255,0.55)]" />
     </div>
   );
 
   return (
-    <header className="sticky top-0 z-50">
+    <header className="sticky top-0 z-50" ref={navRef}>
       <div
         className={`mx-auto max-w-5xl px-0 transition-[padding,transform] duration-500 ease-[cubic-bezier(0.19,1,0.22,1)] ${
           isScrolled ? "pt-4" : "pt-2"
@@ -83,9 +172,10 @@ export default function Nav() {
         <nav
           className={`relative flex items-center justify-between transition-[padding,background-color,border-color,box-shadow] duration-500 ease-[cubic-bezier(0.19,1,0.22,1)] ${
             isScrolled
-              ? "gap-3 rounded-2xl border border-white/60 bg-[color-mix(in_srgb,var(--color-background)_88%,transparent)] px-4 py-3 shadow-[0_30px_85px_-50px_rgba(15,23,42,0.45)] backdrop-blur-[36px] backdrop-saturate-[1.7]"
+              ? "gap-3 rounded-2xl border border-white/60 bg-[color-mix(in_srgb,var(--glass-source,rgba(241,245,249,1))_68%,rgba(255,255,255,0.28))] px-4 py-3 shadow-[0_30px_85px_-50px_rgba(15,23,42,0.28)] backdrop-blur-[36px] backdrop-saturate-[1.65]"
               : "border-transparent bg-transparent px-0 py-6"
           }`}
+          style={glassVariables}
         >
           {renderBackdrop(isScrolled)}
           <Link href="/" className={brandClasses} onClick={() => setMenuOpen(false)}>
@@ -141,7 +231,7 @@ export default function Nav() {
             })}
           </ul>
           <div
-            className={`absolute left-0 right-0 top-full mt-3 overflow-hidden rounded-2xl border border-white/60 bg-[color-mix(in_srgb,var(--color-background)_90%,transparent)] shadow-[0_30px_85px_-55px_rgba(15,23,42,0.48)] backdrop-blur-[36px] backdrop-saturate-[1.6] transition-[max-height,opacity,transform] duration-500 md:hidden ${
+            className={`absolute left-0 right-0 top-full mt-3 overflow-hidden rounded-2xl border border-white/60 bg-[color-mix(in_srgb,var(--glass-source,rgba(241,245,249,1))_70%,rgba(255,255,255,0.24))] shadow-[0_30px_85px_-55px_rgba(15,23,42,0.32)] backdrop-blur-[32px] backdrop-saturate-[1.6] transition-[max-height,opacity,transform] duration-500 md:hidden ${
               menuOpen ? "max-h-64 opacity-100" : "max-h-0 opacity-0"
             } ${isScrolled ? "translate-y-0" : "translate-y-1"}`}
             style={{ pointerEvents: menuOpen ? "auto" : "none" }}
