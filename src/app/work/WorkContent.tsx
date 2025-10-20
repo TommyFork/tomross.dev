@@ -216,43 +216,65 @@ export default function WorkContent() {
 
   return (
     <MotionConfig transition={baseTransition}>
-      <div className="relative mx-auto w-full max-w-5xl px-6 sm:px-8">
-        <div className="lg:grid lg:grid-cols-[auto_1fr] lg:items-start lg:gap-10">
-          <aside className="relative hidden lg:flex">
-            <div className="sticky top-1/2 -translate-y-1/2">
-              <div className="flex flex-col items-center gap-4 rounded-full bg-white/95 px-3 py-5 shadow-[0_24px_60px_rgba(57,57,118,0.12)] backdrop-blur">
-                {PROJECT_SECTIONS.map((section, index) => {
-                  const isActive = index === activeSection;
-                  return (
-                    <motion.button
-                      key={section.id}
-                      type="button"
-                      onClick={() => handleScrollToSection(section.id)}
-                      className="relative flex h-8 w-6 items-center justify-center"
-                      aria-label={`Jump to ${section.label}`}
-                      whileTap={{ scale: 0.9 }}
-                    >
-                      <motion.span
-                        className={`block w-2 rounded-full ${
-                          isActive
-                            ? "bg-[var(--brightbook-blue)]"
-                            : "bg-slate-300/80"
-                        }`}
-                        initial={false}
-                        animate={{
-                          height: isActive ? 28 : 10,
-                          opacity: isActive ? 1 : 0.6,
-                        }}
-                        transition={{ type: "spring", stiffness: 320, damping: 24 }}
-                      />
-                    </motion.button>
-                  );
-                })}
-              </div>
+      <div className="relative">
+        <motion.aside
+          className="pointer-events-none hidden lg:block"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.5, ease: [0.33, 1, 0.68, 1] }}
+        >
+          <div className="pointer-events-auto fixed left-6 top-1/2 z-20 -translate-y-1/2">
+            <div className="flex flex-col items-center gap-5 rounded-full bg-white/95 px-4 py-6 shadow-[0_24px_60px_rgba(57,57,118,0.14)] backdrop-blur">
+              {PROJECT_SECTIONS.map((section, index) => {
+                const isActive = index === activeSection;
+                return (
+                  <motion.button
+                    key={section.id}
+                    type="button"
+                    onClick={() => handleScrollToSection(section.id)}
+                    className="relative flex h-10 w-8 items-center justify-center"
+                    aria-label={`Jump to ${section.label}`}
+                    whileTap={{ scale: 0.92 }}
+                    whileHover={{ scale: 1.05 }}
+                    transition={{ type: "spring", stiffness: 380, damping: 32 }}
+                  >
+                    <span className="absolute inset-0 flex items-center justify-center">
+                      <AnimatePresence>
+                        {isActive && (
+                          <motion.span
+                            layoutId="progress-highlight"
+                            className="absolute h-14 w-14 rounded-full bg-[var(--brightbook-blue)]/15 blur-md"
+                            initial={{ opacity: 0, scale: 0.6 }}
+                            animate={{ opacity: 1, scale: 1 }}
+                            exit={{ opacity: 0, scale: 0.6 }}
+                            transition={{ type: "spring", stiffness: 320, damping: 30 }}
+                          />
+                        )}
+                      </AnimatePresence>
+                    </span>
+                    <motion.span
+                      layout
+                      className={`relative block rounded-full ${
+                        isActive
+                          ? "bg-[var(--brightbook-blue)] shadow-[0_12px_30px_rgba(35,64,179,0.35)]"
+                          : "bg-slate-300/80"
+                      }`}
+                      initial={false}
+                      animate={{
+                        height: isActive ? 34 : 12,
+                        width: isActive ? 10 : 8,
+                        opacity: isActive ? 1 : 0.6,
+                      }}
+                      transition={{ type: "spring", stiffness: 320, damping: 28 }}
+                    />
+                  </motion.button>
+                );
+              })}
             </div>
-          </aside>
+          </div>
+        </motion.aside>
 
-          <main className="flex flex-col gap-y-36 py-14 md:gap-y-48 md:py-20 lg:gap-y-56 lg:py-24">
+        <main className="mx-auto flex w-full max-w-5xl flex-col gap-y-36 px-6 py-14 sm:px-8 md:gap-y-48 md:py-20 lg:gap-y-56 lg:py-24">
             <AnimatedProjectSection id={PROJECT_SECTIONS[0].id}>
               <ProjectPortfolioCard
                 logoUrl="/brightbook/BrightBook-Logo.svg"
@@ -511,7 +533,6 @@ export default function WorkContent() {
             </AnimatedProjectSection>
           </main>
         </div>
-      </div>
     </MotionConfig>
   );
 }
