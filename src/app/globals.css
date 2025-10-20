@@ -46,3 +46,18 @@ body {
   0%, 100% { transform: translateY(0); }
   50% { transform: translateY(6px); }
 }
+
+.contact-genie {
+  opacity: 0;
+  transform: translate3d(0, 16px, 0) scale(0.95);
+  will-change: transform, opacity, border-radius, filter, box-shadow;
+}
+
+.contact-genie[data-state="open"] {
+  opacity: 1;
+  transform: translate3d(0, 0, 0) scale(1);
+}
+
+.contact-genie[data-state="closing"] {
+  pointer-events: none;
+}
