@@ -3,7 +3,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import Nav from "../components/Nav";
 import Footer from "../components/Footer";
-import { ContactModalProvider } from "../components/ContactModalContext";
+import { Providers } from "./providers";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -28,7 +28,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
-        <ContactModalProvider>
+        <Providers>
           <div className="min-h-screen flex flex-col">
             <div className="mx-auto w-full max-w-5xl px-6 flex-1 flex flex-col">
               <Nav />
@@ -38,7 +38,7 @@ export default function RootLayout({
               <Footer />
             </div>
           </div>
-        </ContactModalProvider>
+        </Providers>
       </body>
     </html>
   );
