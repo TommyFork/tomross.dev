@@ -3,6 +3,14 @@
 :root {
   --background: #ffffff;
   --foreground: #171717;
+  --brightbook-blue: #0099FF;
+  --brightbook-blue-rgb: 0, 153, 255;
+  --brightbook-dark-blue: #0066CC;
+  --stumped-blue: #0094E9;
+  --stumped-dark-blue: #0060B6;
+  --next-step-blue: #0075FE;
+  --next-step-dark-blue: #074B9C;
+  --next-step-gold: #F4C430;
 }
 
 @theme inline {
@@ -12,15 +20,29 @@
   --font-mono: var(--font-geist-mono);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-}
-
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-geist-sans), ui-sans-serif, system-ui, -apple-system;
+  color-scheme: light;
+}
+
+/* Minimal animation utilities */
+.animate-float {
+  animation: float 6s ease-in-out infinite;
+}
+
+@keyframes float {
+  0% { transform: translateY(0); }
+  50% { transform: translateY(-8px); }
+  100% { transform: translateY(0); }
+}
+
+.animate-bounce-subtle {
+  animation: bounce-subtle 1.6s ease-in-out infinite;
+}
+
+@keyframes bounce-subtle {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(6px); }
 }
