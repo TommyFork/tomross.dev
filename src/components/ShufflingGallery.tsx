@@ -22,6 +22,28 @@ export default function ShufflingGallery({
   className,
 }: ShufflingGalleryProps) {
   const [images, setImages] = useState(initialImages);
+  const [viewport, setViewport] = useState<"mobile" | "tablet" | "desktop">(
+    "desktop",
+  );
+
+  useEffect(() => {
+    const getViewport = () => {
+      if (typeof window === "undefined") return "desktop" as const;
+      const width = window.innerWidth;
+      if (width < 640) return "mobile" as const;
+      if (width < 1024) return "tablet" as const;
+      return "desktop" as const;
+    };
+
+    const updateViewport = () => {
+      setViewport(getViewport());
+    };
+
+    updateViewport();
+
+    window.addEventListener("resize", updateViewport);
+    return () => window.removeEventListener("resize", updateViewport);
+  }, []);
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -38,8 +60,19 @@ export default function ShufflingGallery({
     return () => clearInterval(interval);
   }, []);
 
+  const galleryHeight =
+    viewport === "mobile" ? 360 : viewport === "tablet" ? 440 : 560;
+  const horizontalOffset = viewport === "desktop" ? 24 : viewport === "tablet" ? 16 : 0;
+  const verticalOffset = viewport === "mobile" ? 12 : 20;
+  const rotation = viewport === "desktop" ? 3.5 : viewport === "tablet" ? 2.5 : 0;
+  const secondScale = viewport === "desktop" ? 0.85 : viewport === "tablet" ? 0.82 : 0.8;
+  const thirdScale = viewport === "desktop" ? 0.75 : viewport === "tablet" ? 0.72 : 0.7;
+
   return (
-    <div className={`relative h-[560px] w-full ${className}`}>
+    <div
+      className={`relative w-full ${className ? className : ""} mx-auto`}
+      style={{ height: galleryHeight }}
+    >
       <AnimatePresence>
         {images.map((image, i) => {
           if (i > 2) return null;
@@ -48,7 +81,11 @@ export default function ShufflingGallery({
           const isSecond = i === 1;
           const isThird = i === 2;
 
-          const baseScale = isTop ? 1 : isSecond ? 0.8 : 0.7;
+          const baseScale = isTop
+            ? 1
+            : isSecond
+            ? secondScale
+            : thirdScale;
           const scale = baseScale * (image.scaleModifier || 1);
 
           return (
@@ -66,10 +103,10 @@ export default function ShufflingGallery({
               }}
               animate={{
                 opacity: 1,
-                y: isTop ? 0 : -i * 20,
-                x: isSecond ? -20 : isThird ? 20 : 0,
+                y: isTop ? 0 : -i * verticalOffset,
+                x: isSecond ? -horizontalOffset : isThird ? horizontalOffset : 0,
                 scale,
-                rotate: isSecond ? -3.5 : isThird ? 3.5 : 0,
+                rotate: isSecond ? -rotation : isThird ? rotation : 0,
                 transition: {
                   type: "spring",
                   stiffness: 110,
@@ -79,7 +116,7 @@ export default function ShufflingGallery({
               exit={{
                 y: 60,
                 scale: 0.85,
-                rotate: isTop ? 6 : 0,
+                rotate: isTop ? rotation + 2.5 : 0,
                 opacity: 0,
                 transition: {
                   duration: 0.6,

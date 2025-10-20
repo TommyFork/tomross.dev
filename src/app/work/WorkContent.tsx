@@ -48,7 +48,7 @@ function AnimatedProjectSection({
 }: AnimatedProjectSectionProps) {
   return (
     <motion.section
-      className=""
+      className="w-full"
       initial="hidden"
       whileInView="visible"
       viewport={{ once: true, amount: 0.2, margin: "-10% 0px" }}
@@ -108,10 +108,9 @@ function Reveal({ children }: RevealProps) {
 type TechStackLogoProps = {
   src: string;
   label: string;
-  delay?: number;
 };
 
-function TechStackLogo({ src, label, delay = 0 }: TechStackLogoProps) {
+function TechStackLogo({ src, label }: TechStackLogoProps) {
   const [hovered, setHovered] = useState(false);
 
   return (
@@ -167,7 +166,7 @@ const nextStepImages = [
 export default function WorkContent() {
   return (
     <MotionConfig transition={baseTransition}>
-      <main className="flex flex-col gap-y-32 py-16">
+      <main className="flex flex-col gap-y-40 py-16 md:gap-y-48 md:py-24 lg:gap-y-56 lg:py-28">
         <AnimatedProjectSection>
           <ProjectPortfolioCard
             logoUrl="/brightbook/BrightBook-Logo.svg"
@@ -203,11 +202,11 @@ export default function WorkContent() {
             leftColumnContent={
               <>
                 <Reveal>
-                  <Card className="px-4 py-7 flex flex-col items-center justify-center text-center">
-                    <p className="text-lg font-medium text-gray-700">
+                  <Card className="flex flex-col items-center justify-center gap-3 px-6 py-8 text-center">
+                    <p className="text-base font-medium text-gray-700">
                       Piloted in the
                     </p>
-                    <div className="relative h-28 w-60">
+                    <div className="relative h-24 w-48 sm:h-28 sm:w-60">
                       <Image
                         src="/brightbook/BPS-Logo.svg"
                         alt="Boston Public Schools"
@@ -236,14 +235,14 @@ export default function WorkContent() {
                   </ImageCard>
                 </Reveal>
                 <Reveal>
-                  <Card className="px-4 py-7 flex flex-col items-center gap-2 justify-center text-center">
+                  <Card className="flex flex-col items-center justify-center gap-3 px-6 py-8 text-center">
                     <AnimatedNumber
                       value={20000}
                       prefix="$"
                       suffix="+"
-                      className="text-4xl font-bold text-[var(--brightbook-blue)]"
+                      className="text-4xl font-bold text-[var(--brightbook-blue)] md:text-5xl"
                     />
-                    <p className="text-lg font-medium text-gray-700">
+                    <p className="text-base font-medium text-gray-700">
                       raised in non–dilutive funding
                     </p>
                   </Card>
@@ -278,32 +277,32 @@ export default function WorkContent() {
             leftColumnContent={
               <>
                 <Reveal>
-                  <Card className="px-4 py-7 flex flex-col items-center gap-2 justify-center text-center">
+                  <Card className="flex flex-col items-center gap-3 px-6 py-8 text-center">
                     <AnimatedNumber
                       value={700}
                       suffix="+"
-                      className="text-4xl font-bold text-[var(--stumped-blue)]"
+                      className="text-4xl font-bold text-[var(--stumped-blue)] md:text-5xl"
                     />
-                    <p className="text-lg font-medium text-gray-700">
+                    <p className="text-base font-medium text-gray-700">
                       students reached
                     </p>
                   </Card>
                 </Reveal>
                 <Reveal>
-                  <Card className="px-4 py-7 flex flex-col items-center gap-2 justify-center text-center">
+                  <Card className="flex flex-col items-center gap-3 px-6 py-8 text-center">
                     <AnimatedNumber
                       value={5000}
                       suffix="+"
-                      className="text-4xl font-bold text-[var(--stumped-blue)]"
+                      className="text-4xl font-bold text-[var(--stumped-blue)] md:text-5xl"
                     />
-                    <p className="text-lg font-medium text-gray-700">
+                    <p className="text-base font-medium text-gray-700">
                       Stumped Cards produced
                     </p>
                   </Card>
                 </Reveal>
                 <Reveal>
-                  <Card className="px-4 py-7 flex flex-col items-center justify-center text-center">
-                    <div className="relative h-28 w-60">
+                  <Card className="flex flex-col items-center justify-center gap-4 px-6 py-8 text-center">
+                    <div className="relative h-24 w-48 sm:h-28 sm:w-60">
                       <Image
                         src="/stumped/NYSSBA-Logo.svg"
                         alt="New York State School Boards Association"
@@ -311,7 +310,7 @@ export default function WorkContent() {
                         className="object-contain"
                       />
                     </div>
-                    <p className="text-base font-medium text-gray-700 mt-2">
+                    <p className="text-base font-medium text-gray-700">
                       Awarded Champions of Change by the NYSSBA
                     </p>
                   </Card>
@@ -355,11 +354,11 @@ export default function WorkContent() {
             leftColumnContent={
               <>
                 <Reveal>
-                  <Card className="px-4 py-7 flex flex-col items-center gap-2 justify-center text-center">
+                  <Card className="flex flex-col items-center gap-3 px-6 py-8 text-center">
                     <AnimatedNumber
                       value={96}
                       suffix="%"
-                      className="text-5xl font-bold text-[var(--next-step-blue)]"
+                      className="text-4xl font-bold text-[var(--next-step-blue)] md:text-5xl"
                     />
                     <p className="text-base font-medium text-gray-700 leading-tight">
                       accuracy in data extraction
@@ -369,11 +368,11 @@ export default function WorkContent() {
                   </Card>
                 </Reveal>
                 <Reveal>
-                  <Card className="relative overflow-visible p-8">
-                    <h3 className="text-[var(--next-step-dark-blue)] font-medium text-xl md:text-lg text-center mb-6">
+                  <Card className="relative overflow-visible px-8 py-10">
+                    <h3 className="mb-6 text-center text-xl font-medium text-[var(--next-step-dark-blue)] md:text-lg">
                       Tech Stack
                     </h3>
-                    <div className="grid grid-cols-3 gap-x-8 gap-y-16 max-w-sm mx-auto">
+                    <div className="mx-auto grid max-w-sm grid-cols-2 gap-x-8 gap-y-12 sm:grid-cols-3">
                       <TechStackLogo
                         src="/next-step/tech-stack/NextJS.png"
                         label="Next.js"
@@ -404,7 +403,7 @@ export default function WorkContent() {
               </>
             }
             rightColumnContent={
-              <ShufflingGallery images={nextStepImages} className="max-w-xl" />
+              <ShufflingGallery images={nextStepImages} className="max-w-lg md:max-w-xl" />
             }
             footerNote={
               <>
