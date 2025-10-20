@@ -54,28 +54,29 @@ export default function Nav() {
   const renderBackdrop = (active: boolean) => (
     <div
       aria-hidden
-      className="pointer-events-none absolute inset-0 overflow-hidden rounded-[inherit] opacity-0 transition-opacity duration-500 [mask-image:radial-gradient(circle_at_center,black,transparent)]"
-      style={{ opacity: active ? 1 : 0 }}
+      className="pointer-events-none absolute inset-0 overflow-hidden rounded-[inherit] opacity-0 transition-opacity duration-700"
+      style={{ opacity: active ? 0.95 : 0 }}
     >
-      <div className="absolute -inset-24 animate-[liquidShift_12s_ease-in-out_infinite] bg-[radial-gradient(circle_at_20%_20%,rgba(255,255,255,0.9),transparent_55%),radial-gradient(circle_at_80%_30%,rgba(148,163,184,0.25),transparent_60%),radial-gradient(circle_at_50%_80%,rgba(226,232,240,0.35),transparent_60%)]" />
+      <div className="absolute inset-0 bg-gradient-to-br from-white/60 via-white/35 to-white/25" />
+      <div className="absolute inset-0 mix-blend-screen opacity-80">
+        <div className="absolute -inset-24 animate-[liquidDrift_16s_ease-in-out_infinite] bg-[radial-gradient(circle_at_15%_20%,rgba(255,255,255,0.85),transparent_55%),radial-gradient(circle_at_70%_25%,rgba(148,163,184,0.3),transparent_60%),radial-gradient(circle_at_50%_80%,rgba(226,232,240,0.35),transparent_60%)]" />
+        <div className="absolute -inset-32 animate-[liquidPulse_22s_ease-in-out_infinite] bg-[radial-gradient(circle_at_20%_80%,rgba(125,211,252,0.35),transparent_60%),radial-gradient(circle_at_80%_60%,rgba(94,234,212,0.3),transparent_60%)]" />
+      </div>
+      <div className="absolute inset-[1px] rounded-[inherit] border border-white/50" />
     </div>
   );
 
   return (
-    <header
-      className={`sticky z-50 transition-[top] duration-500 ${
-        isScrolled ? "top-4" : "top-0"
-      }`}
-    >
+    <header className="sticky top-0 z-50">
       <div
-        className={`mx-auto max-w-5xl transition-all duration-500 ${
-          isScrolled ? "px-6" : "px-0"
+        className={`mx-auto max-w-5xl transition-all duration-500 ease-[cubic-bezier(0.19,1,0.22,1)] ${
+          isScrolled ? "px-6 pt-4" : "px-0 pt-0"
         }`}
       >
         <nav
-          className={`relative flex items-center justify-between transition-all duration-500 ${
+          className={`relative flex items-center justify-between transition-all duration-500 ease-[cubic-bezier(0.19,1,0.22,1)] ${
             isScrolled
-              ? "gap-3 rounded-[14px] border border-white/50 bg-white/45 px-4 py-3 shadow-[0_20px_60px_-30px_rgba(15,23,42,0.65)] backdrop-blur-2xl backdrop-saturate-[1.35]"
+              ? "gap-3 rounded-2xl border border-white/45 bg-white/30 px-4 py-3 shadow-[0_30px_80px_-45px_rgba(15,23,42,0.85)] backdrop-blur-[28px] backdrop-saturate-[1.35]"
               : "border-transparent bg-transparent px-0 py-7"
           }`}
         >
@@ -133,7 +134,7 @@ export default function Nav() {
             })}
           </ul>
           <div
-            className={`absolute left-0 right-0 top-full mt-3 overflow-hidden rounded-[14px] border border-white/45 bg-white/70 shadow-[0_16px_50px_-35px_rgba(15,23,42,0.7)] backdrop-blur-2xl backdrop-saturate-[1.35] transition-[max-height,opacity,transform] duration-500 md:hidden ${
+            className={`absolute left-0 right-0 top-full mt-3 overflow-hidden rounded-2xl border border-white/45 bg-white/45 shadow-[0_30px_80px_-45px_rgba(15,23,42,0.85)] backdrop-blur-[28px] backdrop-saturate-[1.35] transition-[max-height,opacity,transform] duration-500 md:hidden ${
               menuOpen ? "max-h-64 opacity-100" : "max-h-0 opacity-0"
             } ${isScrolled ? "translate-y-0" : "translate-y-1"}`}
             style={{ pointerEvents: menuOpen ? "auto" : "none" }}
@@ -165,15 +166,32 @@ export default function Nav() {
         </nav>
       </div>
       <style jsx global>{`
-        @keyframes liquidShift {
+        @keyframes liquidDrift {
           0% {
-            transform: translate3d(-5%, -5%, 0) scale(1.05);
+            transform: translate3d(-4%, -6%, 0) scale(1.05) rotate(0deg);
           }
           50% {
-            transform: translate3d(5%, 6%, 0) scale(1.1);
+            transform: translate3d(6%, 5%, 0) scale(1.12) rotate(1deg);
           }
           100% {
-            transform: translate3d(-5%, -5%, 0) scale(1.05);
+            transform: translate3d(-4%, -6%, 0) scale(1.05) rotate(0deg);
+          }
+        }
+
+        @keyframes liquidPulse {
+          0% {
+            transform: translate3d(8%, -8%, 0) scale(1);
+            opacity: 0.35;
+          }
+          40% {
+            opacity: 0.6;
+          }
+          50% {
+            transform: translate3d(-6%, 6%, 0) scale(1.15);
+          }
+          100% {
+            transform: translate3d(8%, -8%, 0) scale(1);
+            opacity: 0.35;
           }
         }
       `}</style>
