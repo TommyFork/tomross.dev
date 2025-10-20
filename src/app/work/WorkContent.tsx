@@ -40,14 +40,17 @@ const itemVariants = {
 type AnimatedProjectSectionProps = {
   children: ReactNode;
   staggerIndex?: number;
+  id?: string;
 };
 
 function AnimatedProjectSection({
   children,
   staggerIndex = 0,
+  id,
 }: AnimatedProjectSectionProps) {
   return (
     <motion.section
+      id={id}
       className="w-full"
       initial="hidden"
       whileInView="visible"
@@ -163,14 +166,146 @@ const nextStepImages = [
   },
 ];
 
+const PROJECT_SECTIONS = [
+  { id: "project-brightbook", label: "BrightBook" },
+  { id: "project-stumped", label: "Stumped" },
+  { id: "project-nextstep", label: "NextStep" },
+] as const;
+
 export default function WorkContent() {
+  const [activeSection, setActiveSection] = useState(0);
+
+  const handleScrollToSection = (id: string) => {
+    const el = document.getElementById(id);
+    if (el) {
+      el.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+  };
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const visible = entries
+          .filter((entry) => entry.isIntersecting)
+          .sort((a, b) => b.intersectionRatio - a.intersectionRatio);
+        if (visible.length > 0) {
+          const topId = visible[0].target.id;
+          const index = PROJECT_SECTIONS.findIndex((section) => section.id === topId);
+          if (index !== -1) {
+            setActiveSection(index);
+          }
+        }
+      },
+      {
+        threshold: [0.35, 0.6],
+        rootMargin: "-25% 0px -25% 0px",
+      },
+    );
+
+    const elements = PROJECT_SECTIONS.map((section) =>
+      document.getElementById(section.id),
+    ).filter((el): el is HTMLElement => Boolean(el));
+
+    elements.forEach((el) => observer.observe(el));
+
+    return () => {
+      elements.forEach((el) => observer.unobserve(el));
+      observer.disconnect();
+    };
+  }, []);
+
   return (
     <MotionConfig transition={baseTransition}>
-      <main className="flex flex-col gap-y-40 py-16 md:gap-y-48 md:py-24 lg:gap-y-56 lg:py-28">
-        <AnimatedProjectSection>
-          <ProjectPortfolioCard
-            logoUrl="/brightbook/BrightBook-Logo.svg"
-            logoAlt="BrightBook"
+      <div className="mx-auto flex w-full max-w-6xl px-6 sm:px-8 lg:px-12">
+        <aside className="relative hidden shrink-0 justify-center pr-6 lg:flex">
+          <div className="sticky top-40 flex flex-col items-center">
+            <div className="flex flex-col items-center gap-4 rounded-full bg-white/90 px-3 py-5 shadow-[0_24px_60px_rgba(57,57,118,0.12)] backdrop-blur">
+              {PROJECT_SECTIONS.map((section, index) => {
+                const isActive = index === activeSection;
+                return (
+                  <motion.button
+                    key={section.id}
+                    type="button"
+                    onClick={() => handleScrollToSection(section.id)}
+                    className="relative flex h-8 w-6 items-center justify-center"
+                    aria-label={`Jump to ${section.label}`}
+                    whileTap={{ scale: 0.9 }}
+                  >
+                    <motion.span
+                      className={`block w-2 rounded-full ${
+                        isActive
+                          ? "bg-[var(--brightbook-blue)]"
+                          : "bg-slate-300/80"
+                      }`}
+                      initial={false}
+                      animate={{
+                        height: isActive ? 28 : 10,
+                        opacity: isActive ? 1 : 0.6,
+                      }}
+                      transition={{ type: "spring", stiffness: 320, damping: 24 }}
+                    />
+                  </motion.button>
+                );
+              })}
+            </div>
+          </div>
+        </aside>
+
+        <main className="flex flex-1 flex-col gap-y-36 py-14 md:gap-y-48 md:py-20 lg:gap-y-56 lg:py-24">
+          <section className="mx-auto flex max-w-3xl flex-col items-center gap-6 text-center">
+            <motion.span
+              className="text-sm font-semibold uppercase tracking-[0.3em] text-[var(--brightbook-dark-blue)]"
+              initial={{ opacity: 0, y: 12 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, ease: [0.33, 1, 0.68, 1] }}
+            >
+              Featured Work
+            </motion.span>
+            <motion.h1
+              className="text-3xl font-semibold leading-tight text-gray-900 sm:text-4xl md:text-5xl"
+              initial={{ opacity: 0, y: 16 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.65, ease: [0.25, 1, 0.5, 1], delay: 0.05 }}
+            >
+              Building thoughtful tools for learning, equity, and community
+            </motion.h1>
+            <motion.p
+              className="max-w-2xl text-base leading-7 text-gray-600 sm:text-lg"
+              initial={{ opacity: 0, y: 18 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.7, ease: [0.25, 1, 0.5, 1], delay: 0.1 }}
+            >
+              I lead product, design, and engineering across mission-driven teams, focusing on work that makes education more humane and accessible. Here’s a look at a few projects I’ve been building recently.
+            </motion.p>
+            <motion.button
+              type="button"
+              onClick={() => handleScrollToSection(PROJECT_SECTIONS[0].id)}
+              className="group inline-flex h-14 w-14 items-center justify-center rounded-full border border-[var(--brightbook-blue)]/30 bg-white text-[var(--brightbook-dark-blue)] shadow-[0_18px_40px_rgba(57,57,118,0.12)] transition-transform hover:-translate-y-1"
+              aria-label="Scroll to projects"
+              animate={{ y: [0, 6, 0] }}
+              transition={{ repeat: Infinity, duration: 2.8, ease: "easeInOut" }}
+            >
+              <svg
+                aria-hidden
+                viewBox="0 0 24 24"
+                className="h-5 w-5 transition-transform group-hover:translate-y-0.5"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="1.6"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M12 5v14m0 0-5-5m5 5 5-5"
+                />
+              </svg>
+            </motion.button>
+          </section>
+
+          <AnimatedProjectSection id={PROJECT_SECTIONS[0].id}>
+            <ProjectPortfolioCard
+              logoUrl="/brightbook/BrightBook-Logo.svg"
+              logoAlt="BrightBook"
             description={
               <>
                 BrightBook makes it easy for teachers to build lessons that
@@ -266,14 +401,17 @@ export default function WorkContent() {
           />
         </AnimatedProjectSection>
 
-        <AnimatedProjectSection staggerIndex={1}>
+        <AnimatedProjectSection
+            id={PROJECT_SECTIONS[1].id}
+            staggerIndex={1}
+          >
           <ProjectPortfolioCard
             logoUrl="/stumped/Stumped-Logo.svg"
             logoAlt="Stumped"
             description="Stumped gamified student-teacher relationships, creating a school-wide scavenger hunt that built a stronger and more connected community. The successful competition turned faculty members into collectible characters, motivating hundreds of students to forge new bonds outside the classroom."
             scopeText="Architected and engineered the software that powered Stumped. A fast and easy-to-use web app, it allowed students to view and guess riddles, redeem their points, and see the overall leaderboard. I built the entire backend and API infrastructure, implementing PII mitigation, FAFSA-compliant data policies, secure authentication, and analytics pipelines for engagement and performance."
-            projectColor="--stumped-blue"
-            projectDarkColor="--stumped-dark-blue"
+            projectColor="--brightbook-blue"
+            projectDarkColor="--brightbook-dark-blue"
             leftColumnContent={
               <>
                 <Reveal>
@@ -334,7 +472,10 @@ export default function WorkContent() {
           />
         </AnimatedProjectSection>
 
-        <AnimatedProjectSection staggerIndex={2}>
+        <AnimatedProjectSection
+            id={PROJECT_SECTIONS[2].id}
+            staggerIndex={2}
+          >
           <ProjectPortfolioCard
             logoUrl="/next-step/NextStep-Logo.svg"
             logoAlt="NextStep"
@@ -349,8 +490,8 @@ export default function WorkContent() {
               </>
             }
             scopeText="Engineered a secure end-to-end system integrating Gemini 2.5 Pro and Google Document AI for high-accuracy data extraction and validation. Implemented rigorous PII controls, including encryption at rest and in transit, access-scoped data handling, and anonymization of stored personal identifiers. Embedded an integrated feedback mechanism throughout the interface to facilitate natural, real-time input from beta testers during testing and refinement."
-            projectColor="--next-step-blue"
-            projectDarkColor="--next-step-dark-blue"
+            projectColor="--brightbook-blue"
+            projectDarkColor="--brightbook-dark-blue"
             leftColumnContent={
               <>
                 <Reveal>
@@ -414,7 +555,8 @@ export default function WorkContent() {
             }
           />
         </AnimatedProjectSection>
-      </main>
+        </main>
+      </div>
     </MotionConfig>
   );
 }
