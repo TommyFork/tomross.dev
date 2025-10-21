@@ -26,7 +26,7 @@ export default function ExpandableText({ text, limit = 280 }: { text: string; li
           <button
             type="button"
             onClick={() => setExpanded(false)}
-            className="text-blue-500 underline underline-offset-4 ml-1"
+            className="text-[var(--brightbook-blue)] text-sm cursor-pointer hover:underline underline-offset-4 ml-3"
           >
             View less
           </button>
@@ -42,7 +42,7 @@ export default function ExpandableText({ text, limit = 280 }: { text: string; li
       <button
         type="button"
         onClick={() => setExpanded(true)}
-        className="text-blue-500 underline underline-offset-4"
+        className="text-[var(--brightbook-blue)] text-sm cursor-pointer hover:underline underline-offset-4 ml-3"
       >
         View more
       </button>
