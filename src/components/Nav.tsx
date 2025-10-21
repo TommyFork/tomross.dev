@@ -37,7 +37,7 @@ export default function Nav() {
   };
 
   const headerClassName = isScrolled
-    ? "sticky top-4 z-50 rounded-3xl border border-white/50 bg-white/60 px-6 py-4 shadow-[0_12px_32px_-24px_rgba(15,23,42,0.45)] backdrop-blur-2xl backdrop-saturate-150"
+    ? "sticky top-4 z-50 rounded-3xl border border-white/35 bg-white/40 px-6 py-4 shadow-[0_16px_40px_-32px_rgba(15,23,42,0.35)] backdrop-blur-2xl backdrop-saturate-150"
     : "border border-transparent py-6";
 
   const brandClassName = isScrolled
@@ -61,7 +61,7 @@ export default function Nav() {
                     aria-current={active ? "page" : undefined}
                     className={
                       isScrolled
-                        ? `inline-flex items-center rounded-full border border-white/30 bg-white/40 px-3 py-1.5 text-sm font-medium text-slate-700 transition-all duration-200 backdrop-blur-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-200 focus-visible:ring-offset-0 hover:text-slate-900 hover:border-white/60 ${
+                        ? `inline-flex items-center rounded-full border border-white/25 bg-white/35 px-3 py-1.5 text-sm font-medium text-slate-700 transition-all duration-200 backdrop-blur-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-200 focus-visible:ring-offset-0 hover:text-slate-900 hover:border-white/60 ${
                             active
                               ? "bg-white/85 text-slate-900"
                               : "hover:bg-white/55"
@@ -82,11 +82,11 @@ export default function Nav() {
           <button
             type="button"
             onClick={handleOpenModal}
-            className={
+            className={`${
               isScrolled
-                ? "inline-flex items-center justify-center gap-2 rounded-full border border-white/40 bg-white/65 px-4 py-2 text-sm font-semibold text-slate-900 shadow-[0_10px_28px_-22px_rgba(15,23,42,0.45)] transition-all duration-200 backdrop-blur-sm hover:-translate-y-[2px] hover:border-white/70 hover:bg-white/80 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-200"
-                : "inline-flex items-center justify-center rounded-full border border-neutral-200 bg-white px-4 py-2 text-sm font-medium text-neutral-600 shadow-sm transition hover:-translate-y-[1px] hover:border-neutral-300 hover:shadow-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-400"
-            }
+                ? "inline-flex items-center justify-center gap-2 rounded-full border border-white/30 bg-white/45 px-4 py-2 text-sm font-semibold text-slate-900 shadow-[0_18px_42px_-34px_rgba(15,23,42,0.35)] transition-all duration-200 backdrop-blur-sm hover:-translate-y-[2px] hover:border-white/60 hover:bg-white/65 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-200 active:scale-95"
+                : "inline-flex items-center justify-center gap-2 rounded-full border border-transparent bg-white px-4 py-2 text-sm font-medium text-neutral-600 shadow-sm transition-all duration-200 hover:-translate-y-[1px] hover:border-neutral-200/80 hover:shadow-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-400 active:scale-95"
+            } cursor-pointer`}
           >
             Let’s chat
           </button>
