@@ -84,7 +84,7 @@ export default function Nav() {
             onClick={handleOpenModal}
             className={`${
               isScrolled
-                ? "inline-flex items-center justify-center gap-2 rounded-full border border-white/45 bg-white/60 px-4 py-2 text-sm font-semibold text-slate-900 shadow-[0_20px_44px_-34px_rgba(15,23,42,0.32)] transition-all duration-200 backdrop-blur-sm hover:-translate-y-[2px] hover:border-white/70 hover:bg-white/70 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-200 active:scale-95"
+                ? "inline-flex items-center justify-center gap-2 rounded-full border border-white/45 bg-white/60 px-4 py-2 text-sm font-semibold text-slate-900 shadow-sm transition-all duration-200 backdrop-blur-sm hover:-translate-y-[2px] hover:border-white/70 hover:bg-white/70 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-200 active:scale-95"
                 : "inline-flex items-center justify-center gap-2 rounded-full border border-transparent bg-white px-4 py-2 text-sm font-medium text-neutral-600 shadow-sm transition-all duration-200 hover:-translate-y-[1px] hover:border-neutral-200/80 hover:shadow-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-400 active:scale-95"
             } cursor-pointer`}
           >
