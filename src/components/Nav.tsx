@@ -77,7 +77,7 @@ export default function Nav() {
 
     const updateOffset = () => {
       const rect = headerRef.current?.getBoundingClientRect();
-      const nextOffset = (rect?.bottom ?? 0) + 12;
+      const nextOffset = (rect?.bottom ?? 0) + 8;
       setMenuOffset((previous) => (Math.abs(previous - nextOffset) < 0.5 ? previous : nextOffset));
     };
 
@@ -118,13 +118,20 @@ export default function Nav() {
             : "text-neutral-500 hover:text-neutral-700 visited:text-neutral-500"
         }`;
 
+  const mobileNavLinkClassName = (active: boolean) =>
+    `group flex w-full items-center gap-3 rounded-xl px-4 py-3 text-left text-base font-medium tracking-tight transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neutral-900 focus-visible:ring-offset-2 focus-visible:ring-offset-white ${
+      active
+        ? "bg-neutral-900/5 text-neutral-900"
+        : "text-neutral-500 hover:bg-neutral-900/5 hover:text-neutral-900"
+    }`;
+
+  const mobileContactButtonClassName = isScrolled
+    ? "inline-flex w-full cursor-pointer items-center justify-center rounded-full border border-white/45 bg-white/75 px-5 py-2.5 text-sm font-semibold text-slate-900 shadow-sm transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-200 hover:-translate-y-[2px] hover:border-white/70 hover:bg-white"
+    : "inline-flex w-full cursor-pointer items-center justify-center rounded-full border border-transparent bg-white px-5 py-2.5 text-sm font-medium text-neutral-600 shadow-sm transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-400 hover:-translate-y-[1px] hover:border-neutral-200/80 hover:shadow-md";
+
   const contactButtonClassName = isScrolled
     ? "inline-flex w-full cursor-pointer items-center justify-center gap-2 rounded-full border border-white/45 bg-white/70 px-4 py-2 text-sm font-semibold text-slate-900 shadow-sm transition-all duration-200 sm:w-auto hover:-translate-y-[2px] hover:border-white/70 hover:bg-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-200 active:scale-95"
     : "inline-flex w-full cursor-pointer items-center justify-center gap-2 rounded-full border border-transparent bg-white px-4 py-2 text-sm font-medium text-neutral-600 shadow-sm transition-all duration-200 sm:w-auto hover:-translate-y-[1px] hover:border-neutral-200/80 hover:shadow-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-400 active:scale-95";
-
-  const mobileContactButtonClassName = isScrolled
-    ? "inline-flex w-full items-center justify-center rounded-full border border-white/45 bg-white/75 px-5 py-2.5 text-sm font-semibold text-slate-900 shadow-sm transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-200 hover:-translate-y-[2px] hover:border-white/70 hover:bg-white"
-    : "inline-flex w-full items-center justify-center rounded-full border border-transparent bg-white px-5 py-2.5 text-sm font-medium text-neutral-600 shadow-sm transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-400 hover:-translate-y-[1px] hover:border-neutral-200/80 hover:shadow-md";
 
   const mobileMenu =
     menuPortalTarget && typeof window !== "undefined"
@@ -143,7 +150,7 @@ export default function Nav() {
                   type="button"
                   aria-hidden="true"
                   tabIndex={-1}
-                  className="absolute inset-0 h-full w-full bg-white/40 backdrop-blur-sm"
+                  className="absolute inset-0 h-full w-full bg-white/60 backdrop-blur-[2px]"
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   exit={{ opacity: 0 }}
@@ -157,11 +164,11 @@ export default function Nav() {
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: -12 }}
                   transition={{ duration: 0.28, ease: [0.22, 0.61, 0.36, 1] }}
-                  className="absolute inset-x-0 px-3"
+                  className="absolute inset-x-3 flex justify-end"
                   style={{ top: menuOffset }}
                 >
-                  <div className="mx-auto max-w-sm rounded-3xl border border-white/40 bg-white/70 p-4 shadow-[0_24px_56px_-40px_rgba(15,23,42,0.28)] backdrop-blur-xl backdrop-saturate-150">
-                    <ul className="flex flex-col gap-1 text-sm font-medium">
+                  <div className="w-full max-w-sm overflow-hidden rounded-2xl border border-neutral-200 bg-white shadow-xl">
+                    <ul className="flex flex-col gap-1.5 px-3 py-3">
                       {links.map((item) => {
                         const active = pathname === item.href;
                         return (
@@ -170,28 +177,24 @@ export default function Nav() {
                               href={item.href}
                               aria-current={active ? "page" : undefined}
                               onClick={() => setIsMenuOpen(false)}
-                              className={`${navLinkClassName(active)} block rounded-2xl px-4 py-3 text-base transition-colors ${
-                                active
-                                  ? "bg-white shadow-sm"
-                                  : "hover:bg-white/70"
-                              }`}
+                              className={mobileNavLinkClassName(active)}
                             >
                               {item.label}
                             </Link>
                           </li>
                         );
                       })}
+                      <li className="pt-1.5">
+                        <motion.button
+                          type="button"
+                          onClick={handleOpenModal}
+                          whileTap={{ scale: 0.97 }}
+                          className={mobileContactButtonClassName}
+                          >
+                          Let’s chat
+                        </motion.button>
+                      </li>
                     </ul>
-                    <div className="mt-4 flex flex-col gap-2">
-                      <motion.button
-                        type="button"
-                        onClick={handleOpenModal}
-                        whileTap={{ scale: 0.97 }}
-                        className={mobileContactButtonClassName}
-                      >
-                        Let’s chat
-                      </motion.button>
-                    </div>
                   </div>
                 </motion.div>
               </motion.div>
