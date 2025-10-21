@@ -9,7 +9,7 @@ import {
 export default function ProfileCard() {
   return (
     <div className="rounded-lg border border-neutral-200 p-6 flex flex-col items-center gap-4">
-      <div className="rounded-full overflow-hidden w-20 h-20 border border-neutral-200">
+      <div className="rounded-full overflow-hidden w-32 h-32 border border-neutral-200">
         <Image src="/headshot.jpeg" alt="Headshot" width={128} height={128} />
       </div>
       <div className="text-center">

@@ -10,7 +10,7 @@ import { useContactModal } from "@/components/ContactModalContext";
 const links = [
   { href: "/about", label: "About" },
   { href: "/work", label: "Work" },
-  { href: "/writing", label: "Writing" },
+  // { href: "/writing", label: "Writing" },
 ];
 
 export default function Nav() {
