@@ -324,7 +324,7 @@ export default function ContactModal({
 
   return createPortal(
     <div
-      className={`fixed inset-0 z-50 flex items-end justify-center px-4 pb-6 sm:items-center sm:pb-0 ${pointerClass}`}
+      className={`fixed inset-0 z-50 flex items-center justify-center px-4 py-6 sm:py-0 ${pointerClass}`}
       role="presentation"
     >
       <div
@@ -362,7 +362,6 @@ export default function ContactModal({
               type="button"
               ref={focusRef}
               onClick={handleRevealOrCopy}
-              onFocus={revealEmail}
               onMouseEnter={revealEmail}
               className="inline-flex items-center justify-center rounded-full bg-neutral-900 px-6 py-2.5 text-sm font-medium text-white transition hover:bg-neutral-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-neutral-900 disabled:cursor-not-allowed disabled:opacity-60"
               disabled={status === "blocked"}
