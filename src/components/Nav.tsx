@@ -2,6 +2,7 @@
 
 import { useEffect, useState, type MouseEvent } from "react";
 
+import { AnimatePresence, motion } from "framer-motion";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
@@ -33,6 +34,7 @@ export default function Nav() {
   }, []);
 
   const handleOpenModal = (event: MouseEvent<HTMLButtonElement>) => {
+    setIsMenuOpen(false);
     const trigger = event.currentTarget;
     openModal({ triggerRect: trigger.getBoundingClientRect(), trigger });
   };
@@ -41,95 +43,151 @@ export default function Nav() {
     setIsMenuOpen(false);
   }, [pathname]);
 
-  const headerClassName = isScrolled
-    ? "sticky top-4 z-50 rounded-3xl border border-white/45 bg-white/55 px-4 py-3 shadow-[0_18px_48px_-30px_rgba(15,23,42,0.3)] backdrop-blur-2xl backdrop-saturate-150 sm:px-6 sm:py-4"
-    : "border border-transparent px-4 py-4 sm:px-0 sm:py-6";
+  const headerClassName = [
+    "relative isolate z-50 mt-6 w-full rounded-3xl border px-5 py-5 transition-[background-color,border-color,box-shadow,padding] duration-500 backdrop-blur-xl",
+    isScrolled
+      ? "sticky top-4 border-white/60 bg-white/70 px-4 py-3 shadow-[0_18px_48px_-30px_rgba(15,23,42,0.45)] backdrop-saturate-150 sm:px-6 sm:py-4"
+      : "border-white/30 bg-white/40 shadow-[0_28px_68px_-48px_rgba(15,23,42,0.35)] sm:px-8",
+  ].join(" ");
 
   const brandClassName = isScrolled
     ? "text-base font-semibold tracking-tight text-slate-900 transition-all duration-300 sm:text-lg"
-    : "text-lg font-semibold tracking-tight transition-all duration-300 sm:text-xl";
+    : "text-lg font-semibold tracking-tight text-slate-900 transition-all duration-300 sm:text-xl";
 
-  const menuButtonClassName = isScrolled
-    ? "inline-flex items-center gap-2 rounded-full border border-white/45 bg-white/60 px-3 py-2 text-sm font-semibold text-slate-900 shadow-sm transition-all duration-200 hover:-translate-y-[1px] hover:border-white/70 hover:bg-white/70 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-200 active:scale-95"
-    : "inline-flex items-center gap-2 rounded-full border border-transparent bg-white px-3 py-2 text-sm font-medium text-neutral-600 shadow-sm transition-all duration-200 hover:-translate-y-[1px] hover:border-neutral-200/80 hover:shadow-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-400 active:scale-95";
+  const menuButtonClassName = [
+    "relative inline-flex h-11 w-11 items-center justify-center overflow-hidden rounded-full border text-slate-900 transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-200 active:scale-95",
+    isScrolled
+      ? "border-white/60 bg-white/70 shadow-[0_16px_30px_-20px_rgba(15,23,42,0.4)] hover:-translate-y-[1px] hover:border-white/80 hover:bg-white"
+      : "border-white/40 bg-white/55 shadow-[0_20px_50px_-28px_rgba(15,23,42,0.45)] hover:-translate-y-[1px] hover:border-white/60 hover:bg-white/80",
+  ].join(" ");
+
+  const navLinkBaseClassName =
+    "transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-200 focus-visible:ring-offset-0";
+
+  const navLinkClassName = (active: boolean) =>
+    isScrolled
+      ? `${navLinkBaseClassName} ${
+          active
+            ? "text-slate-900"
+            : "text-slate-600 hover:text-slate-900 visited:text-slate-600"
+        }`
+      : `${navLinkBaseClassName} ${
+          active
+            ? "text-slate-950"
+            : "text-slate-700/80 hover:text-slate-950 visited:text-slate-700/80"
+        }`;
+
+  const contactButtonClassName = [
+    "inline-flex w-full cursor-pointer items-center justify-center gap-2 rounded-full px-4 py-2 text-sm font-semibold transition-all duration-200 sm:w-auto",
+    isScrolled
+      ? "border border-white/60 bg-white/70 text-slate-900 shadow-[0_16px_30px_-18px_rgba(15,23,42,0.45)] hover:-translate-y-[2px] hover:border-white/80 hover:bg-white"
+      : "border border-white/40 bg-white/55 text-slate-900 shadow-[0_24px_50px_-28px_rgba(15,23,42,0.5)] hover:-translate-y-[2px] hover:border-white/60 hover:bg-white/80",
+  ].join(" ");
 
   return (
     <header className={`transition-all duration-300 ${headerClassName}`}>
-      <nav className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between sm:gap-6">
+      <nav className="flex flex-col gap-4 sm:gap-5">
         <div className="flex items-center justify-between gap-4 sm:gap-6">
           <Link href="/" className={`${brandClassName} whitespace-nowrap`}>
             Tommy Ross
           </Link>
-          <button
-            type="button"
-            className={`${menuButtonClassName} sm:hidden`}
-            onClick={() => setIsMenuOpen((open) => !open)}
-            aria-expanded={isMenuOpen}
-            aria-controls="primary-navigation"
-          >
-            <span className="font-semibold">Menu</span>
-            <svg
-              className={`h-4 w-4 transition-transform duration-300 ${isMenuOpen ? "rotate-90" : ""}`}
-              viewBox="0 0 20 20"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-              aria-hidden="true"
+          <div className="flex items-center gap-3 sm:gap-5">
+            <div className="hidden sm:flex sm:items-center sm:gap-5">
+              <ul className="flex items-center gap-5 text-sm">
+                {links.map((item) => {
+                  const active = pathname === item.href;
+                  return (
+                    <li key={item.href}>
+                      <Link
+                        href={item.href}
+                        aria-current={active ? "page" : undefined}
+                        className={navLinkClassName(active)}
+                      >
+                        {item.label}
+                      </Link>
+                    </li>
+                  );
+                })}
+              </ul>
+              <button
+                type="button"
+                onClick={handleOpenModal}
+                className={contactButtonClassName}
+              >
+                Let’s chat
+              </button>
+            </div>
+            <button
+              type="button"
+              className={`${menuButtonClassName} sm:hidden`}
+              onClick={() => setIsMenuOpen((open) => !open)}
+              aria-expanded={isMenuOpen}
+              aria-controls="primary-navigation"
+              aria-label={isMenuOpen ? "Close navigation" : "Open navigation"}
             >
-              <path
-                d="M4 6H16M4 10H16M4 14H16"
-                stroke="currentColor"
-                strokeWidth="1.5"
-                strokeLinecap="round"
-              />
-            </svg>
-          </button>
+              <span aria-hidden className="relative block h-5 w-5">
+                <span
+                  className={`absolute left-1/2 top-1/2 h-0.5 w-full -translate-x-1/2 transform rounded-full bg-current transition-[transform,opacity] duration-300 ease-in-out ${
+                    isMenuOpen
+                      ? "translate-y-0 rotate-45"
+                      : "-translate-y-[6px]"
+                  }`}
+                />
+                <span
+                  className={`absolute left-1/2 top-1/2 h-0.5 w-full -translate-x-1/2 transform rounded-full bg-current transition-[transform,opacity] duration-300 ease-in-out ${
+                    isMenuOpen ? "scale-x-0 opacity-0" : "opacity-100"
+                  }`}
+                />
+                <span
+                  className={`absolute left-1/2 top-1/2 h-0.5 w-full -translate-x-1/2 transform rounded-full bg-current transition-[transform,opacity] duration-300 ease-in-out ${
+                    isMenuOpen
+                      ? "translate-y-0 -rotate-45"
+                      : "translate-y-[6px]"
+                  }`}
+                />
+              </span>
+            </button>
+          </div>
         </div>
-        <div
-          id="primary-navigation"
-          className={`${
-            isMenuOpen ? "grid grid-cols-1 gap-3 border-t border-slate-200/60 pt-3" : "hidden"
-          } sm:flex sm:items-center sm:gap-5 sm:border-0 sm:pt-0`}
-        >
-          <ul className="flex flex-col items-start gap-3 text-sm sm:flex-row sm:items-center sm:gap-5">
-            {links.map((item) => {
-              const active = pathname === item.href;
-              return (
-                <li key={item.href}>
-                  <Link
-                    href={item.href}
-                    aria-current={active ? "page" : undefined}
-                    className={
-                      isScrolled
-                        ? `transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-200 focus-visible:ring-offset-0 text-slate-600 hover:text-slate-900 ${
-                            active
-                              ? "text-slate-900"
-                              : ""
-                          }`
-                        : `transition-colors hover:text-neutral-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-400 focus-visible:ring-offset-2 focus-visible:ring-offset-white ${
-                            active
-                              ? "text-neutral-900 visited:text-neutral-900"
-                              : "text-neutral-500 visited:text-neutral-500"
-                          }`
-                    }
-                  >
-                    {item.label}
-                  </Link>
-                </li>
-              );
-            })}
-          </ul>
-          <button
-            type="button"
-            onClick={handleOpenModal}
-            className={`${
-              isScrolled
-                ? "inline-flex w-full items-center justify-center gap-2 rounded-full border border-white/45 bg-white/60 px-4 py-2 text-sm font-semibold text-slate-900 shadow-sm transition-all duration-200 backdrop-blur-sm hover:-translate-y-[2px] hover:border-white/70 hover:bg-white/70 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-200 active:scale-95"
-                : "inline-flex w-full items-center justify-center gap-2 rounded-full border border-transparent bg-white px-4 py-2 text-sm font-medium text-neutral-600 shadow-sm transition-all duration-200 hover:-translate-y-[1px] hover:border-neutral-200/80 hover:shadow-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-400 active:scale-95"
-            } whitespace-nowrap cursor-pointer sm:w-auto`}
-          >
-            Let’s chat
-          </button>
-        </div>
+        <AnimatePresence initial={false}>
+          {isMenuOpen && (
+            <motion.div
+              key="mobile-menu"
+              id="primary-navigation"
+              initial={{ opacity: 0, height: 0, y: -12 }}
+              animate={{ opacity: 1, height: "auto", y: 0 }}
+              exit={{ opacity: 0, height: 0, y: -12 }}
+              transition={{ duration: 0.28, ease: [0.22, 0.61, 0.36, 1] }}
+              className="overflow-hidden sm:hidden"
+            >
+              <div className="grid gap-4 border-t border-white/50 pt-4">
+                <ul className="flex flex-col gap-3 text-sm">
+                  {links.map((item) => {
+                    const active = pathname === item.href;
+                    return (
+                      <li key={`${item.href}-mobile`}>
+                        <Link
+                          href={item.href}
+                          aria-current={active ? "page" : undefined}
+                          className={navLinkClassName(active)}
+                        >
+                          {item.label}
+                        </Link>
+                      </li>
+                    );
+                  })}
+                </ul>
+                <button
+                  type="button"
+                  onClick={handleOpenModal}
+                  className={contactButtonClassName}
+                >
+                  Let’s chat
+                </button>
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
       </nav>
     </header>
   );
