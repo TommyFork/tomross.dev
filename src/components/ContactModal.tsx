@@ -1,6 +1,8 @@
 "use client";
 
+import Link from "next/link";
 import {
+  useCallback,
   useEffect,
   useLayoutEffect,
   useMemo,
@@ -12,6 +14,7 @@ import { createPortal } from "react-dom";
 const ANIMATION_DURATION = 420;
 const ANIMATION_EASING = "cubic-bezier(0.24, 0.94, 0.32, 1)";
 const BACKDROP_DURATION = 300;
+const MASK_SEQUENCE = [71, 18, 112, 5, 209, 88, 44];
 
 type AnchorRect = {
   left: number;
@@ -39,8 +42,9 @@ export default function ContactModal({
   const animationRef = useRef<Animation | null>(null);
   const backdropAnimationRef = useRef<Animation | null>(null);
   const latestOpenRef = useRef(open);
-  const focusRef = useRef<HTMLAnchorElement | null>(null);
+  const focusRef = useRef<HTMLButtonElement | null>(null);
   const copyTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const emailRef = useRef<string | null>(null);
   const [mounted, setMounted] = useState(false);
   const [render, setRender] = useState(open);
   const [displayState, setDisplayState] = useState<"closed" | "open" | "closing">(
@@ -48,6 +52,11 @@ export default function ContactModal({
   );
   const [prefersReducedMotion, setPrefersReducedMotion] = useState(false);
   const [copied, setCopied] = useState(false);
+  const [email, setEmail] = useState<string | null>(null);
+  const [status, setStatus] = useState<"idle" | "revealed" | "blocked">("idle");
+  const [notice, setNotice] = useState<
+    null | "blocked" | "clipboard-unavailable" | "clipboard-failed"
+  >(null);
 
   if (typeof document !== "undefined" && portalRef.current === null) {
     portalRef.current = document.createElement("div");
@@ -56,6 +65,18 @@ export default function ContactModal({
 
   useEffect(() => {
     latestOpenRef.current = open;
+  }, [open]);
+
+  useEffect(() => {
+    if (open) {
+      return;
+    }
+
+    setCopied(false);
+    setEmail(null);
+    setStatus("idle");
+    setNotice(null);
+    emailRef.current = null;
   }, [open]);
 
   useEffect(() => {
@@ -208,30 +229,90 @@ export default function ContactModal({
     };
   }, [open, render, mounted, anchorRect, prefersReducedMotion, onExited]);
 
-  const email = useMemo(() => {
+  const encodedEmail = useMemo(() => {
     const user = process.env.NEXT_PUBLIC_EMAIL_USER || "hello";
     const domain = process.env.NEXT_PUBLIC_EMAIL_DOMAIN || "tomross.dev";
-    return `${user}@${domain}`;
+    const complete = `${user}@${domain}`;
+
+    return complete.split("").map((char, index) => {
+      const key = MASK_SEQUENCE[index % MASK_SEQUENCE.length];
+      return char.charCodeAt(0) ^ key;
+    });
   }, []);
 
-  const mailtoHref = useMemo(() => {
-    const subject = encodeURIComponent("Let's collaborate");
-    return `mailto:${email}?subject=${subject}`;
-  }, [email]);
+  const decodeEmail = useCallback(() => {
+    return encodedEmail
+      .map((code, index) => {
+        const key = MASK_SEQUENCE[index % MASK_SEQUENCE.length];
+        return String.fromCharCode(code ^ key);
+      })
+      .join("");
+  }, [encodedEmail]);
 
-  const handleCopy = async () => {
+  const revealEmail = useCallback(() => {
+    if (status === "blocked") {
+      return null;
+    }
+
+    if (emailRef.current) {
+      setEmail(emailRef.current);
+      setStatus("revealed");
+      setNotice(null);
+      return emailRef.current;
+    }
+
+    if (typeof navigator !== "undefined") {
+      const agent = navigator.userAgent || "";
+      const suspicious = /bot|crawler|spider|crawling|preview|scan|fetch|monitor/i;
+
+      if (navigator.webdriver || suspicious.test(agent)) {
+        setStatus("blocked");
+        setNotice("blocked");
+        return null;
+      }
+    }
+
+    const decoded = decodeEmail();
+    emailRef.current = decoded;
+    setEmail(decoded);
+    setStatus("revealed");
+    setNotice(null);
+    return decoded;
+  }, [decodeEmail, status]);
+
+  const mailSubject = useMemo(
+    () => encodeURIComponent("Let's collaborate"),
+    [],
+  );
+
+  const handleRevealOrCopy = async () => {
+    const value = revealEmail();
+
+    if (!value) {
+      setCopied(false);
+      return;
+    }
+
+    if (typeof navigator === "undefined" || !navigator.clipboard) {
+      setNotice("clipboard-unavailable");
+      setCopied(false);
+      return;
+    }
+
     try {
-      await navigator.clipboard.writeText(email);
+      await navigator.clipboard.writeText(value);
       setCopied(true);
+      setNotice(null);
       if (copyTimeoutRef.current) {
         clearTimeout(copyTimeoutRef.current);
       }
       copyTimeoutRef.current = setTimeout(() => {
         setCopied(false);
         copyTimeoutRef.current = null;
-      }, 2000);
+      }, 2200);
     } catch {
       setCopied(false);
+      setNotice("clipboard-failed");
     }
   };
 
@@ -274,26 +355,56 @@ export default function ContactModal({
             Let’s build something together
           </h2>
           <p className="mt-3 text-sm leading-relaxed text-neutral-600">
-            If you’re exploring a new product direction or need a partner to ship polished web experiences, I’d love to hear what you’re working on.
+            Send a quick note about your project and I’ll follow up fast.
           </p>
-          <div className="mt-6 flex flex-col gap-3 sm:flex-row sm:items-center">
-            <a
-              href={mailtoHref}
-              ref={focusRef}
-              onClick={onClose}
-              className="inline-flex items-center justify-center rounded-full bg-neutral-900 px-5 py-2.5 text-sm font-medium text-white transition hover:bg-neutral-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-neutral-900"
-            >
-              Start an email ↗
-            </a>
+          <div className="mt-6 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
             <button
               type="button"
-              onClick={handleCopy}
-              className="inline-flex items-center justify-center gap-2 rounded-full border border-neutral-200 px-4 py-2 text-sm font-medium text-neutral-600 transition hover:border-neutral-300 hover:text-neutral-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-neutral-900"
+              ref={focusRef}
+              onClick={handleRevealOrCopy}
+              onFocus={revealEmail}
+              onMouseEnter={revealEmail}
+              className="inline-flex items-center justify-center rounded-full bg-neutral-900 px-6 py-2.5 text-sm font-medium text-white transition hover:bg-neutral-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-neutral-900 disabled:cursor-not-allowed disabled:opacity-60"
+              disabled={status === "blocked"}
             >
-              {copied ? "Copied!" : "Copy email"}
+              {status === "blocked"
+                ? "Email protected"
+                : status === "revealed"
+                  ? copied
+                    ? "Email copied"
+                    : "Copy email"
+                  : "Reveal email"}
             </button>
-            <span className="text-xs text-neutral-400">{email}</span>
+            {status === "revealed" && email ? (
+              <a
+                href={`mailto:${email}?subject=${mailSubject}`}
+                onFocus={revealEmail}
+                className="select-all text-sm font-mono tracking-tight text-neutral-500 underline-offset-4 transition hover:text-neutral-900 hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-neutral-900"
+              >
+                {email}
+              </a>
+            ) : null}
           </div>
+          {notice === "blocked" ? (
+            <p className="mt-4 text-xs leading-relaxed text-rose-500" aria-live="assertive">
+              Email protected — reach out via the {" "}
+              <Link
+                href="/contact"
+                className="underline underline-offset-2 transition hover:text-rose-600"
+              >
+                contact page
+              </Link>
+              .
+            </p>
+          ) : notice === "clipboard-unavailable" ? (
+            <p className="mt-4 text-xs leading-relaxed text-neutral-500" aria-live="polite">
+              Clipboard unavailable — highlight the address to copy it manually.
+            </p>
+          ) : notice === "clipboard-failed" ? (
+            <p className="mt-4 text-xs leading-relaxed text-neutral-500" aria-live="polite">
+              Copy failed — highlight the address if you still need it.
+            </p>
+          ) : null}
         </div>
       </div>
     </div>,
