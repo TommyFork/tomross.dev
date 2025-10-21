@@ -40,15 +40,18 @@ const itemVariants = {
 type AnimatedProjectSectionProps = {
   children: ReactNode;
   staggerIndex?: number;
+  id?: string;
 };
 
 function AnimatedProjectSection({
   children,
   staggerIndex = 0,
+  id,
 }: AnimatedProjectSectionProps) {
   return (
     <motion.section
-      className=""
+      id={id}
+      className="w-full"
       initial="hidden"
       whileInView="visible"
       viewport={{ once: true, amount: 0.2, margin: "-10% 0px" }}
@@ -108,10 +111,9 @@ function Reveal({ children }: RevealProps) {
 type TechStackLogoProps = {
   src: string;
   label: string;
-  delay?: number;
 };
 
-function TechStackLogo({ src, label, delay = 0 }: TechStackLogoProps) {
+function TechStackLogo({ src, label }: TechStackLogoProps) {
   const [hovered, setHovered] = useState(false);
 
   return (
@@ -164,258 +166,419 @@ const nextStepImages = [
   },
 ];
 
+const PROJECT_SECTIONS = [
+  { id: "project-brightbook", label: "BrightBook" },
+  { id: "project-stumped", label: "Stumped" },
+  { id: "project-nextstep", label: "NextStep" },
+] as const;
+
 export default function WorkContent() {
+  const [activeSection, setActiveSection] = useState(0);
+
+  const handleScrollToSection = (id: string) => {
+    const el = document.getElementById(id);
+    if (el) {
+      el.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+  };
+
+  useEffect(() => {
+    const sectionElements = PROJECT_SECTIONS.map((section) =>
+      document.getElementById(section.id),
+    ).filter((el): el is HTMLElement => Boolean(el));
+
+    if (!sectionElements.length) {
+      return;
+    }
+
+    let frameId: number | null = null;
+
+    const updateActiveSection = () => {
+      frameId = null;
+      const viewportCenter = window.innerHeight / 2;
+      let closestIndex = 0;
+      let smallestDistance = Number.POSITIVE_INFINITY;
+
+      sectionElements.forEach((el, index) => {
+        const rect = el.getBoundingClientRect();
+        const sectionCenter = rect.top + rect.height / 2;
+        const distance = Math.abs(sectionCenter - viewportCenter);
+
+        if (distance < smallestDistance) {
+          closestIndex = index;
+          smallestDistance = distance;
+        }
+      });
+
+      setActiveSection((current) =>
+        current === closestIndex ? current : closestIndex,
+      );
+    };
+
+    const requestUpdate = () => {
+      if (frameId != null) {
+        return;
+      }
+
+      frameId = window.requestAnimationFrame(updateActiveSection);
+    };
+
+    updateActiveSection();
+
+    window.addEventListener("scroll", requestUpdate, { passive: true });
+    window.addEventListener("resize", requestUpdate);
+
+    return () => {
+      if (frameId != null) {
+        window.cancelAnimationFrame(frameId);
+      }
+      window.removeEventListener("scroll", requestUpdate);
+      window.removeEventListener("resize", requestUpdate);
+    };
+  }, []);
+
   return (
     <MotionConfig transition={baseTransition}>
-      <main className="flex flex-col gap-y-32 py-16">
-        <AnimatedProjectSection>
-          <ProjectPortfolioCard
-            logoUrl="/brightbook/BrightBook-Logo.svg"
-            logoAlt="BrightBook"
-            description={
-              <>
-                BrightBook makes it easy for teachers to build lessons that
-                adapted to each student and classroom, bringing personalization
-                into everyday teaching. An award–winning software, it turned
-                lesson planning into a dynamic system that evolved with students
-                as they learn.
-                <em>
-                  {" "}
-                  BrightBook was acquired and merged with DesignMy Education in
-                  September 2025.
-                </em>
-              </>
-            }
-            scopeText={
-              <>
-                Founded and led BrightBook, overseeing product strategy, design,
-                and development of its AI-powered lesson planning platform.
-                Built the web app using Next.js, Firebase, and Gemini APIs,
-                employing a mixture-of-experts model to generate differentiated
-                instruction aligned with U.S. Common Core, NGSS, and IB
-                standards. Directed the pilot in Boston Public Schools, secured
-                over $20K in non-dilutive funding, and represented the venture
-                in the BU Summer Accelerator and New Venture Competition.
-              </>
-            }
-            projectColor="--brightbook-blue"
-            projectDarkColor="--brightbook-dark-blue"
-            leftColumnContent={
-              <>
-                <Reveal>
-                  <Card className="px-4 py-7 flex flex-col items-center justify-center text-center">
-                    <p className="text-lg font-medium text-gray-700">
-                      Piloted in the
-                    </p>
-                    <div className="relative h-28 w-60">
-                      <Image
-                        src="/brightbook/BPS-Logo.svg"
-                        alt="Boston Public Schools"
-                        fill
-                        className="object-contain"
-                      />
-                    </div>
-                  </Card>
-                </Reveal>
-                <Reveal>
-                  <ImageCard
-                    src="/brightbook/New-Venture-Competition.jpg"
-                    alt="BU New Venture Competition"
+      <div className="relative">
+        <motion.aside
+          className="pointer-events-none hidden lg:block"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.5, ease: [0.33, 1, 0.68, 1] }}
+        >
+          <div className="pointer-events-auto fixed left-5 top-1/2 z-20 -translate-y-1/2">
+            <div className="flex flex-col items-center gap-5 rounded-full bg-white/95 px-4 py-6 shadow-[0_24px_60px_rgba(57,57,118,0.14)] backdrop-blur">
+              {PROJECT_SECTIONS.map((section, index) => {
+                const isActive = index === activeSection;
+                return (
+                  <motion.button
+                    key={section.id}
+                    type="button"
+                    onClick={() => handleScrollToSection(section.id)}
+                    className="relative flex h-10 w-8 items-center justify-center"
+                    aria-label={`Jump to ${section.label}`}
+                    whileTap={{ scale: 0.92 }}
+                    whileHover={{ scale: 1.05 }}
+                    transition={{ type: "spring", stiffness: 380, damping: 32 }}
                   >
-                    2nd place out of 160 startups in BU&apos;s 2025 New Venture
-                    Competition
-                  </ImageCard>
-                </Reveal>
-                <Reveal>
-                  <ImageCard
-                    src="/brightbook/NYU-Shanghai-Panel.jpg"
-                    alt="NYU Shanghai Panel on AI in Education"
-                  >
-                    Panelist at NYU Shanghai <br /> on the future of AI in
-                    Education
-                  </ImageCard>
-                </Reveal>
-                <Reveal>
-                  <Card className="px-4 py-7 flex flex-col items-center gap-2 justify-center text-center">
-                    <AnimatedNumber
-                      value={20000}
-                      prefix="$"
-                      suffix="+"
-                      className="text-4xl font-bold text-[var(--brightbook-blue)]"
+                    <motion.span
+                      layout
+                      className={`relative block rounded-full ${
+                        isActive ? "bg-[var(--brightbook-blue)]" : "bg-slate-300/80"
+                      }`}
+                      initial={false}
+                      animate={{
+                        height: isActive ? 34 : 12,
+                        width: isActive ? 10 : 8,
+                        opacity: isActive ? 1 : 0.6,
+                      }}
+                      transition={{ type: "spring", stiffness: 320, damping: 28 }}
                     />
-                    <p className="text-lg font-medium text-gray-700">
-                      raised in non–dilutive funding
-                    </p>
-                  </Card>
-                </Reveal>
-              </>
-            }
-            rightColumnContent={
-              <motion.div variants={itemVariants}>
-                <Card className="overflow-hidden p-0">
-                  <Image
-                    src="/brightbook/BrightBook-Preview.jpg"
-                    alt="BrightBook lesson preview"
-                    width={1600}
-                    height={1100}
-                    className="h-auto w-full"
-                    priority
-                  />
-                </Card>
-              </motion.div>
-            }
-          />
-        </AnimatedProjectSection>
+                  </motion.button>
+                );
+              })}
+            </div>
+          </div>
+        </motion.aside>
 
-        <AnimatedProjectSection staggerIndex={1}>
-          <ProjectPortfolioCard
-            logoUrl="/stumped/Stumped-Logo.svg"
-            logoAlt="Stumped"
-            description="Stumped gamified student-teacher relationships, creating a school-wide scavenger hunt that built a stronger and more connected community. The successful competition turned faculty members into collectible characters, motivating hundreds of students to forge new bonds outside the classroom."
-            scopeText="Architected and engineered the software that powered Stumped. A fast and easy-to-use web app, it allowed students to view and guess riddles, redeem their points, and see the overall leaderboard. I built the entire backend and API infrastructure, implementing PII mitigation, FAFSA-compliant data policies, secure authentication, and analytics pipelines for engagement and performance."
-            projectColor="--stumped-blue"
-            projectDarkColor="--stumped-dark-blue"
-            leftColumnContent={
-              <>
-                <Reveal>
-                  <Card className="px-4 py-7 flex flex-col items-center gap-2 justify-center text-center">
-                    <AnimatedNumber
-                      value={700}
-                      suffix="+"
-                      className="text-4xl font-bold text-[var(--stumped-blue)]"
-                    />
-                    <p className="text-lg font-medium text-gray-700">
-                      students reached
-                    </p>
-                  </Card>
-                </Reveal>
-                <Reveal>
-                  <Card className="px-4 py-7 flex flex-col items-center gap-2 justify-center text-center">
-                    <AnimatedNumber
-                      value={5000}
-                      suffix="+"
-                      className="text-4xl font-bold text-[var(--stumped-blue)]"
-                    />
-                    <p className="text-lg font-medium text-gray-700">
-                      Stumped Cards produced
-                    </p>
-                  </Card>
-                </Reveal>
-                <Reveal>
-                  <Card className="px-4 py-7 flex flex-col items-center justify-center text-center">
-                    <div className="relative h-28 w-60">
+        <motion.aside
+          className="pointer-events-none fixed inset-x-0 bottom-6 z-20 flex justify-center px-6 lg:hidden"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.5, ease: [0.33, 1, 0.68, 1] }}
+        >
+          <div className="pointer-events-auto flex items-center gap-4 rounded-full bg-white/95 px-5 py-3 shadow-[0_16px_44px_rgba(57,57,118,0.16)] backdrop-blur">
+            {PROJECT_SECTIONS.map((section, index) => {
+              const isActive = index === activeSection;
+              return (
+                <motion.button
+                  key={section.id}
+                  type="button"
+                  onClick={() => handleScrollToSection(section.id)}
+                  className="relative h-10 w-10"
+                  aria-label={`Jump to ${section.label}`}
+                  whileTap={{ scale: 0.92 }}
+                  whileHover={{ scale: 1.05 }}
+                  transition={{ type: "spring", stiffness: 380, damping: 32 }}
+                >
+                  <motion.span
+                    layout
+                    className={`relative mx-auto block rounded-full ${
+                      isActive ? "bg-[var(--brightbook-blue)]" : "bg-slate-300/80"
+                    }`}
+                    initial={false}
+                    style={{ height: 10 }}
+                    animate={{
+                      width: isActive ? 28 : 10,
+                      opacity: isActive ? 1 : 0.6,
+                    }}
+                    transition={{ type: "spring", stiffness: 320, damping: 28 }}
+                  />
+                </motion.button>
+              );
+            })}
+          </div>
+        </motion.aside>
+
+        <main className="flex w-full flex-col gap-y-44 pt-8 pb-16 md:gap-y-60 md:pt-10 md:pb-20 lg:gap-y-72 lg:pt-12 lg:pb-24">
+            <AnimatedProjectSection id={PROJECT_SECTIONS[0].id}>
+              <ProjectPortfolioCard
+                logoUrl="/brightbook/BrightBook-Logo.svg"
+                logoAlt="BrightBook"
+                description={
+                  <>
+                    BrightBook makes it easy for teachers to build lessons that
+                    adapted to each student and classroom, bringing
+                    personalization into everyday teaching. An award–winning
+                    software, it turned lesson planning into a dynamic system
+                    that evolved with students as they learn.
+                    <em>
+                      {" "}
+                      BrightBook was acquired and merged with DesignMy Education
+                      in September 2025.
+                    </em>
+                  </>
+                }
+                scopeText={
+                  <>
+                    Founded and led BrightBook, overseeing product strategy,
+                    design, and development of its AI-powered lesson planning
+                    platform. Built the web app using Next.js, Firebase, and
+                    Gemini APIs, employing a mixture-of-experts model to
+                    generate differentiated instruction aligned with U.S.
+                    Common Core, NGSS, and IB standards. Directed the pilot in
+                    Boston Public Schools, secured over $20K in non-dilutive
+                    funding, and represented the venture in the BU Summer
+                    Accelerator and New Venture Competition.
+                  </>
+                }
+                projectColor="--brightbook-blue"
+                projectDarkColor="--brightbook-dark-blue"
+                leftColumnContent={
+                  <>
+                    <Reveal>
+                      <Card className="flex flex-col items-center justify-center gap-3 px-6 py-8 text-center">
+                        <p className="text-base font-medium text-gray-700">
+                          Piloted in the
+                        </p>
+                        <div className="relative h-24 w-48 sm:h-28 sm:w-60">
+                          <Image
+                            src="/brightbook/BPS-Logo.svg"
+                            alt="Boston Public Schools"
+                            fill
+                            className="object-contain"
+                          />
+                        </div>
+                      </Card>
+                    </Reveal>
+                    <Reveal>
+                      <ImageCard
+                        src="/brightbook/New-Venture-Competition.jpg"
+                        alt="BU New Venture Competition"
+                      >
+                        2nd place out of 160 startups in BU&apos;s 2025 New Venture
+                        Competition
+                      </ImageCard>
+                    </Reveal>
+                    <Reveal>
+                      <ImageCard
+                        src="/brightbook/NYU-Shanghai-Panel.jpg"
+                        alt="NYU Shanghai Panel on AI in Education"
+                      >
+                        Panelist at NYU Shanghai <br /> on the future of AI in
+                        Education
+                      </ImageCard>
+                    </Reveal>
+                    <Reveal>
+                      <Card className="flex flex-col items-center justify-center gap-3 px-6 py-8 text-center">
+                        <AnimatedNumber
+                          value={20000}
+                          prefix="$"
+                          suffix="+"
+                          className="text-4xl font-bold text-[var(--brightbook-blue)] md:text-5xl"
+                        />
+                        <p className="text-base font-medium text-gray-700">
+                          raised in non–dilutive funding
+                        </p>
+                      </Card>
+                    </Reveal>
+                  </>
+                }
+                rightColumnContent={
+                  <motion.div variants={itemVariants}>
+                    <Card className="overflow-hidden p-0">
                       <Image
-                        src="/stumped/NYSSBA-Logo.svg"
-                        alt="New York State School Boards Association"
-                        fill
-                        className="object-contain"
+                        src="/brightbook/BrightBook-Preview.jpg"
+                        alt="BrightBook lesson preview"
+                        width={1600}
+                        height={1100}
+                        className="h-auto w-full"
+                        priority
                       />
-                    </div>
-                    <p className="text-base font-medium text-gray-700 mt-2">
-                      Awarded Champions of Change by the NYSSBA
-                    </p>
-                  </Card>
-                </Reveal>
-              </>
-            }
-            rightColumnContent={
-              <motion.div variants={itemVariants}>
-                <Card className="overflow-hidden p-0">
-                  <Image
-                    src="/stumped/Stumped-Preview.png"
-                    alt="Stumped card preview"
-                    width={1600}
-                    height={1100}
-                    className="h-auto w-full"
-                    priority
-                  />
-                </Card>
-              </motion.div>
-            }
-          />
-        </AnimatedProjectSection>
+                    </Card>
+                  </motion.div>
+                }
+              />
+            </AnimatedProjectSection>
+            <AnimatedProjectSection
+              id={PROJECT_SECTIONS[1].id}
+              staggerIndex={1}
+            >
+              <ProjectPortfolioCard
+                logoUrl="/stumped/Stumped-Logo.svg"
+                logoAlt="Stumped"
+                description="Stumped gamified student-teacher relationships, creating a school-wide scavenger hunt that built a stronger and more connected community. The successful competition turned faculty members into collectible characters, motivating hundreds of students to forge new bonds outside the classroom."
+                scopeText="Architected and engineered the software that powered Stumped. A fast and easy-to-use web app, it allowed students to view and guess riddles, redeem their points, and see the overall leaderboard. I built the entire backend and API infrastructure, implementing PII mitigation, FAFSA-compliant data policies, secure authentication, and analytics pipelines for engagement and performance."
+                projectColor="--brightbook-blue"
+                projectDarkColor="--brightbook-dark-blue"
+                leftColumnContent={
+                  <>
+                    <Reveal>
+                      <Card className="flex flex-col items-center gap-3 px-6 py-8 text-center">
+                        <AnimatedNumber
+                          value={700}
+                          suffix="+"
+                          className="text-4xl font-bold text-[var(--stumped-blue)] md:text-5xl"
+                        />
+                        <p className="text-base font-medium text-gray-700">
+                          students reached
+                        </p>
+                      </Card>
+                    </Reveal>
+                    <Reveal>
+                      <Card className="flex flex-col items-center gap-3 px-6 py-8 text-center">
+                        <AnimatedNumber
+                          value={5000}
+                          suffix="+"
+                          className="text-4xl font-bold text-[var(--stumped-blue)] md:text-5xl"
+                        />
+                        <p className="text-base font-medium text-gray-700">
+                          Stumped Cards produced
+                        </p>
+                      </Card>
+                    </Reveal>
+                    <Reveal>
+                      <Card className="flex flex-col items-center justify-center gap-4 px-6 py-8 text-center">
+                        <div className="relative h-24 w-48 sm:h-28 sm:w-60">
+                          <Image
+                            src="/stumped/NYSSBA-Logo.svg"
+                            alt="New York State School Boards Association"
+                            fill
+                            className="object-contain"
+                          />
+                        </div>
+                        <p className="text-base font-medium text-gray-700">
+                          Awarded Champions of Change by the NYSSBA
+                        </p>
+                      </Card>
+                    </Reveal>
+                  </>
+                }
+                rightColumnContent={
+                  <motion.div variants={itemVariants}>
+                    <Card className="overflow-hidden p-0">
+                      <Image
+                        src="/stumped/Stumped-Preview.png"
+                        alt="Stumped card preview"
+                        width={1600}
+                        height={1100}
+                        className="h-auto w-full"
+                        priority
+                      />
+                    </Card>
+                  </motion.div>
+                }
+              />
+            </AnimatedProjectSection>
 
-        <AnimatedProjectSection staggerIndex={2}>
-          <ProjectPortfolioCard
-            logoUrl="/next-step/NextStep-Logo.svg"
-            logoAlt="NextStep"
-            description={
-              <>
-                NextStepEdu was designed to help students and families apply to
-                college with ease and maximize their financial aid. Like
-                TurboTax for the FAFSA, it guides users step-by-step through
-                every question, adapting to their unique circumstances and
-                turning confusing tax data into clear, personalized answers.
-                <em> NextStep was acquired in late 2025.</em>
-              </>
-            }
-            scopeText="Engineered a secure end-to-end system integrating Gemini 2.5 Pro and Google Document AI for high-accuracy data extraction and validation. Implemented rigorous PII controls, including encryption at rest and in transit, access-scoped data handling, and anonymization of stored personal identifiers. Embedded an integrated feedback mechanism throughout the interface to facilitate natural, real-time input from beta testers during testing and refinement."
-            projectColor="--next-step-blue"
-            projectDarkColor="--next-step-dark-blue"
-            leftColumnContent={
-              <>
-                <Reveal>
-                  <Card className="px-4 py-7 flex flex-col items-center gap-2 justify-center text-center">
-                    <AnimatedNumber
-                      value={96}
-                      suffix="%"
-                      className="text-5xl font-bold text-[var(--next-step-blue)]"
-                    />
-                    <p className="text-base font-medium text-gray-700 leading-tight">
-                      accuracy in data extraction
-                      <br />
-                      and document classification*
-                    </p>
-                  </Card>
-                </Reveal>
-                <Reveal>
-                  <Card className="relative overflow-visible p-8">
-                    <h3 className="text-[var(--next-step-dark-blue)] font-medium text-xl md:text-lg text-center mb-6">
-                      Tech Stack
-                    </h3>
-                    <div className="grid grid-cols-3 gap-x-8 gap-y-16 max-w-sm mx-auto">
-                      <TechStackLogo
-                        src="/next-step/tech-stack/NextJS.png"
-                        label="Next.js"
-                      />
-                      <TechStackLogo
-                        src="/next-step/tech-stack/Gemini.png"
-                        label="Gemini 2.5 Pro"
-                      />
-                      <TechStackLogo
-                        src="/next-step/tech-stack/DocumentsAI.png"
-                        label="Google Document AI"
-                      />
-                      <TechStackLogo
-                        src="/next-step/tech-stack/Mongo.png"
-                        label="MongoDB"
-                      />
-                      <TechStackLogo
-                        src="/next-step/tech-stack/AuthJS.png"
-                        label="Auth.js"
-                      />
-                      <TechStackLogo
-                        src="/next-step/tech-stack/Redis.png"
-                        label="Redis"
-                      />
-                    </div>
-                  </Card>
-                </Reveal>
-              </>
-            }
-            rightColumnContent={
-              <ShufflingGallery images={nextStepImages} className="max-w-xl" />
-            }
-            footerNote={
-              <>
-                *Approx. 96.35% accuracy in extraction and classification across
-                124 anonymized 1040 and W-2 datasets using Gemini-2.5 Pro +
-                Document AI (n = 124 forms, ±1.3 std)
-              </>
-            }
-          />
-        </AnimatedProjectSection>
-      </main>
+            <AnimatedProjectSection
+              id={PROJECT_SECTIONS[2].id}
+              staggerIndex={2}
+            >
+              <ProjectPortfolioCard
+                logoUrl="/next-step/NextStep-Logo.svg"
+                logoAlt="NextStep"
+                description={
+                  <>
+                    NextStepEdu was designed to help students and families apply
+                    to college with ease and maximize their financial aid. Like
+                    TurboTax for the FAFSA, it guides users step-by-step through
+                    every question, adapting to their unique circumstances and
+                    turning confusing tax data into clear, personalized answers.
+                    <em> NextStep was acquired in late 2025.</em>
+                  </>
+                }
+                scopeText="Engineered a secure end-to-end system integrating Gemini 2.5 Pro and Google Document AI for high-accuracy data extraction and validation. Implemented rigorous PII controls, including encryption at rest and in transit, access-scoped data handling, and anonymization of stored personal identifiers. Embedded an integrated feedback mechanism throughout the interface to facilitate natural, real-time input from beta testers during testing and refinement."
+                projectColor="--brightbook-blue"
+                projectDarkColor="--brightbook-dark-blue"
+                leftColumnContent={
+                  <>
+                    <Reveal>
+                      <Card className="flex flex-col items-center gap-3 px-6 py-8 text-center">
+                        <AnimatedNumber
+                          value={96}
+                          suffix="%"
+                          className="text-4xl font-bold text-[var(--next-step-blue)] md:text-5xl"
+                        />
+                        <p className="text-base font-medium text-gray-700 leading-tight">
+                          accuracy in data extraction
+                          <br />
+                          and document classification*
+                        </p>
+                      </Card>
+                    </Reveal>
+                    <Reveal>
+                      <Card className="relative overflow-visible px-8 py-10">
+                        <h3 className="mb-6 text-center text-xl font-medium text-[var(--next-step-dark-blue)] md:text-lg">
+                          Tech Stack
+                        </h3>
+                        <div className="mx-auto grid max-w-sm grid-cols-2 gap-x-8 gap-y-12 sm:grid-cols-3">
+                          <TechStackLogo
+                            src="/next-step/tech-stack/NextJS.png"
+                            label="Next.js"
+                          />
+                          <TechStackLogo
+                            src="/next-step/tech-stack/Gemini.png"
+                            label="Gemini 2.5 Pro"
+                          />
+                          <TechStackLogo
+                            src="/next-step/tech-stack/DocumentsAI.png"
+                            label="Google Document AI"
+                          />
+                          <TechStackLogo
+                            src="/next-step/tech-stack/Mongo.png"
+                            label="MongoDB"
+                          />
+                          <TechStackLogo
+                            src="/next-step/tech-stack/AuthJS.png"
+                            label="Auth.js"
+                          />
+                          <TechStackLogo
+                            src="/next-step/tech-stack/Redis.png"
+                            label="Redis"
+                          />
+                        </div>
+                      </Card>
+                    </Reveal>
+                  </>
+                }
+                rightColumnContent={
+                  <ShufflingGallery
+                    images={nextStepImages}
+                    className="max-w-lg md:max-w-xl"
+                  />
+                }
+                footerNote={
+                  <>
+                    *Approx. 96.35% accuracy in extraction and classification
+                    across 124 anonymized 1040 and W-2 datasets using
+                    Gemini-2.5 Pro + Document AI (n = 124 forms, ±1.3 std)
+                  </>
+                }
+              />
+            </AnimatedProjectSection>
+          </main>
+        </div>
     </MotionConfig>
   );
 }

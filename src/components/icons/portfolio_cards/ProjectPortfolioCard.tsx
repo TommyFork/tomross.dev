@@ -37,106 +37,103 @@ export default function ProjectPortfolioCard({
 
   return (
     <MotionConfig transition={{ duration: 0.6, ease: easing }}>
-      <div className="w-full">
+      <div className="w-full space-y-12 md:space-y-16">
         {/* Header */}
-        <div className="">
+        <motion.div
+          className="space-y-5 md:space-y-6"
+          initial="hidden"
+          whileInView="visible"
+          viewport={viewport}
+          variants={{
+            hidden: { opacity: 0 },
+            visible: {
+              opacity: 1,
+              transition: { staggerChildren: 0.12 },
+            },
+          }}
+        >
           <motion.div
-            className="pt-6"
-            initial="hidden"
-            whileInView="visible"
-            viewport={viewport}
+            className="relative h-14 w-full max-w-[260px] sm:max-w-[280px]"
             variants={{
               hidden: { opacity: 0 },
               visible: {
                 opacity: 1,
-                transition: { staggerChildren: 0.12 },
+                transition: { duration: 0.55 },
               },
             }}
           >
-            <motion.div
-              className="h-14 relative w-full max-w-[260px]"
-              variants={{
-                hidden: { opacity: 0 },
-                visible: {
-                  opacity: 1,
-                  transition: { duration: 0.55 },
-                },
-              }}
-            >
-              <Image
-                src={logoUrl}
-                alt={logoAlt}
-                fill
-                className="object-contain object-left"
-                sizes="260px"
-                priority
-              />
-            </motion.div>
-            <motion.p
-              className="mt-4 text-md md:text-base leading-6 text-gray-700"
-              variants={{
-                hidden: { opacity: 0 },
-                visible: {
-                  opacity: 1,
-                  transition: { duration: 0.55 },
-                },
-              }}
-            >
-              {description}
-            </motion.p>
+            <Image
+              src={logoUrl}
+              alt={logoAlt}
+              fill
+              className="object-contain object-left"
+              sizes="(min-width: 640px) 280px, 240px"
+              priority
+            />
           </motion.div>
-        </div>
+          <motion.p
+            className="text-base leading-relaxed text-gray-700 md:text-[15px]"
+            variants={{
+              hidden: { opacity: 0 },
+              visible: {
+                opacity: 1,
+                transition: { duration: 0.55 },
+              },
+            }}
+          >
+            {description}
+          </motion.p>
+        </motion.div>
 
         {/* Technical & Venture Scope */}
-        <div className="mt-6">
+        <motion.div
+          className="rounded-2xl border border-[#393976]/[0.1] px-8 py-8 shadow-[0_16px_60px_rgba(57,57,118,0.08)] md:px-10 md:py-9"
+          style={gradientStyle}
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          viewport={viewport}
+        >
           <motion.div
-            className="rounded-lg border-[0.5px] border-[#393976]/[0.1] px-10 py-8"
-            style={gradientStyle}
+            className="space-y-3 md:space-y-4"
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 1 }}
             viewport={viewport}
+            transition={{ duration: 0.55, ease: easing }}
           >
             <motion.h3
-              className="font-medium text-xl md:text-2xl"
+              className="text-xl font-medium md:text-2xl"
               style={headingStyle}
-              initial={{ opacity: 0 }}
-              whileInView={{ opacity: 1 }}
-              viewport={viewport}
             >
               Project Role
             </motion.h3>
-            <motion.p
-              className="mt-3 text-md md:text-[15px] leading-7 text-black"
-              initial={{ opacity: 0 }}
-              whileInView={{ opacity: 1 }}
-              viewport={viewport}
-              transition={{ duration: 0.55, ease: easing }}
-            >
+            <motion.p className="text-base leading-7 text-black md:text-[15px]">
               {scopeText}
             </motion.p>
           </motion.div>
-        </div>
+        </motion.div>
 
         {/* Body Grid */}
-        <div className="mt-6 grid grid-cols-1 gap-6 md:gap-8 lg:grid-cols-12">
+        <div className="grid grid-cols-1 gap-8 md:gap-10 lg:grid-cols-12 xl:gap-12">
           {/* Left column */}
           <div className="space-y-6 md:space-y-8 lg:col-span-6 xl:col-span-5">
             {leftColumnContent}
           </div>
 
           {/* Right column */}
-          <div className="lg:col-span-6 xl:col-span-7">{rightColumnContent}</div>
+          <div className="flex justify-center lg:col-span-6 lg:justify-end xl:col-span-7">
+            <div className="w-full max-w-xl xl:max-w-2xl">{rightColumnContent}</div>
+          </div>
         </div>
 
         {footerNote && (
           <motion.div
-            className="mt-40"
+            className="mt-12 border-t border-gray-200/70 pt-9 md:mt-14 md:pt-11"
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 1 }}
             viewport={viewport}
             transition={{ duration: 0.5, ease: easing, delay: 0.1 }}
           >
-            <p className="text-xs text-gray-500 text-left">{footerNote}</p>
+            <p className="text-xs text-gray-500 md:text-sm">{footerNote}</p>
           </motion.div>
         )}
       </div>
