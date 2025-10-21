@@ -13,12 +13,12 @@ export default function ProfileCard() {
         <Image src="/headshot.jpeg" alt="Headshot" width={128} height={128} />
       </div>
       <div className="text-center">
-        <div className="font-medium">Tom Ross</div>
+        <div className="font-medium">Tommy Ross</div>
         <div className="text-sm text-neutral-500">Full‑Stack Developer</div>
       </div>
       <div className="flex items-center gap-4 text-sm text-neutral-700">
         <Link
-          href="https://github.com/tommyross"
+          href="https://github.com/TommyFork"
           target="_blank"
           rel="noreferrer noopener"
           className="hover:text-neutral-900"
@@ -27,7 +27,7 @@ export default function ProfileCard() {
           <GitHubIcon />
         </Link>
         <Link
-          href="https://www.linkedin.com/in/tomross"
+          href="https://www.linkedin.com/in/rosstommy/"
           target="_blank"
           rel="noreferrer noopener"
           className="hover:text-neutral-900"
@@ -36,7 +36,7 @@ export default function ProfileCard() {
           <LinkedInIcon />
         </Link>
         <Link
-          href="https://x.com/tommyross"
+          href="https://x.com/tommytelos"
           target="_blank"
           rel="noreferrer noopener"
           className="hover:text-neutral-900"

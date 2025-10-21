@@ -2,7 +2,7 @@
 // import { posts } from "@/content/writing/posts";
 
 // export const metadata = {
-//   title: "Writing — Tom Ross",
+//   title: "Writing — Tommy Ross",
 // };
 
 // export default function WritingIndex() {

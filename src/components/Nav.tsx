@@ -48,7 +48,7 @@ export default function Nav() {
     <header className={`transition-all duration-300 ${headerClassName}`}>
       <nav className="flex items-center justify-between gap-6">
         <Link href="/" className={brandClassName}>
-          Tom Ross
+          Tommy Ross
         </Link>
         <div className="flex items-center gap-5 text-sm">
           <ul className="flex items-center gap-5">

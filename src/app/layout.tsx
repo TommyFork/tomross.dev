@@ -16,8 +16,49 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Tom Ross — Full‑Stack Developer",
-  description: "Portfolio, work, writing, and contact.",
+  metadataBase: new URL("https://tomross.dev"),
+  title: {
+    default: "Tommy Ross — Full‑Stack Developer",
+    template: "%s — Tommy Ross",
+  },
+  description:
+    "I'm a full-stack developer building polished, data-driven products and experiences.",
+  keywords: [
+    "Tommy Ross",
+    "Full-stack developer",
+    "Product engineer",
+    "React",
+    "Next.js",
+    "Boston",
+  ],
+  authors: [{ name: "Tommy Ross", url: "https://tomross.dev" }],
+  openGraph: {
+    title: "Tommy Ross — Full‑Stack Developer",
+    description:
+      "Explore my portfolio of full-stack product work, writing, and ways to get in touch.",
+    url: "https://tomross.dev",
+    siteName: "Tommy Ross",
+    type: "website",
+    locale: "en_US",
+    images: [
+      {
+        url: "/headshot.jpeg",
+        width: 1024,
+        height: 1024,
+        alt: "Portrait of me, Tommy Ross",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Tommy Ross — Full‑Stack Developer",
+    description:
+      "Explore my portfolio of full-stack product work, writing, and ways to get in touch.",
+    creator: "@tommytelos",
+  },
+  alternates: {
+    canonical: "https://tomross.dev",
+  },
 };
 
 export default function RootLayout({

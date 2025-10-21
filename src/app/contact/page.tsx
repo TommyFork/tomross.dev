@@ -1,5 +1,9 @@
-export const metadata = {
-  title: "Contact — Tom Ross",
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Contact",
+  description:
+    "Get in touch with me for collaborations, product work, or new opportunities.",
 };
 
 import ContactCard from "@/components/ContactCard";
