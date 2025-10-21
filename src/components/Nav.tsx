@@ -37,12 +37,12 @@ export default function Nav() {
   };
 
   const headerClassName = isScrolled
-    ? "sticky top-4 z-50 rounded-3xl border border-white/60 bg-white/80 px-6 py-4 shadow-lg shadow-slate-200/80 backdrop-blur-xl"
-    : "py-6";
+    ? "sticky top-4 z-50 rounded-3xl border border-white/50 bg-white/60 px-6 py-4 shadow-[0_12px_32px_-24px_rgba(15,23,42,0.45)] backdrop-blur-2xl backdrop-saturate-150"
+    : "border border-transparent py-6";
 
   const brandClassName = isScrolled
     ? "text-base font-semibold tracking-tight text-slate-900 transition-all duration-300"
-    : "text-sm font-medium tracking-tight";
+    : "text-xl font-semibold tracking-tight transition-all duration-300";
 
   return (
     <header className={`transition-all duration-300 ${headerClassName}`}>
@@ -61,10 +61,10 @@ export default function Nav() {
                     aria-current={active ? "page" : undefined}
                     className={
                       isScrolled
-                        ? `inline-flex items-center rounded-full px-3 py-1.5 text-sm font-medium text-slate-600 transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-300 focus-visible:ring-offset-0 hover:text-slate-900 hover:shadow-sm ${
+                        ? `inline-flex items-center rounded-full border border-white/30 bg-white/40 px-3 py-1.5 text-sm font-medium text-slate-700 transition-all duration-200 backdrop-blur-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-200 focus-visible:ring-offset-0 hover:text-slate-900 hover:border-white/60 ${
                             active
-                              ? "bg-white text-slate-900"
-                              : "bg-white/60 hover:bg-white"
+                              ? "bg-white/85 text-slate-900"
+                              : "hover:bg-white/55"
                           }`
                         : `transition-colors hover:text-neutral-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-400 focus-visible:ring-offset-2 focus-visible:ring-offset-white ${
                             active
@@ -84,7 +84,7 @@ export default function Nav() {
             onClick={handleOpenModal}
             className={
               isScrolled
-                ? "inline-flex items-center justify-center gap-2 rounded-full border border-white/70 bg-white/90 px-4 py-2 text-sm font-semibold text-slate-900 shadow-md shadow-slate-200/70 transition-all duration-200 hover:-translate-y-[2px] hover:border-white hover:bg-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-300"
+                ? "inline-flex items-center justify-center gap-2 rounded-full border border-white/40 bg-white/65 px-4 py-2 text-sm font-semibold text-slate-900 shadow-[0_10px_28px_-22px_rgba(15,23,42,0.45)] transition-all duration-200 backdrop-blur-sm hover:-translate-y-[2px] hover:border-white/70 hover:bg-white/80 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-200"
                 : "inline-flex items-center justify-center rounded-full border border-neutral-200 bg-white px-4 py-2 text-sm font-medium text-neutral-600 shadow-sm transition hover:-translate-y-[1px] hover:border-neutral-300 hover:shadow-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-400"
             }
           >
