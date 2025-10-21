@@ -13,7 +13,7 @@ export default function ContactButton() {
 
   const handleClick = () => {
     if (honeypotRef.current && honeypotRef.current.value) return;
-    const u = ["hello", "tomross.dev"].join("@");
+    const u = ["tommy", "tomross.dev"].join("@");
     const subject = encodeURIComponent("Hello");
     window.location.href = `mailto:${u}?subject=${subject}`;
   };

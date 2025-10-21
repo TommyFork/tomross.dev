@@ -230,7 +230,7 @@ export default function ContactModal({
   }, [open, render, mounted, anchorRect, prefersReducedMotion, onExited]);
 
   const encodedEmail = useMemo(() => {
-    const user = process.env.NEXT_PUBLIC_EMAIL_USER || "hello";
+    const user = process.env.NEXT_PUBLIC_EMAIL_USER || "tommy";
     const domain = process.env.NEXT_PUBLIC_EMAIL_DOMAIN || "tomross.dev";
     const complete = `${user}@${domain}`;
 

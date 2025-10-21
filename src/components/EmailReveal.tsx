@@ -9,7 +9,7 @@ export default function EmailReveal({ label = "Email me" }: Props) {
   const [email, setEmail] = useState<string | null>(null);
 
   useEffect(() => {
-    const user = process.env.NEXT_PUBLIC_EMAIL_USER || "hello";
+    const user = process.env.NEXT_PUBLIC_EMAIL_USER || "tommy";
     const domain = process.env.NEXT_PUBLIC_EMAIL_DOMAIN || "tomross.dev";
     setEmail(`${user}@${domain}`);
   }, []);
