@@ -7,6 +7,7 @@ import {
   motion,
   useInView,
   animate,
+  Variants,
 } from "framer-motion";
 import ProjectPortfolioCard from "@/components/icons/portfolio_cards/ProjectPortfolioCard";
 import Card from "@/components/icons/portfolio_cards/Card";
@@ -14,7 +15,7 @@ import ImageCard from "@/components/icons/portfolio_cards/ImageCard";
 import Image from "next/image";
 import ShufflingGallery from "@/components/ShufflingGallery";
 
-const sectionVariants = {
+const sectionVariants: Variants = {
   hidden: { opacity: 0 },
   visible: (i = 0) => ({
     opacity: 1,
@@ -27,7 +28,7 @@ const sectionVariants = {
   }),
 };
 
-const itemVariants = {
+const itemVariants: Variants = {
   hidden: { opacity: 0, y: 24, scale: 0.98 },
   visible: {
     opacity: 1,
