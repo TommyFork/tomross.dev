@@ -26,7 +26,7 @@ export default function ProjectPortfolioCard({
   rightColumnContent,
   footerNote,
 }: ProjectPortfolioCardProps) {
-  const viewport = { once: true, amount: 0.65, margin: "-10% 0px" } as const;
+  const viewport = { once: true, amount: 0.28, margin: "-18% 0px -16% 0px" } as const;
   const easing: [number, number, number, number] = [0.33, 1, 0.68, 1];
 
   const gradientStyle = {
@@ -37,10 +37,10 @@ export default function ProjectPortfolioCard({
 
   return (
     <MotionConfig transition={{ duration: 0.6, ease: easing }}>
-      <div className="w-full space-y-12 md:space-y-16">
+      <div className="w-full space-y-10 sm:space-y-12 md:space-y-16">
         {/* Header */}
         <motion.div
-          className="space-y-5 md:space-y-6"
+          className="space-y-4 md:space-y-6"
           initial="hidden"
           whileInView="visible"
           viewport={viewport}
@@ -87,7 +87,7 @@ export default function ProjectPortfolioCard({
 
         {/* Technical & Venture Scope */}
         <motion.div
-          className="rounded-2xl border border-[#393976]/[0.1] px-8 py-8 shadow-[0_16px_60px_rgba(57,57,118,0.08)] md:px-10 md:py-9"
+          className="rounded-2xl border border-[#393976]/[0.1] px-6 py-7 shadow-[0_16px_60px_rgba(57,57,118,0.08)] sm:px-8 sm:py-8 md:px-10 md:py-9"
           style={gradientStyle}
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
@@ -113,15 +113,15 @@ export default function ProjectPortfolioCard({
         </motion.div>
 
         {/* Body Grid */}
-        <div className="grid grid-cols-1 gap-8 md:gap-10 lg:grid-cols-12 xl:gap-12">
+        <div className="grid grid-cols-1 gap-6 sm:gap-8 md:gap-10 lg:grid-cols-12 xl:gap-12">
           {/* Left column */}
-          <div className="space-y-6 md:space-y-8 lg:col-span-6 xl:col-span-5">
+          <div className="space-y-5 sm:space-y-6 md:space-y-8 lg:col-span-6 xl:col-span-5">
             {leftColumnContent}
           </div>
 
           {/* Right column */}
           <div className="flex justify-center lg:col-span-6 lg:justify-end xl:col-span-7">
-            <div className="w-full max-w-xl xl:max-w-2xl">{rightColumnContent}</div>
+            <div className="w-full max-w-md sm:max-w-xl xl:max-w-2xl">{rightColumnContent}</div>
           </div>
         </div>
 

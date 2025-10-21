@@ -20,21 +20,21 @@ const sectionVariants: Variants = {
   visible: (i = 0) => ({
     opacity: 1,
     transition: {
-      duration: 0.75,
+      duration: 0.65,
       ease: [0.25, 1, 0.5, 1],
-      staggerChildren: 0.1,
-      delayChildren: i * 0.1,
+      staggerChildren: 0.08,
+      delayChildren: i * 0.08,
     },
   }),
 };
 
 const itemVariants: Variants = {
-  hidden: { opacity: 0, y: 24, scale: 0.98 },
+  hidden: { opacity: 0, y: 18, scale: 0.99 },
   visible: {
     opacity: 1,
     y: 0,
     scale: 1,
-    transition: { duration: 0.6, ease: [0.33, 1, 0.68, 1] },
+    transition: { duration: 0.5, ease: [0.33, 1, 0.68, 1] },
   },
 };
 
@@ -55,7 +55,7 @@ function AnimatedProjectSection({
       className="w-full"
       initial="hidden"
       whileInView="visible"
-      viewport={{ once: true, amount: 0.2, margin: "-10% 0px" }}
+      viewport={{ once: true, amount: 0.12, margin: "-20% 0px -12% 0px" }}
       variants={sectionVariants}
       custom={staggerIndex}
     >
@@ -283,12 +283,12 @@ export default function WorkContent() {
         </motion.aside>
 
         <motion.aside
-          className="pointer-events-none fixed inset-x-0 bottom-6 z-20 flex justify-center px-6 lg:hidden"
+          className="pointer-events-none fixed inset-x-0 bottom-5 z-20 flex justify-center px-4 lg:hidden"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.5, ease: [0.33, 1, 0.68, 1] }}
         >
-          <div className="pointer-events-auto flex items-center gap-4 rounded-full bg-white/95 px-5 py-3 shadow-[0_16px_44px_rgba(57,57,118,0.16)] backdrop-blur">
+          <div className="pointer-events-auto flex items-center gap-3 rounded-full bg-white/95 px-5 py-2.5 shadow-[0_16px_44px_rgba(57,57,118,0.16)] backdrop-blur">
             {PROJECT_SECTIONS.map((section, index) => {
               const isActive = index === activeSection;
               return (
@@ -321,7 +321,7 @@ export default function WorkContent() {
           </div>
         </motion.aside>
 
-        <main className="flex w-full flex-col gap-y-44 pt-8 pb-16 md:gap-y-60 md:pt-10 md:pb-20 lg:gap-y-72 lg:pt-12 lg:pb-24">
+        <main className="flex w-full flex-col gap-y-32 pt-6 pb-14 sm:gap-y-40 sm:pt-8 sm:pb-16 md:gap-y-52 md:pt-10 md:pb-20 lg:gap-y-64 lg:pt-12 lg:pb-24">
             <AnimatedProjectSection id={PROJECT_SECTIONS[0].id}>
               <ProjectPortfolioCard
                 logoUrl="/brightbook/BrightBook-Logo.svg"
