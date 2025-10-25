@@ -93,7 +93,7 @@ export default function Nav() {
 
   const headerClassName = isScrolled
     ? "mt-6 sticky top-4 z-50 w-full rounded-3xl border border-white/45 bg-white/60 px-5 py-3 shadow-[0_18px_48px_-30px_rgba(15,23,42,0.3)] backdrop-blur-2xl backdrop-saturate-150 sm:px-6 sm:py-4"
-    : "mt-6 w-full border border-transparent px-4 py-6 sm:px-6";
+    : "mt-6 w-full border border-transparent px-0 py-6";
 
   const brandClassName = isScrolled
     ? "text-base font-semibold tracking-tight text-slate-900 transition-all duration-300"
