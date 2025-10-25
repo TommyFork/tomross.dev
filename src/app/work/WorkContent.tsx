@@ -42,23 +42,37 @@ type AnimatedProjectSectionProps = {
   children: ReactNode;
   staggerIndex?: number;
   id?: string;
+  anchorIds?: readonly string[];
 };
 
 function AnimatedProjectSection({
   children,
   staggerIndex = 0,
   id,
+  anchorIds = [],
 }: AnimatedProjectSectionProps) {
+  const anchorIdList = id
+    ? Array.from(new Set([id, ...anchorIds]))
+    : Array.from(new Set(anchorIds));
+
   return (
     <motion.section
-      id={id}
-      className="w-full"
+      data-section-id={id ?? undefined}
+      className="relative w-full"
       initial="hidden"
       whileInView="visible"
       viewport={{ once: true, amount: 0.12, margin: "-20% 0px -12% 0px" }}
       variants={sectionVariants}
       custom={staggerIndex}
     >
+      {anchorIdList.map((anchorId) => (
+        <span
+          key={anchorId}
+          id={anchorId}
+          aria-hidden="true"
+          className="pointer-events-none absolute top-0 h-0 w-px opacity-0 scroll-mt-28 md:scroll-mt-36"
+        />
+      ))}
       <div className="relative">{children}</div>
     </motion.section>
   );
@@ -168,9 +182,17 @@ const nextStepImages = [
 ];
 
 const PROJECT_SECTIONS = [
-  { id: "project-brightbook", label: "BrightBook" },
-  { id: "project-stumped", label: "Stumped" },
-  { id: "project-nextstep", label: "NextStep" },
+  {
+    id: "brightbook",
+    label: "BrightBook",
+    anchorIds: ["project-brightbook"],
+  },
+  { id: "stumped", label: "Stumped", anchorIds: ["project-stumped"] },
+  {
+    id: "nextstep",
+    label: "NextStep",
+    anchorIds: ["project-nextstep"],
+  },
 ] as const;
 
 export default function WorkContent() {
@@ -185,7 +207,9 @@ export default function WorkContent() {
 
   useEffect(() => {
     const sectionElements = PROJECT_SECTIONS.map((section) =>
-      document.getElementById(section.id),
+      document.querySelector<HTMLElement>(
+        `[data-section-id="${section.id}"]`,
+      ),
     ).filter((el): el is HTMLElement => Boolean(el));
 
     if (!sectionElements.length) {
@@ -322,7 +346,10 @@ export default function WorkContent() {
         </motion.aside>
 
         <main className="flex w-full flex-col gap-y-32 pt-6 pb-14 sm:gap-y-40 sm:pt-8 sm:pb-16 md:gap-y-52 md:pt-10 md:pb-20 lg:gap-y-64 lg:pt-12 lg:pb-24">
-            <AnimatedProjectSection id={PROJECT_SECTIONS[0].id}>
+            <AnimatedProjectSection
+              id={PROJECT_SECTIONS[0].id}
+              anchorIds={PROJECT_SECTIONS[0].anchorIds}
+            >
               <ProjectPortfolioCard
                 logoUrl="/brightbook/BrightBook-Logo.svg"
                 logoAlt="BrightBook"
@@ -423,6 +450,7 @@ export default function WorkContent() {
             </AnimatedProjectSection>
             <AnimatedProjectSection
               id={PROJECT_SECTIONS[1].id}
+              anchorIds={PROJECT_SECTIONS[1].anchorIds}
               staggerIndex={1}
             >
               <ProjectPortfolioCard
@@ -494,6 +522,7 @@ export default function WorkContent() {
 
             <AnimatedProjectSection
               id={PROJECT_SECTIONS[2].id}
+              anchorIds={PROJECT_SECTIONS[2].anchorIds}
               staggerIndex={2}
             >
               <ProjectPortfolioCard
