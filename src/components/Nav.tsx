@@ -28,8 +28,22 @@ export default function Nav() {
   const bodyOverflowRef = useRef<string | undefined>(undefined);
 
   useEffect(() => {
+    const activateThreshold = 64;
+    const deactivateThreshold = 24;
+
     const handleScroll = () => {
-      setIsScrolled(window.scrollY > 12);
+      const currentScrollY = window.scrollY;
+      setIsScrolled((previous) => {
+        if (currentScrollY > activateThreshold) {
+          return true;
+        }
+
+        if (currentScrollY < deactivateThreshold) {
+          return false;
+        }
+
+        return previous;
+      });
     };
 
     handleScroll();
