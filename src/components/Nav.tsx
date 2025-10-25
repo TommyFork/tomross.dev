@@ -25,7 +25,7 @@ export default function Nav() {
   const headerRef = useRef<HTMLElement | null>(null);
   const [menuPortalTarget, setMenuPortalTarget] = useState<HTMLElement | null>(null);
   const [menuOffset, setMenuOffset] = useState(0);
-  const bodyOverflowRef = useRef<string>();
+  const bodyOverflowRef = useRef<string | undefined>(undefined);
 
   useEffect(() => {
     const handleScroll = () => {
