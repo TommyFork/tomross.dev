@@ -49,8 +49,8 @@ export default function About() {
               >
                 high school
               </Link>
-              , I was deep into Node.js. Thankfully, I haven't touched Java or
-              PHP since. Along the way, I've built everything from Discord bots
+              , I was deep into Node.js. Thankfully, I haven&apos;t touched Java or
+              PHP since. Along the way, I&apos;ve built everything from Discord bots
               to web scrapers to a couple of startups.
               <br />
               <br />I started my last failed startup,{" "}
@@ -65,12 +65,12 @@ export default function About() {
               <br />I led the venture from idea to prototype to piloting in the
               Boston Public Schools. Along the way, I worked with so many
               incredible people. It was an amazing journey full of many failures
-              and lessons and I can't wait to apply what I learned to my next
+              and lessons and I can&apos;t wait to apply what I learned to my next
               venture.
               <br />
               <br />
               I enjoy thinking about the future of software, AI, education, and
-              finance. Lately I've been particularly interested in generative UI
+              finance. Lately I&apos;ve been particularly interested in generative UI
               and personal AI financial advisors. I also love my dog, getting
               out in nature, and cooking for the people I love.
               <br />
