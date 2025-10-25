@@ -36,26 +36,46 @@ export default function About() {
           </h1>
           <div className="space-y-4">
             <p className="text-neutral-700" style={{ lineHeight: "1.5" }}>
-              Thanks for visiting my personal website!
-              <br />
-              <br />
               My name is Tommy, a full-stack engineer and product builder based
-              in Boston, MA 🇺🇸 <br />
-              <br />I get excited about taking ideas from concept all the way
-              through to launch, handling everything from development to testing
-              along the way. One project I&apos;m particularly proud of is
-              BrightBook, an award-winning education platform that we piloted in
-              the Boston Public Schools. My approach blends engineering,
-              analytics, and UX. <br />
-              <br />I like to dig into user insights, translate them into clear
-              requirements, and use data to guide direction. Whether I&apos;m
-              working on web apps or AI tools, I love collaboration and creating
-              experiences that feel seamless and intuitive. <br />
+              in Boston, MA 🇺🇸
               <br />
-              At the end of the day, I&apos;m passionate about using technology,
-              design, and data to build products that are reliable, easy to use,
-              and genuinely improve people&apos;s everyday lives. <br />
-              <br /> I graduated cum laude from Boston University&apos;s
+              <br />I started coding in middle school, making Minecraft plugins
+              for my friends. That pulled me into Java, then web development
+              with PHP, and by&nbsp;
+              <Link
+                href="https://archive.ph/oe9mp"
+                target="_blank"
+                className="text-blue-500 hover:text-blue-600"
+              >
+                high school
+              </Link>
+              , I was deep into Node.js. Thankfully, I haven't touched Java or
+              PHP since. Along the way, I've built everything from Discord bots
+              to web scrapers to a couple of startups.
+              <br />
+              <br />I started my last failed startup,{" "}
+              <Link
+                href="/work#brightbook"
+                className="text-blue-500 hover:text-blue-600"
+              >
+                BrightBook
+              </Link>
+              , a platform to individualize curricula for middle school
+              students, while a junior in college. <br />
+              <br />I led the venture from idea to prototype to piloting in the
+              Boston Public Schools. Along the way, I worked with so many
+              incredible people. It was an amazing journey full of many failures
+              and lessons and I can't wait to apply what I learned to my next
+              venture.
+              <br />
+              <br />
+              I enjoy thinking about the future of software, AI, education, and
+              finance. Lately I've been particularly interested in generative UI
+              and personal AI financial advisors. I also love my dog, getting
+              out in nature, and cooking for the people I love.
+              <br />
+              <br />
+              This year, I graduated cum laude from Boston University&apos;s
               Questrom School of Business, where I concentrated in Business
               Analytics.
             </p>
