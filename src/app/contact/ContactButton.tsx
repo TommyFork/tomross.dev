@@ -13,7 +13,9 @@ export default function ContactButton() {
 
   const handleClick = () => {
     if (honeypotRef.current && honeypotRef.current.value) return;
-    const u = ["tommy", "tomross.dev"].join("@");
+    const user = process.env.NEXT_PUBLIC_EMAIL_USER ?? "tommyross";
+    const domain = process.env.NEXT_PUBLIC_EMAIL_DOMAIN ?? "me.com";
+    const u = `${user}@${domain}`;
     const subject = encodeURIComponent("Hello");
     window.location.href = `mailto:${u}?subject=${subject}`;
   };

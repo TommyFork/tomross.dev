@@ -1,18 +1,33 @@
 {
-  "name": "my-app",
+  "name": "tomross.dev",
   "version": "0.1.0",
   "private": true,
+  "description": "Personal portfolio and work showcase built with Next.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/TommyFork/tomross.dev.git"
+  },
+  "homepage": "https://tomross.dev",
+  "bugs": {
+    "url": "https://github.com/TommyFork/tomross.dev/issues"
+  },
+  "author": "Tommy Ross",
+  "license": "PolyForm-Noncommercial-1.0.0",
   "scripts": {
     "dev": "next dev --turbopack",
-    "build": "next build --turbopack",
+    "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "lint:fix": "eslint --fix .",
+    "typecheck": "tsc --noEmit"
   },
   "dependencies": {
     "framer-motion": "^12.23.24",
     "next": "15.5.5",
     "react": "19.1.0",
-    "react-dom": "19.1.0"
+    "react-dom": "19.1.0",
+    "react-markdown": "^9.0.1",
+    "remark-gfm": "^4.0.0"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",

@@ -106,7 +106,7 @@ export default function Nav() {
   }, [isMenuOpen]);
 
   const headerClassName = isScrolled
-    ? "mt-6 sticky top-4 z-50 w-full rounded-3xl border border-white/45 bg-white/60 px-5 py-3 shadow-[0_18px_48px_-30px_rgba(15,23,42,0.3)] backdrop-blur-2xl backdrop-saturate-150 sm:px-6 sm:py-4"
+    ? "mt-6 sticky top-4 z-50 w-full rounded-3xl border border-white/30 bg-white/40 px-5 py-3 shadow-[0_8px_32px_0_rgba(31,38,135,0.15)] backdrop-blur-[20px] backdrop-saturate-[180%] before:absolute before:inset-0 before:rounded-3xl before:border before:border-white/40 before:shadow-[inset_0_1px_1px_0_rgba(255,255,255,0.5)] before:pointer-events-none sm:px-6 sm:py-4"
     : "mt-6 w-full border border-transparent px-0 py-6";
 
   const brandClassName = isScrolled
@@ -140,12 +140,12 @@ export default function Nav() {
     }`;
 
   const mobileContactButtonClassName = isScrolled
-    ? "inline-flex w-full cursor-pointer items-center justify-center rounded-full border border-white/45 bg-white/75 px-5 py-2.5 text-sm font-semibold text-slate-900 shadow-sm transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-200 hover:-translate-y-[2px] hover:border-white/70 hover:bg-white"
-    : "inline-flex w-full cursor-pointer items-center justify-center rounded-full border border-transparent bg-white px-5 py-2.5 text-sm font-medium text-neutral-600 shadow-sm transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-400 hover:-translate-y-[1px] hover:border-neutral-200/80 hover:shadow-md";
+    ? "inline-flex w-full cursor-pointer items-center justify-center rounded-full border border-white/45 bg-white/75 px-5 py-2.5 text-sm font-semibold text-slate-900 shadow-sm transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-200 hover:-translate-y-[0.5px] hover:bg-black hover:text-white hover:border-black"
+    : "inline-flex w-full cursor-pointer items-center justify-center rounded-full border border-transparent bg-white px-5 py-2.5 text-sm font-medium text-neutral-600 shadow-sm transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-400 hover:-translate-y-[0.5px] hover:bg-black hover:text-white hover:border-black";
 
   const contactButtonClassName = isScrolled
-    ? "inline-flex w-full cursor-pointer items-center justify-center gap-2 rounded-full border border-white/45 bg-white/70 px-4 py-2 text-sm font-semibold text-slate-900 shadow-sm transition-all duration-200 sm:w-auto hover:-translate-y-[2px] hover:border-white/70 hover:bg-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-200 active:scale-95"
-    : "inline-flex w-full cursor-pointer items-center justify-center gap-2 rounded-full border border-transparent bg-white px-4 py-2 text-sm font-medium text-neutral-600 shadow-sm transition-all duration-200 sm:w-auto hover:-translate-y-[1px] hover:border-neutral-200/80 hover:shadow-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-400 active:scale-95";
+    ? "inline-flex w-full cursor-pointer items-center justify-center gap-2 rounded-full border border-white/45 bg-white/70 px-4 py-2 text-sm font-semibold text-slate-900 shadow-sm transition-all duration-200 sm:w-auto hover:-translate-y-[0.5px] hover:bg-black hover:text-white hover:border-black focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-200 active:scale-95"
+    : "inline-flex w-full cursor-pointer items-center justify-center gap-2 rounded-full border border-transparent bg-white px-4 py-2 text-sm font-medium text-neutral-600 shadow-sm transition-all duration-200 sm:w-auto hover:-translate-y-[0.5px] hover:bg-black hover:text-white hover:border-black focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-400 active:scale-95";
 
   const mobileMenu =
     menuPortalTarget && typeof window !== "undefined"
@@ -219,8 +219,8 @@ export default function Nav() {
       : null;
 
   return (
-    <header ref={headerRef} className={`transition-all duration-300 ${headerClassName}`}>
-      <nav className="flex items-center justify-between gap-4 sm:gap-6">
+    <header ref={headerRef} className={`relative transition-all duration-300 ${headerClassName}`}>
+      <nav className="relative z-10 flex items-center justify-between gap-4 sm:gap-6">
         <Link href="/" className={`${brandClassName} whitespace-nowrap`}>
           Tommy Ross
         </Link>

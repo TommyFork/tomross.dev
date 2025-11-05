@@ -67,21 +67,27 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const gaId = process.env.NEXT_PUBLIC_GA_ID;
+  const isProd = process.env.NODE_ENV === "production";
   return (
     <html lang="en">
         <body className={`light ${geistSans.variable} ${geistMono.variable} antialiased`}>
-          <Script
-            src="https://www.googletagmanager.com/gtag/js?id=G-0QJNN3QP2C"
-            strategy="afterInteractive"
-          />
-          <Script id="google-analytics" strategy="afterInteractive">
-            {`
-              window.dataLayer = window.dataLayer || [];
-              function gtag(){dataLayer.push(arguments);}
-              gtag('js', new Date());
-              gtag('config', 'G-0QJNN3QP2C');
-            `}
-          </Script>
+          {isProd && gaId ? (
+            <>
+              <Script
+                src={`https://www.googletagmanager.com/gtag/js?id=${gaId}`}
+                strategy="afterInteractive"
+              />
+              <Script id="google-analytics" strategy="afterInteractive">
+                {`
+                  window.dataLayer = window.dataLayer || [];
+                  function gtag(){dataLayer.push(arguments);} 
+                  gtag('js', new Date());
+                  gtag('config', '${gaId}');
+                `}
+              </Script>
+            </>
+          ) : null}
           <Providers>
           <div className="min-h-screen flex flex-col">
             <div className="mx-auto w-full max-w-5xl px-6 flex-1 flex flex-col">

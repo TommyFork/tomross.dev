@@ -197,6 +197,8 @@ const PROJECT_SECTIONS = [
 
 export default function WorkContent() {
   const [activeSection, setActiveSection] = useState(0);
+  const manualActiveUntilRef = useRef<number | null>(null);
+  const [hoveredDesktopIndex, setHoveredDesktopIndex] = useState<number>(-1);
 
   const handleScrollToSection = (id: string) => {
     const el = document.getElementById(id);
@@ -220,6 +222,13 @@ export default function WorkContent() {
 
     const updateActiveSection = () => {
       frameId = null;
+      if (
+        manualActiveUntilRef.current != null &&
+        performance.now() < manualActiveUntilRef.current
+      ) {
+        return;
+      }
+      manualActiveUntilRef.current = null;
       const viewportCenter = window.innerHeight / 2;
       let closestIndex = 0;
       let smallestDistance = Number.POSITIVE_INFINITY;
@@ -279,8 +288,18 @@ export default function WorkContent() {
                   <motion.button
                     key={section.id}
                     type="button"
-                    onClick={() => handleScrollToSection(section.id)}
-                    className="relative flex h-10 w-8 items-center justify-center"
+                  onClick={() => {
+                    manualActiveUntilRef.current = performance.now() + 900;
+                      setActiveSection(index);
+                      handleScrollToSection(section.id);
+                    }}
+                    className={`relative flex h-12 w-12 items-center justify-center rounded-full ${
+                      isActive
+                        ? "cursor-default"
+                        : "cursor-pointer hover:bg-slate-100/70"
+                    }`}
+                    onMouseEnter={() => setHoveredDesktopIndex(index)}
+                    onMouseLeave={() => setHoveredDesktopIndex(-1)}
                     aria-label={`Jump to ${section.label}`}
                     whileTap={{ scale: 0.92 }}
                     whileHover={{ scale: 1.05 }}
@@ -288,14 +307,18 @@ export default function WorkContent() {
                   >
                     <motion.span
                       layout
-                      className={`relative block rounded-full ${
-                        isActive ? "bg-[var(--brightbook-blue)]" : "bg-slate-300/80"
+                      className={`relative block rounded-full transition-colors ${
+                        isActive
+                          ? "bg-[var(--brightbook-blue)]"
+                          : hoveredDesktopIndex === index
+                            ? "bg-slate-400"
+                            : "bg-slate-300/80"
                       }`}
                       initial={false}
                       animate={{
-                        height: isActive ? 34 : 12,
+                        height: isActive ? 34 : hoveredDesktopIndex === index ? 18 : 12,
                         width: isActive ? 10 : 8,
-                        opacity: isActive ? 1 : 0.6,
+                        opacity: isActive ? 1 : hoveredDesktopIndex === index ? 0.95 : 0.6,
                       }}
                       transition={{ type: "spring", stiffness: 320, damping: 28 }}
                     />
@@ -319,8 +342,14 @@ export default function WorkContent() {
                 <motion.button
                   key={section.id}
                   type="button"
-                  onClick={() => handleScrollToSection(section.id)}
-                  className="relative h-10 w-10"
+                  onClick={() => {
+                    manualActiveUntilRef.current = performance.now() + 900;
+                    setActiveSection(index);
+                    handleScrollToSection(section.id);
+                  }}
+                  className={`group relative h-10 w-10 ${
+                    isActive ? "cursor-default" : "cursor-pointer"
+                  }`}
                   aria-label={`Jump to ${section.label}`}
                   whileTap={{ scale: 0.92 }}
                   whileHover={{ scale: 1.05 }}
@@ -328,8 +357,10 @@ export default function WorkContent() {
                 >
                   <motion.span
                     layout
-                    className={`relative mx-auto block rounded-full ${
-                      isActive ? "bg-[var(--brightbook-blue)]" : "bg-slate-300/80"
+                    className={`relative mx-auto block rounded-full transition-colors ${
+                      isActive
+                        ? "bg-[var(--brightbook-blue)]"
+                        : "bg-slate-300/80 group-hover:bg-slate-400"
                     }`}
                     initial={false}
                     style={{ height: 10 }}
@@ -337,6 +368,7 @@ export default function WorkContent() {
                       width: isActive ? 28 : 10,
                       opacity: isActive ? 1 : 0.6,
                     }}
+                    whileHover={isActive ? undefined : { width: 18, opacity: 0.9 }}
                     transition={{ type: "spring", stiffness: 320, damping: 28 }}
                   />
                 </motion.button>
@@ -558,11 +590,11 @@ export default function WorkContent() {
                       </Card>
                     </Reveal>
                     <Reveal>
-                      <Card className="relative overflow-visible px-8 py-10">
+                      <Card className="relative overflow-visible px-8 py-8 sm:py-10 md:py-12">
                         <h3 className="mb-6 text-center text-xl font-medium text-[var(--next-step-dark-blue)] md:text-lg">
                           Tech Stack
                         </h3>
-                        <div className="mx-auto grid max-w-sm grid-cols-2 gap-x-8 gap-y-12 sm:grid-cols-3">
+                        <div className="mx-auto grid max-w-sm grid-cols-2 gap-x-8 gap-y-16 sm:grid-cols-3">
                           <TechStackLogo
                             src="/next-step/tech-stack/NextJS.png"
                             label="Next.js"

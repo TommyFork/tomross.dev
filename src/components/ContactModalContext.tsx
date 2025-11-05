@@ -38,7 +38,7 @@ export function ContactModalProvider({ children }: { children: ReactNode }) {
   const [open, setOpen] = useState(false);
   const [anchorRect, setAnchorRect] = useState<AnchorRect | null>(null);
   const [lastTrigger, setLastTrigger] = useState<HTMLElement | null>(null);
-  const clearAnchorTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const clearAnchorTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const setAnchorFromRect = useCallback((rect: DOMRect | null | undefined) => {
     if (!rect) {

@@ -127,7 +127,7 @@ export default function ProjectPortfolioCard({
 
         {footerNote && (
           <motion.div
-            className="mt-12 border-t border-gray-200/70 pt-9 md:mt-14 md:pt-11"
+            className="mt-12 border-t border-gray-200/70 pt-9 md:mt-14 md:pt-11 lg:mt-20 lg:pt-14 xl:mt-24 xl:pt-16"
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 1 }}
             viewport={viewport}

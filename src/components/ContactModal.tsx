@@ -43,7 +43,7 @@ export default function ContactModal({
   const backdropAnimationRef = useRef<Animation | null>(null);
   const latestOpenRef = useRef(open);
   const focusRef = useRef<HTMLButtonElement | null>(null);
-  const copyTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const copyTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const emailRef = useRef<string | null>(null);
   const [mounted, setMounted] = useState(false);
   const [render, setRender] = useState(open);
@@ -280,10 +280,6 @@ export default function ContactModal({
     return decoded;
   }, [decodeEmail, status]);
 
-  const mailSubject = useMemo(
-    () => encodeURIComponent("Let's collaborate"),
-    [],
-  );
 
   const handleRevealOrCopy = async () => {
     const value = revealEmail();
@@ -352,10 +348,10 @@ export default function ContactModal({
         </button>
         <div className="p-6 sm:p-8">
           <h2 id="contact-modal-title" className="text-2xl font-medium tracking-tight text-neutral-900">
-            Let’s build something together
+            Want to chat?
           </h2>
           <p className="mt-3 text-sm leading-relaxed text-neutral-600">
-            Send a quick note about your project and I’ll follow up fast.
+            Send me a note and let&apos;s make something happen.
           </p>
           <div className="mt-6 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
             <button
@@ -376,7 +372,7 @@ export default function ContactModal({
             </button>
             {status === "revealed" && email ? (
               <a
-                href={`mailto:${email}?subject=${mailSubject}`}
+                href={`mailto:${email}`}
                 onFocus={revealEmail}
                 className="select-all text-sm font-mono tracking-tight text-neutral-500 underline-offset-4 transition hover:text-neutral-900 hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-neutral-900"
               >
