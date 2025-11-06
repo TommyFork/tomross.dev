@@ -52,6 +52,7 @@ const MIN_SPAWN_DELAY = 0.75;
 const MOUNTAIN_BASE_SPEED = 70;
 const INITIAL_MOUNTAIN_DELAY = 2.4;
 const MOUNTAIN_SPAWN_DELAY_RANGE = [6.5, 12] as const;
+const MOUNTAIN_BOTTOM_MARGIN = 21; // Transparent padding at bottom of the sprite (in px)
 const MIN_GAP_BASE = 160;
 const JUMP_TIME = 0.85;
 
@@ -510,11 +511,11 @@ export default function DogRunnerGame({ onExit }: { onExit: () => void }) {
           const scale = randomBetween(0.52, 0.78);
           const widthScaled = assets.mountain.width * scale;
           const heightScaled = assets.mountain.height * scale;
-          const yOffset = randomBetween(-8, 8);
+          const groundOffset = MOUNTAIN_BOTTOM_MARGIN * scale;
           const spawnBuffer = Math.min(widthScaled * 0.45, 220);
           backgroundsRef.current.push({
             x: width + spawnBuffer,
-            y: FLOOR_Y - heightScaled - yOffset,
+            y: FLOOR_Y - heightScaled + groundOffset,
             width: widthScaled,
             height: heightScaled,
             speed: MOUNTAIN_BASE_SPEED + difficultyNormalized * 52,
