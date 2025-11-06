@@ -5,6 +5,7 @@ import "./globals.css";
 import Nav from "../components/Nav";
 import Footer from "../components/Footer";
 import { Providers } from "./providers";
+import { Analytics } from "@vercel/analytics/next";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -71,24 +72,31 @@ export default function RootLayout({
   const isProd = process.env.NODE_ENV === "production";
   return (
     <html lang="en">
-        <body className={`light ${geistSans.variable} ${geistMono.variable} antialiased`}>
-          {isProd && gaId ? (
-            <>
-              <Script
-                src={`https://www.googletagmanager.com/gtag/js?id=${gaId}`}
-                strategy="afterInteractive"
-              />
-              <Script id="google-analytics" strategy="afterInteractive">
-                {`
+      <body
+        className={`light ${geistSans.variable} ${geistMono.variable} antialiased`}
+      >
+        {isProd && (
+          <>
+            {gaId && (
+              <>
+                <Analytics />
+                <Script
+                  src={`https://www.googletagmanager.com/gtag/js?id=${gaId}`}
+                  strategy="afterInteractive"
+                />
+                <Script id="google-analytics" strategy="afterInteractive">
+                  {`
                   window.dataLayer = window.dataLayer || [];
                   function gtag(){dataLayer.push(arguments);} 
                   gtag('js', new Date());
                   gtag('config', '${gaId}');
                 `}
-              </Script>
-            </>
-          ) : null}
-          <Providers>
+                </Script>
+              </>
+            )}
+          </>
+        )}
+        <Providers>
           <div className="min-h-screen flex flex-col">
             <div className="mx-auto w-full max-w-5xl px-6 flex-1 flex flex-col">
               <Nav />
