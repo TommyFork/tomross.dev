@@ -11,11 +11,11 @@ Personal portfolio and project showcase built with Next.js.
 
 ### Local development
 1. Install dependencies
-   - `npm install` (or your preferred manager)
+   - `bun install`
 2. Copy env example and set values
    - Create a `.env` file with the keys below
 3. Run dev server
-   - `npm run dev`
+   - `bun dev`
 
 ### Environment variables
 - `NEXT_PUBLIC_GA_ID` (optional) — Google Analytics measurement ID
