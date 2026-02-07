@@ -2,36 +2,71 @@
 
 import Link from "next/link";
 import Image from "next/image";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { usePathname } from "next/navigation";
 import { GitHubIcon, LinkedInIcon, XIcon } from "@/components/icons/SocialIcons";
 import DogRunnerGame from "@/components/DogRunnerGame";
+
+const GAME_WRAPPER_HEIGHT = 210; // matches DogRunnerGame CANVAS_HEIGHT
+const TRANSITION_DURATION = 300;
 
 export default function Footer() {
   const pathname = usePathname();
   const isAboutPage = pathname === "/about";
   const [showGame, setShowGame] = useState(false);
+  const [gameExpanded, setGameExpanded] = useState(false);
+  const [animateHeight, setAnimateHeight] = useState(false);
+  const footerRef = useRef<HTMLElement>(null);
+
+  const openGame = useCallback(() => {
+    setAnimateHeight(false); // No transition on open — appear at full height
+    setShowGame(true);
+    setGameExpanded(true);
+    requestAnimationFrame(() => {
+      setAnimateHeight(true); // Re-enable for future close
+      footerRef.current?.scrollIntoView({
+        behavior: "smooth",
+        block: "end",
+      });
+    });
+  }, []);
+
+  const closeGame = useCallback(() => {
+    setAnimateHeight(true);
+    setGameExpanded(false);
+    setTimeout(() => {
+      setShowGame(false);
+      setAnimateHeight(false);
+    }, TRANSITION_DURATION);
+  }, []);
 
   useEffect(() => {
     if (!isAboutPage && showGame) {
+      setGameExpanded(false);
       setShowGame(false);
     }
   }, [isAboutPage, showGame]);
 
   return (
     <footer
-      className={`relative py-10 text-sm text-neutral-500 ${
-        isAboutPage ? "border-t border-neutral-200/70" : ""
-      }`}
+      ref={footerRef}
+      className="relative py-10 text-sm text-neutral-500"
     >
       {isAboutPage && showGame ? (
-        <div className="pointer-events-none absolute bottom-full left-0 right-0">
-          <div className="pointer-events-auto">
-            <DogRunnerGame onExit={() => setShowGame(false)} />
-          </div>
+        <div
+          className={`overflow-hidden ${animateHeight ? "transition-[max-height] duration-300 ease-in-out" : ""}`}
+          style={{
+            maxHeight: gameExpanded ? `${GAME_WRAPPER_HEIGHT}px` : "0px",
+          }}
+        >
+          <DogRunnerGame onExit={closeGame} />
         </div>
       ) : null}
-      <div className="flex items-center justify-between">
+      <div
+        className={`flex items-center justify-between ${
+          isAboutPage ? "border-t border-neutral-200/70 pt-10" : ""
+        }`}
+      >
         <p>© {new Date().getFullYear()} Tommy Ross</p>
         <div className="flex items-center gap-5 text-neutral-700">
           <Link
@@ -67,7 +102,11 @@ export default function Footer() {
                 type="button"
                 onClick={(event) => {
                   event.currentTarget.blur();
-                  setShowGame((prev) => !prev);
+                  if (showGame) {
+                    closeGame();
+                  } else {
+                    openGame();
+                  }
                 }}
                 aria-label={showGame ? "Hide dog runner" : "Play dog runner"}
                 aria-pressed={showGame}
