@@ -34,6 +34,7 @@ export default function Footer() {
   const closeGame = useCallback(() => {
     setAnimateHeight(true);
     setGameExpanded(false);
+    window.scrollTo({ top: 0, behavior: "smooth" });
     setTimeout(() => {
       setShowGame(false);
       setAnimateHeight(false);
