@@ -71,10 +71,8 @@ export default function RootLayout({
   const gaId = process.env.NEXT_PUBLIC_GA_ID;
   const isProd = process.env.NODE_ENV === "production";
   return (
-    <html lang="en">
-      <body
-        className={`light ${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
+    <html lang="en" className={`${geistSans.variable} ${geistMono.variable}`}>
+      <body className="light antialiased">
         {isProd && (
           <>
             {gaId && (
