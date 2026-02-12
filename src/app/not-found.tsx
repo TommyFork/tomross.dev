@@ -1,17 +1,25 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 
 export default function NotFound() {
   const router = useRouter();
+  const [countdown, setCountdown] = useState(10);
 
   useEffect(() => {
-    const timer = setTimeout(() => {
-      router.replace("/");
-    }, 10000);
-    return () => clearTimeout(timer);
+    const interval = setInterval(() => {
+      setCountdown((prev) => {
+        if (prev <= 1) {
+          router.replace("/");
+          return 0;
+        }
+        return prev - 1;
+      });
+    }, 1000);
+
+    return () => clearInterval(interval);
   }, [router]);
 
   return (
@@ -28,7 +36,8 @@ export default function NotFound() {
           Take me home
         </Link>
         <p className="text-sm text-neutral-500">
-          You will be redirected home in 10 seconds.
+          You will be redirected home in{" "}
+          <span className="font-bold text-slate-900">{countdown}</span> seconds.
         </p>
       </div>
     </div>
