@@ -23,7 +23,7 @@ export default function NotFound() {
   }, [router]);
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center px-4 py-12 sm:px-6 lg:px-8 text-center">
+    <div className="flex-1 flex flex-col items-center justify-center px-4 py-12 sm:px-6 lg:px-8 text-center">
       <div className="max-w-md w-full mx-auto space-y-8">
         <h1 className="text-6xl md:text-8xl font-black text-slate-900 tracking-tight mb-6">404</h1>
         <div className="space-y-2">
