@@ -2,15 +2,26 @@
 
 import { motion } from "framer-motion";
 import { useTheme } from "./ThemeProvider";
+import React, { FC, SVGProps } from "react";
 
-const SunIcon = () => (
-  <svg className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+const SunIcon: FC<SVGProps<SVGSVGElement>> = ({ className, ...props }) => (
+  <svg 
+    className={`h-5 w-5 ${className ?? ""}`}
+    viewBox="0 0 20 20" 
+    fill="currentColor"
+    {...props}
+  >
     <path d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zM4 4a1 1 0 11-2 0 1 1 0 012 0zm14 0a1 1 0 11-2 0 1 1 0 012 0zM5 13a1 1 0 100 2h6a1 1 0 100-2H5zM3.293 13.293a1 1 0 011.414 0l2 2a1 1 0 01-1.414 1.414l-2-2a1 1 0 010-1.414zM13 11a1 1 0 100 2h6a1 1 0 100-2h-6zM11.293 13.293a1 1 0 011.414 0l2 2a1 1 0 01-1.414 1.414l-2-2a1 1 0 010-1.414zM10 15a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.293 16.707a1 1 0 011.414 0l2 2a1 1 0 01-1.414 1.414l-2-2a1 1 0 010-1.414zM15.293 16.707a1 1 0 011.414 0l2 2a1 1 0 01-1.414 1.414l-2-2a1 1 0 010-1.414z"/>
   </svg>
 );
 
-const MoonIcon = () => (
-  <svg className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+const MoonIcon: FC<SVGProps<SVGSVGElement>> = ({ className, ...props }) => (
+  <svg 
+    className={`h-5 w-5 ${className ?? ""}`}
+    viewBox="0 0 20 20" 
+    fill="currentColor"
+    {...props}
+  >
     <path d="M17.293 13.293A8 8 0 0 1 6.707 2.707a8.001 8.001 0 1 0 11.586 11.586z"/>
   </svg>
 );
