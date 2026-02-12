@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { GeistSans, GeistMono } from "next/font/google";
 import Script from "next/script";
 import "./globals.css";
 import Nav from "../components/Nav";
@@ -7,12 +7,12 @@ import Footer from "../components/Footer";
 import { Providers } from "./providers";
 import { Analytics } from "@vercel/analytics/next";
 
-const geistSans = Geist({
+const geistSans = GeistSans({
   variable: "--font-geist-sans",
   subsets: ["latin"],
 });
 
-const geistMono = Geist_Mono({
+const geistMono = GeistMono({
   variable: "--font-geist-mono",
   subsets: ["latin"],
 });
@@ -71,41 +71,41 @@ export default function RootLayout({
   const gaId = process.env.NEXT_PUBLIC_GA_ID;
   const isProd = process.env.NODE_ENV === "production";
   return (
-    &lt;html lang="en" className={`${geistSans.variable} ${geistMono.variable}`} suppressHydrationWarning&gt;
-      &lt;body className="antialiased"&gt;
-        {isProd &amp;&amp; (
-          &lt;&gt;
-            {gaId &amp;&amp; (
-              &lt;&gt;
-                &lt;Analytics /&gt;
-                &lt;Script
+    <html lang="en" className={`${geistSans.variable} ${geistMono.variable} light`} suppressHydrationWarning>
+      <body className="antialiased">
+        {isProd && (
+          <>
+            {gaId && (
+              <>
+                <Analytics />
+                <Script
                   src={`https://www.googletagmanager.com/gtag/js?id=${gaId}`}
                   strategy="afterInteractive"
-                /&gt;
-                &lt;Script id="google-analytics" strategy="afterInteractive"&gt;
+                />
+                <Script id="google-analytics" strategy="afterInteractive">
                   {`
                   window.dataLayer = window.dataLayer || [];
                   function gtag(){dataLayer.push(arguments);} 
                   gtag('js', new Date());
                   gtag('config', '${gaId}');
                 `}
-                &lt;/Script&gt;
-              &lt;/&gt;
+                </Script>
+              </>
             )}
-          &lt;/&gt;
+          </>
         )}
-        &lt;Providers&gt;
-          &lt;div className="min-h-screen flex flex-col bg-background text-foreground"&gt;
-            &lt;div className="mx-auto w-full max-w-5xl px-6 flex-1 flex flex-col"&gt;
-              &lt;Nav /&gt;
-              &lt;main className="flex-1 flex flex-col"&gt;{children}&lt;/main&gt;
-            &lt;/div&gt;
-            &lt;div className="mx-auto w-full max-w-5xl px-6"&gt;
-              &lt;Footer /&gt;
-            &lt;/div&gt;
-          &lt;/div&gt;
-        &lt;/Providers&gt;
-      &lt;/body&gt;
-    &lt;/html&gt;
+        <Providers>
+          <div className="min-h-screen flex flex-col bg-background text-foreground">
+            <div className="mx-auto w-full max-w-5xl px-6 flex-1 flex flex-col">
+              <Nav />
+              <main className="flex-1 flex flex-col">{children}</main>
+            </div>
+            <div className="mx-auto w-full max-w-5xl px-6">
+              <Footer />
+            </div>
+          </div>
+        </Providers>
+      </body>
+    </html>
   );
 }

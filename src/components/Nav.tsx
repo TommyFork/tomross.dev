@@ -5,6 +5,8 @@ import { createPortal } from "react-dom";
 
 import { AnimatePresence, motion } from "framer-motion";
 import { ThemeToggle } from "./ThemeToggle";
+
+import { ThemeToggle } from "./ThemeToggle";
 import { ThemeToggle } from "./ThemeToggle";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -287,4 +289,3 @@ export default function Nav() {
     </header>
   );
 }
-
