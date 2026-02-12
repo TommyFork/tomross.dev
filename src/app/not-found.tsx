@@ -1,21 +1,35 @@
-import Link from 'next/link';
+"use client";
+
+import Link from "next/link";
+import { useEffect } from "react";
+import { useRouter } from "next/navigation";
 
 export default function NotFound() {
+  const router = useRouter();
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      router.replace("/");
+    }, 10000);
+    return () => clearTimeout(timer);
+  }, [router]);
+
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-br from-slate-50 to-slate-100 px-4 py-16 sm:px-6 lg:px-8 text-center">
-      <div className="max-w-md w-full mx-auto">
-        <h1 className="text-6xl md:text-8xl font-black text-slate-900 tracking-tight mb-4">
-          404
-        </h1>
-        <p className="text-xl md:text-2xl text-slate-600 mb-8 leading-relaxed">
-          Page not found.
-        </p>
+    <div className="min-h-[60vh] flex flex-col items-center justify-center py-16 px-4 sm:px-6 lg:px-8 text-center">
+      <div className="max-w-md w-full mx-auto space-y-8">
+        <h1 className="text-6xl md:text-8xl font-black text-slate-900 tracking-tight mb-6">404</h1>
+        <div className="space-y-2">
+          <p className="text-2xl md:text-3xl font-medium text-slate-600">Page not found</p>
+        </div>
         <Link
           href="/"
-          className="inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-lg shadow-sm text-white bg-slate-900 hover:bg-slate-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-slate-500 transition-colors duration-200"
+          className="inline-flex items-center px-8 py-4 rounded-full border border-slate-200 bg-white shadow-lg text-lg font-semibold text-slate-900 hover:shadow-xl hover:border-slate-300 hover:bg-slate-50 focus:outline-none focus:ring-4 focus:ring-slate-400/50 focus:ring-offset-2 transition-all duration-200 hover:-translate-y-1 active:scale-95"
         >
-          ← Go Home
+          Take me home
         </Link>
+        <p className="text-sm text-neutral-500">
+          You will be redirected home in 10 seconds.
+        </p>
       </div>
     </div>
   );
