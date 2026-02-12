@@ -71,41 +71,41 @@ export default function RootLayout({
   const gaId = process.env.NEXT_PUBLIC_GA_ID;
   const isProd = process.env.NODE_ENV === "production";
   return (
-    <html lang="en" className={`${geistSans.variable} ${geistMono.variable}`}>
-      <body className="light antialiased">
-        {isProd && (
-          <>
-            {gaId && (
-              <>
-                <Analytics />
-                <Script
+    &lt;html lang="en" className={`${geistSans.variable} ${geistMono.variable}`} suppressHydrationWarning&gt;
+      &lt;body className="antialiased"&gt;
+        {isProd &amp;&amp; (
+          &lt;&gt;
+            {gaId &amp;&amp; (
+              &lt;&gt;
+                &lt;Analytics /&gt;
+                &lt;Script
                   src={`https://www.googletagmanager.com/gtag/js?id=${gaId}`}
                   strategy="afterInteractive"
-                />
-                <Script id="google-analytics" strategy="afterInteractive">
+                /&gt;
+                &lt;Script id="google-analytics" strategy="afterInteractive"&gt;
                   {`
                   window.dataLayer = window.dataLayer || [];
                   function gtag(){dataLayer.push(arguments);} 
                   gtag('js', new Date());
                   gtag('config', '${gaId}');
                 `}
-                </Script>
-              </>
+                &lt;/Script&gt;
+              &lt;/&gt;
             )}
-          </>
+          &lt;/&gt;
         )}
-        <Providers>
-          <div className="min-h-screen flex flex-col">
-            <div className="mx-auto w-full max-w-5xl px-6 flex-1 flex flex-col">
-              <Nav />
-              <main className="flex-1 flex flex-col">{children}</main>
-            </div>
-            <div className="mx-auto w-full max-w-5xl px-6">
-              <Footer />
-            </div>
-          </div>
-        </Providers>
-      </body>
-    </html>
+        &lt;Providers&gt;
+          &lt;div className="min-h-screen flex flex-col bg-background text-foreground"&gt;
+            &lt;div className="mx-auto w-full max-w-5xl px-6 flex-1 flex flex-col"&gt;
+              &lt;Nav /&gt;
+              &lt;main className="flex-1 flex flex-col"&gt;{children}&lt;/main&gt;
+            &lt;/div&gt;
+            &lt;div className="mx-auto w-full max-w-5xl px-6"&gt;
+              &lt;Footer /&gt;
+            &lt;/div&gt;
+          &lt;/div&gt;
+        &lt;/Providers&gt;
+      &lt;/body&gt;
+    &lt;/html&gt;
   );
 }

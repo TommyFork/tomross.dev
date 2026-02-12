@@ -1,6 +1,13 @@
 @import "tailwindcss";
 
-:root {
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+}
+
+:root.light {
   --background: #ffffff;
   --foreground: #171717;
   --brightbook-blue: #0099FF;
@@ -11,13 +18,21 @@
   --next-step-blue: #0075FE;
   --next-step-dark-blue: #074B9C;
   --next-step-gold: #F4C430;
+  color-scheme: light;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+:root.dark {
+  --background: #0a0a0a;
+  --foreground: #f5f5f5;
+  --brightbook-blue: #60b0ff;
+  --brightbook-blue-rgb: 96, 176, 255;
+  --brightbook-dark-blue: #4090ff;
+  --stumped-blue: #62b8ff;
+  --stumped-dark-blue: #4098e0;
+  --next-step-blue: #509fff;
+  --next-step-dark-blue: #2e75e0;
+  --next-step-gold: #f8d866;
+  color-scheme: dark;
 }
 
 html {
@@ -28,7 +43,7 @@ body {
   background: var(--background);
   color: var(--foreground);
   font-family: var(--font-geist-sans), ui-sans-serif, system-ui, -apple-system;
-  color-scheme: light;
+  color-scheme: light dark;
 }
 
 /* Minimal animation utilities */
