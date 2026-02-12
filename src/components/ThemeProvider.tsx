@@ -26,7 +26,6 @@ export function ThemeProvider({
   children,
   defaultTheme = "light",
   storageKey = "theme",
-  ...props
 }: ThemeProviderProps) {
   const [theme, setTheme] = useState<Theme>(defaultTheme);
 
@@ -42,10 +41,9 @@ export function ThemeProvider({
   }, [theme]);
 
   useEffect(() => {
-    const root = window.document.documentElement;
     const initialTheme = (localStorage.getItem(storageKey) as Theme) || defaultTheme;
     computedSetTheme(initialTheme);
-  }, [computedSetTheme]);
+  }, [computedSetTheme, defaultTheme, storageKey]);
 
   return (
     <ThemeProviderContext.Provider value={{
