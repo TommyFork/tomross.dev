@@ -5,9 +5,6 @@ import { createPortal } from "react-dom";
 
 import { AnimatePresence, motion } from "framer-motion";
 import { ThemeToggle } from "./ThemeToggle";
-
-import { ThemeToggle } from "./ThemeToggle";
-import { ThemeToggle } from "./ThemeToggle";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
@@ -110,7 +107,7 @@ export default function Nav() {
   }, [isMenuOpen]);
 
   const headerClassName = isScrolled
-    ? "mt-6 sticky top-4 z-50 w-full rounded-3xl border border-white/30 dark:border-slate-800/30 bg-white/40 dark:bg-slate-900/40 px-5 py-3 shadow-[0_8px_32px_0_rgba(31,38,135,0.15)] backdrop-blur-[20px] backdrop-saturate-[180%] before:absolute before:inset-0 before:rounded-3xl before:border before:border-white/40 before:shadow-[inset_0_1px_1px_0_rgba(255,255,255,0.5)] before:pointer-events-none sm:px-6 sm:py-4"
+    ? "mt-6 sticky top-4 z-50 w-full rounded-3xl border border-white/30 dark:border-slate-800/30 bg-white/40 dark:bg-slate-900/40 px-5 py-3 shadow-[0_8px_32px_0_rgba(31,38,135,0.15)] backdrop-blur-[20px] backdrop-saturate-[180%] before:absolute before:inset-0 before:rounded-3xl before:border before:border-white/40 dark:before:border-slate-800/40 before:shadow-[inset_0_1px_1px_0_rgba(255,255,255,0.5)] before:pointer-events-none sm:px-6 sm:py-4"
     : "mt-6 w-full border border-transparent px-0 py-6";
 
   const brandClassName = isScrolled
@@ -128,19 +125,19 @@ export default function Nav() {
       ? `${navLinkBaseClassName} ${
           active
             ? "text-slate-900 dark:text-slate-50"
-            : "text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:text-slate-50"
+            : "text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-50"
         }`
       : `${navLinkBaseClassName} focus-visible:ring-offset-2 focus-visible:ring-offset-white ${
           active
             ? "text-neutral-900 visited:text-neutral-900"
-            : "text-neutral-500 dark:text-neutral-400 hover:text-neutral-700 visited:text-neutral-500 dark:text-neutral-400"
+            : "text-neutral-500 dark:text-neutral-400 hover:text-neutral-700 visited:text-neutral-500 dark:hover:text-neutral-100"
         }`;
 
   const mobileNavLinkClassName = (active: boolean) =>
     `group flex w-full items-center gap-3 rounded-xl px-4 py-3 text-left text-base font-medium tracking-tight transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neutral-900 focus-visible:ring-offset-2 focus-visible:ring-offset-white ${
       active
-        ? "bg-neutral-900/10 dark:bg-white/5 text-neutral-900"
-        : "text-neutral-500 dark:text-neutral-400 hover:bg-neutral-900/10 dark:bg-white/5 hover:text-neutral-900"
+        ? "bg-neutral-900/5 dark:bg-neutral-100/5 text-neutral-900 dark:text-neutral-100"
+        : "text-neutral-500 dark:text-neutral-400 hover:bg-neutral-900/5 dark:hover:bg-neutral-100/5 hover:text-neutral-900 dark:hover:text-neutral-100"
     }`;
 
   const mobileContactButtonClassName = isScrolled
@@ -208,7 +205,7 @@ export default function Nav() {
                           onClick={handleOpenModal}
                           whileTap={{ scale: 0.97 }}
                           className={mobileContactButtonClassName}
-                          >
+                        >
                           Let’s chat
                         </motion.button>
                       </li>

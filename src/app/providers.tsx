@@ -1,14 +1,15 @@
 "use client";
 
-import type { ReactNode } from "react";
-
-import { ContactModalProvider } from "@/components/ContactModalContext";
+import { ReactNode } from "react";
 import { ThemeProvider } from "@/components/ThemeProvider";
+import { ContactModalProvider } from "@/components/ContactModalContext";
 
 export function Providers({ children }: { children: ReactNode }) {
   return (
-    <ThemeProvider defaultTheme="light" storageKey="tomross-theme">
-      <ContactModalProvider>{children}</ContactModalProvider>
+    <ThemeProvider defaultTheme="light" storageKey="theme">
+      <ContactModalProvider>
+        {children}
+      </ContactModalProvider>
     </ThemeProvider>
   );
 }

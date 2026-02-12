@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { GeistSans, GeistMono } from "next/font/google";
+import { Inter } from "next/font/google";
 import Script from "next/script";
 import "./globals.css";
 import Nav from "../components/Nav";
@@ -7,13 +7,8 @@ import Footer from "../components/Footer";
 import { Providers } from "./providers";
 import { Analytics } from "@vercel/analytics/next";
 
-const geistSans = GeistSans({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
-
-const geistMono = GeistMono({
-  variable: "--font-geist-mono",
+const inter = Inter({
+  variable: "--font-inter",
   subsets: ["latin"],
 });
 
@@ -71,7 +66,7 @@ export default function RootLayout({
   const gaId = process.env.NEXT_PUBLIC_GA_ID;
   const isProd = process.env.NODE_ENV === "production";
   return (
-    <html lang="en" className={`${geistSans.variable} ${geistMono.variable} light`} suppressHydrationWarning>
+    <html lang="en" className={`${inter.variable} light`} suppressHydrationWarning>
       <body className="antialiased">
         {isProd && (
           <>
