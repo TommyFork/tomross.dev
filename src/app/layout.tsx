@@ -4,6 +4,7 @@ import Script from "next/script";
 import "./globals.css";
 import Nav from "../components/Nav";
 import Footer from "../components/Footer";
+import ScrollProgress from "../components/ScrollProgress";
 import { Providers } from "./providers";
 import { Analytics } from "@vercel/analytics/next";
 
@@ -95,6 +96,7 @@ export default function RootLayout({
           </>
         )}
         <Providers>
+          <ScrollProgress />
           <div className="min-h-screen flex flex-col">
             <div className="mx-auto w-full max-w-5xl px-6 flex-1 flex flex-col">
               <Nav />
