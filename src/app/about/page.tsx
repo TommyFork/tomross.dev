@@ -67,7 +67,7 @@ export default async function About() {
         </div>
         <div className="md:col-span-2 space-y-6">
           <h1 className="text-2xl font-medium tracking-tight">
-            It&apos;s nice to meet you! 👋
+            Hey there! 👋
           </h1>
           <div className="space-y-4">
             <ReactMarkdown
