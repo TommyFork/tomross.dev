@@ -24,6 +24,16 @@
     --input: 214.3 31.8% 91.4%;
     --ring: 222.2 47.4% 11.2%;
     --radius: 0.5rem;
+
+    /* Custom brand colors from original */
+    --brightbook-blue: #0099FF;
+    --brightbook-blue-rgb: 0, 153, 255;
+    --brightbook-dark-blue: #0066CC;
+    --stumped-blue: #0094E9;
+    --stumped-dark-blue: #0060B6;
+    --next-step-blue: #0075FE;
+    --next-step-dark-blue: #074B9C;
+    --next-step-gold: #F4C430;
   }
 
   :root.dark {
@@ -47,6 +57,16 @@
     --input: 217.2 32.6% 17.5%;
     --ring: 212.7 26.8% 83.9%;
     --radius: 0.5rem;
+
+    /* Custom brand colors from original (same for dark for now) */
+    --brightbook-blue: #0099FF;
+    --brightbook-blue-rgb: 0, 153, 255;
+    --brightbook-dark-blue: #0066CC;
+    --stumped-blue: #0094E9;
+    --stumped-dark-blue: #0060B6;
+    --next-step-blue: #0075FE;
+    --next-step-dark-blue: #074B9C;
+    --next-step-gold: #F4C430;
   }
 }
 
@@ -54,8 +74,52 @@
   * {
     border-color: hsl(var(--border));
   }
+  
+  html {
+    scrollbar-gutter: stable;
+  }
+  
   body {
     background-color: hsl(var(--background));
     color: hsl(var(--foreground));
+    font-family: var(--font-inter), ui-sans-serif, system-ui, -apple-system, BlinkText, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+    color-scheme: light dark;
+  }
+}
+
+/* Custom animations from original */
+@layer utilities {
+  .animate-float {
+    animation: float 6s ease-in-out infinite;
+  }
+
+  @keyframes float {
+    0% { transform: translateY(0); }
+    50% { transform: translateY(-8px); }
+    100% { transform: translateY(0); }
+  }
+
+  .animate-bounce-subtle {
+    animation: bounce-subtle 1.6s ease-in-out infinite;
+  }
+
+  @keyframes bounce-subtle {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(6px); }
+  }
+
+  .contact-genie {
+    opacity: 0;
+    transform: translate3d(0, 16px, 0) scale(0.95);
+    will-change: transform, opacity, border-radius, filter, box-shadow;
+  }
+
+  .contact-genie[data-state="open"] {
+    opacity: 1;
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+
+  .contact-genie[data-state="closing"] {
+    pointer-events: none;
   }
 }
