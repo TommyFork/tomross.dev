@@ -21,6 +21,7 @@ export default function Nav() {
   const pathname = usePathname();
   const { openModal } = useContactModal();
   const [isScrolled, setIsScrolled] = useState(false);
+  const [scrollProgress, setScrollProgress] = useState(0);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const headerRef = useRef<HTMLElement | null>(null);
   const [menuPortalTarget, setMenuPortalTarget] = useState<HTMLElement | null>(null);
@@ -44,6 +45,9 @@ export default function Nav() {
 
         return previous;
       });
+
+      const totalHeight = document.documentElement.scrollHeight - window.innerHeight;
+      setScrollProgress(Math.round((currentScrollY / totalHeight) * 100));
     };
 
     handleScroll();
@@ -220,6 +224,11 @@ export default function Nav() {
 
   return (
     <header ref={headerRef} className={`relative transition-all duration-300 ${headerClassName}`}>
+      <motion.div
+        className="pointer-events-none fixed inset-x-0 top-0 z-[60] h-[2px] bg-gradient-to-r from-[var(--brightbook-blue)] via-[var(--next-step-blue)] to-[var(--stumped-blue)] origin-left"
+        initial={false}
+        animate={{ scaleX: scrollProgress / 100 }}
+      />
       <nav className="relative z-10 flex items-center justify-between gap-4 sm:gap-6">
         <Link href="/" className={`${brandClassName} whitespace-nowrap`}>
           Tommy Ross
