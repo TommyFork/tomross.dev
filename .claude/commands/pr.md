@@ -8,7 +8,7 @@ allowed-tools: Bash(gh *), Bash(git *)
 
 # Instructions
 1. Analyze the differences between the current branch and main.
-2. Draft a PR Title (conventional format) and a Description (bullet points of changes).
+2. Draft a PR Title in conventional format with the required prefix (feat, fix, chore, etc.) and a lowercase description (e.g. `feat: add dark mode`, not `feat: Add dark mode`). Also draft a Description (bullet points of changes).
 3. Present them to me for confirmation.
 4. If I approve, run:
    `gh pr create --title "YOUR_TITLE" --body "YOUR_DESCRIPTION" --web`
