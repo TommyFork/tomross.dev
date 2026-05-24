@@ -19,8 +19,8 @@ export default async function About() {
   const filePath = path.join(process.cwd(), "public", "content", "about.md");
   const markdown = await fs.readFile(filePath, "utf8");
 
-  const MarkdownLink = (props: AnchorHTMLAttributes<HTMLAnchorElement>) => {
-    const { href, children, ...rest } = props;
+  const MarkdownLink = (props: AnchorHTMLAttributes<HTMLAnchorElement> & { node?: unknown }) => {
+    const { href, children, node: _node, ...rest } = props;
     const className = `text-blue-500 hover:underline hover:opacity-70 transition-smooth duration-200 ease-in-out ${props.className ?? ""}`;
     if (href && /^https?:\/\//.test(href)) {
       return (

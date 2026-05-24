@@ -1,6 +1,6 @@
 "use client";
 
-import type { AnchorHTMLAttributes, MouseEvent } from "react";
+import type { AnchorHTMLAttributes, KeyboardEvent, MouseEvent } from "react";
 
 import { useContactModal } from "@/components/ContactModalContext";
 
@@ -35,7 +35,18 @@ export default function ContactModalLink({
   };
 
   return (
-    <a href={href} onClick={handleClick} aria-haspopup="dialog" {...props}>
+    <a
+      href={href}
+      onClick={handleClick}
+      onKeyDown={(e: KeyboardEvent<HTMLAnchorElement>) => {
+        if (e.key === " ") {
+          e.preventDefault();
+          handleClick(e as unknown as MouseEvent<HTMLAnchorElement>);
+        }
+      }}
+      aria-haspopup="dialog"
+      {...props}
+    >
       {children}
     </a>
   );
