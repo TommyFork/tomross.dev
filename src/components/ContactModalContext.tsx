@@ -20,7 +20,7 @@ type ContactModalContextValue = {
   toggleModal: (options?: ModalTriggerOptions) => void;
 };
 
-type AnchorRect = {
+export type AnchorRect = {
   left: number;
   top: number;
   width: number;
@@ -38,6 +38,7 @@ export function ContactModalProvider({ children }: { children: ReactNode }) {
   const [open, setOpen] = useState(false);
   const [anchorRect, setAnchorRect] = useState<AnchorRect | null>(null);
   const [lastTrigger, setLastTrigger] = useState<HTMLElement | null>(null);
+  const openedFromUrlRef = useRef(false);
   const clearAnchorTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const setAnchorFromRect = useCallback((rect: DOMRect | null | undefined) => {
@@ -64,11 +65,32 @@ export function ContactModalProvider({ children }: { children: ReactNode }) {
       setLastTrigger(options.trigger);
     }
 
+    openedFromUrlRef.current = true;
     setOpen(true);
   }, [setAnchorFromRect]);
 
   const closeModal = useCallback(() => {
     setOpen(false);
+
+    if (openedFromUrlRef.current && typeof window !== "undefined") {
+      const url = new URL(window.location.href);
+      const shouldCleanHash = url.hash === "#contact" || url.hash === "#contact-modal";
+      const shouldCleanQuery = url.searchParams.get("contact") === "modal";
+
+      if (shouldCleanHash || shouldCleanQuery) {
+        if (shouldCleanHash) {
+          url.hash = "";
+        }
+
+        if (shouldCleanQuery) {
+          url.searchParams.delete("contact");
+        }
+
+        window.history.replaceState(window.history.state, "", `${url.pathname}${url.search}${url.hash}`);
+      }
+
+      openedFromUrlRef.current = false;
+    }
 
     if (clearAnchorTimeoutRef.current) {
       clearTimeout(clearAnchorTimeoutRef.current);
@@ -126,6 +148,31 @@ export function ContactModalProvider({ children }: { children: ReactNode }) {
       body.style.overflow = previousOverflow;
     };
   }, [open, closeModal]);
+
+  useEffect(() => {
+    const openModalFromUrl = () => {
+      const { hash, search } = window.location;
+      const params = new URLSearchParams(search);
+      const shouldOpenModal = hash === "#contact" || hash === "#contact-modal" || params.get("contact") === "modal";
+
+      if (shouldOpenModal) {
+        openedFromUrlRef.current = true;
+        openModal();
+      } else if (openedFromUrlRef.current) {
+        openedFromUrlRef.current = false;
+        closeModal();
+      }
+    };
+
+    openModalFromUrl();
+    window.addEventListener("hashchange", openModalFromUrl);
+    window.addEventListener("popstate", openModalFromUrl);
+
+    return () => {
+      window.removeEventListener("hashchange", openModalFromUrl);
+      window.removeEventListener("popstate", openModalFromUrl);
+    };
+  }, [openModal, closeModal]);
 
   useEffect(() => {
     if (open || !lastTrigger) {
