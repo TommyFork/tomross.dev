@@ -1,0 +1,12 @@
+{
+  "name": "tomross-dev-deepsec",
+  "version": "0.1.0",
+  "private": true,
+  "description": "deepsec scanning workspace",
+  "type": "module",
+  "workspaces": [],
+  "packageManager": "pnpm@8.15.9",
+  "scripts": {
+    "deepsec": "/Users/tommyross/Repos/deepsec/node_modules/.bin/tsx /Users/tommyross/Repos/deepsec/packages/deepsec/src/cli.ts"
+  }
+}
