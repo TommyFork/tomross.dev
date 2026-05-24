@@ -65,7 +65,7 @@ jobs:
               esac
 
               # Find what this package was on the base branch
-              base_version=$(echo "$BASE_DEPS" | grep "^${name}=" | cut -d= -f2-)
+              base_version=$(printf '%s\n' "$BASE_DEPS" | awk -F= -v pkg="$name" '$1==pkg{for(i=2;i<=NF;i++) printf "%s%s",$i,(i<NF?"=":"\n"); exit}')
 
               if [ "$version" = "$base_version" ]; then
                 continue
