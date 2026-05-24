@@ -40,6 +40,7 @@ export default function ContactModalLink({
       onClick={handleClick}
       onKeyDown={(e: KeyboardEvent<HTMLAnchorElement>) => {
         if (e.key === " ") {
+          onClick?.(e as unknown as MouseEvent<HTMLAnchorElement>);
           e.preventDefault();
           const trigger = e.currentTarget;
           window.history.replaceState(window.history.state, "", href ?? "#contact");
