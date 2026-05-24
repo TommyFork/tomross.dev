@@ -65,6 +65,7 @@ export function ContactModalProvider({ children }: { children: ReactNode }) {
       setLastTrigger(options.trigger);
     }
 
+    openedFromUrlRef.current = true;
     setOpen(true);
   }, [setAnchorFromRect]);
 

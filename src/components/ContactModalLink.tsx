@@ -27,6 +27,9 @@ export default function ContactModalLink({
       return;
     }
 
+    event.preventDefault();
+    window.history.replaceState(window.history.state, "", href ?? "#contact");
+
     const trigger = event.currentTarget;
     openModal({ triggerRect: trigger.getBoundingClientRect(), trigger });
   };
