@@ -18,9 +18,9 @@ bun run typecheck    # TypeScript check (tsc --noEmit)
 
 ## Architecture
 
-**Routing**: Next.js App Router in `src/app/`. Three pages: `/about` (default, redirected from `/`), `/work`, `/contact`.
+**Routing**: Next.js App Router in `src/app/`. Two pages: `/about` (default, redirected from `/`) and `/work`. Contact is handled by the global modal via `#contact` or `?contact=modal`.
 
-**Server vs Client**: Components are server components by default. Interactive components use `"use client"` directive — notably Nav, WorkContent, ContactModal, ContactButton, and the Providers wrapper.
+**Server vs Client**: Components are server components by default. Interactive components use `"use client"` directive — notably Nav, WorkContent, ContactModal, and the Providers wrapper.
 
 **State Management**: React Context API via `ContactModalContext` for global contact modal state (open/close, anchor tracking, focus management, body scroll lock). No external state libraries.
 

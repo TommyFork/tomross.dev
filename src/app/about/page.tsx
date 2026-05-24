@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import ProfileCard from "@/components/ProfileCard";
 import AnimatedWorkLink from "@/components/AnimatedWorkLink";
+import ContactModalLink from "@/components/ContactModalLink";
 import fs from "fs/promises";
 import path from "path";
 import ReactMarkdown from "react-markdown";
@@ -32,6 +33,17 @@ export default async function About() {
         >
           {children}
         </a>
+      );
+    }
+    if (href === "#contact" || href === "#contact-modal") {
+      return (
+        <ContactModalLink
+          href={href}
+          className={className}
+          {...(rest as Omit<AnchorHTMLAttributes<HTMLAnchorElement>, "href">)}
+        >
+          {children}
+        </ContactModalLink>
       );
     }
     if (href) {

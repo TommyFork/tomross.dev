@@ -1,6 +1,5 @@
 "use client";
 
-import Link from "next/link";
 import {
   useCallback,
   useEffect,
@@ -382,14 +381,7 @@ export default function ContactModal({
           </div>
           {notice === "blocked" ? (
             <p className="mt-4 text-xs leading-relaxed text-rose-500" aria-live="assertive">
-              Email protected — reach out via the {" "}
-              <Link
-                href="/contact"
-                className="underline underline-offset-2 transition hover:text-rose-600"
-              >
-                contact page
-              </Link>
-              .
+              Email protected. Try again with JavaScript enabled or reach out through another channel.
             </p>
           ) : notice === "clipboard-unavailable" ? (
             <p className="mt-4 text-xs leading-relaxed text-neutral-500" aria-live="polite">

@@ -54,8 +54,15 @@ export default function Nav() {
     };
   }, []);
 
-  const handleOpenModal = (event: MouseEvent<HTMLButtonElement>) => {
+  const contactHref = `${pathname === "/" ? "/about" : pathname}#contact`;
+
+  const handleOpenModal = (event: MouseEvent<HTMLAnchorElement>) => {
     setIsMenuOpen(false);
+
+    if (event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) {
+      return;
+    }
+
     const trigger = event.currentTarget;
     openModal({ triggerRect: trigger.getBoundingClientRect(), trigger });
   };
@@ -199,14 +206,15 @@ export default function Nav() {
                         );
                       })}
                       <li className="pt-1.5">
-                        <motion.button
-                          type="button"
-                          onClick={handleOpenModal}
-                          whileTap={{ scale: 0.97 }}
-                          className={mobileContactButtonClassName}
+                        <motion.div whileTap={{ scale: 0.97 }}>
+                          <Link
+                            href={contactHref}
+                            onClick={handleOpenModal}
+                            className={mobileContactButtonClassName}
                           >
-                          Let’s chat
-                        </motion.button>
+                            Let’s chat
+                          </Link>
+                        </motion.div>
                       </li>
                     </ul>
                   </div>
@@ -242,9 +250,9 @@ export default function Nav() {
                 );
               })}
             </ul>
-            <button type="button" onClick={handleOpenModal} className={contactButtonClassName}>
+            <Link href={contactHref} onClick={handleOpenModal} className={contactButtonClassName}>
               Let’s chat
-            </button>
+            </Link>
           </div>
           <button
             type="button"
@@ -284,5 +292,4 @@ export default function Nav() {
     </header>
   );
 }
-
 
