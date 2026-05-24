@@ -32,7 +32,7 @@ export default function ContactModalLink({
   };
 
   return (
-    <a href={href} onClick={handleClick} {...props}>
+    <a href={href} onClick={handleClick} aria-haspopup="dialog" {...props}>
       {children}
     </a>
   );
