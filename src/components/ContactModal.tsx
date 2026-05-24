@@ -10,17 +10,12 @@ import {
 } from "react";
 import { createPortal } from "react-dom";
 
+import type { AnchorRect } from "@/components/ContactModalContext";
+
 const ANIMATION_DURATION = 420;
 const ANIMATION_EASING = "cubic-bezier(0.24, 0.94, 0.32, 1)";
 const BACKDROP_DURATION = 300;
 const MASK_SEQUENCE = [71, 18, 112, 5, 209, 88, 44];
-
-type AnchorRect = {
-  left: number;
-  top: number;
-  width: number;
-  height: number;
-};
 
 type ContactModalProps = {
   open: boolean;
@@ -381,7 +376,7 @@ export default function ContactModal({
           </div>
           {notice === "blocked" ? (
             <p className="mt-4 text-xs leading-relaxed text-rose-500" aria-live="assertive">
-              Email protected. Try again with JavaScript enabled or reach out through another channel.
+              Email protected. Our bot check blocked this request — please reach out through another channel.
             </p>
           ) : notice === "clipboard-unavailable" ? (
             <p className="mt-4 text-xs leading-relaxed text-neutral-500" aria-live="polite">

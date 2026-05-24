@@ -20,7 +20,7 @@ type ContactModalContextValue = {
   toggleModal: (options?: ModalTriggerOptions) => void;
 };
 
-type AnchorRect = {
+export type AnchorRect = {
   left: number;
   top: number;
   width: number;
