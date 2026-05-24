@@ -6,9 +6,18 @@ updates:
       interval: weekly
       day: monday
       time: "09:00"
+      timezone: "UTC"
     open-pull-requests-limit: 10
     groups:
       dev-dependencies:
         dependency-type: development
       production-dependencies:
         dependency-type: production
+
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: weekly
+      day: monday
+      time: "09:00"
+      timezone: "UTC"
