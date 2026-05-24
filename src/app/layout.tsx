@@ -51,13 +51,6 @@ export const metadata: Metadata = {
       },
     ],
   },
-  twitter: {
-    card: "summary_large_image",
-    title: "Tommy Ross — Full‑Stack Developer",
-    description:
-      "Explore my portfolio of full-stack product work, writing, and ways to get in touch.",
-    creator: "@tommytelos",
-  },
   alternates: {
     canonical: "https://tomross.dev",
   },
