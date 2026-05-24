@@ -21,3 +21,8 @@ updates:
       day: monday
       time: "09:00"
       timezone: "UTC"
+    open-pull-requests-limit: 10
+    groups:
+      github-actions:
+        patterns:
+          - "*"
