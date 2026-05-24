@@ -1,0 +1,131 @@
+name: Package Age Check
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - package.json
+
+jobs:
+  package-age:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Check package versions are at least 7 days old
+        run: |
+          # Compare package.json to the base branch to find changed packages
+          BASE_PACKAGE=$(git show origin/${{ github.base_ref }}:package.json)
+          HEAD_PACKAGE=$(cat package.json)
+
+          MIN_AGE_DAYS=7
+          MIN_AGE_SECONDS=$((MIN_AGE_DAYS * 86400))
+          NOW=$(date +%s)
+          FAILED=0
+
+          check_deps() {
+            local section="$1"
+
+            # Extract "name": "version" pairs from the given section of each file
+            BASE_DEPS=$(echo "$BASE_PACKAGE" | node -e "
+              const data = require('fs').readFileSync('/dev/stdin', 'utf8');
+              const pkg = JSON.parse(data);
+              const deps = pkg['$section'] || {};
+              Object.entries(deps).forEach(([k, v]) => console.log(k + '=' + v));
+            ")
+            HEAD_DEPS=$(echo "$HEAD_PACKAGE" | node -e "
+              const data = require('fs').readFileSync('/dev/stdin', 'utf8');
+              const pkg = JSON.parse(data);
+              const deps = pkg['$section'] || {};
+              Object.entries(deps).forEach(([k, v]) => console.log(k + '=' + v));
+            ")
+
+            while IFS='=' read -r name version; do
+              # Strip semver range prefix (^, ~, >=, etc.) to get the declared version specifier
+              clean_version="${version#^}"
+              clean_version="${clean_version#~}"
+              clean_version="${clean_version#>=}"
+              clean_version="${clean_version#>}"
+              clean_version="${clean_version#<=}"
+              clean_version="${clean_version#<}"
+
+              # Find what this package was on the base branch
+              base_version=$(echo "$BASE_DEPS" | grep "^${name}=" | cut -d= -f2-)
+
+              if [ "$version" = "$base_version" ]; then
+                continue
+              fi
+
+              echo "Package changed: $name  $base_version → $version"
+
+              # Query npm registry for the exact published version
+              registry_data=$(curl -sf "https://registry.npmjs.org/${name}/${clean_version}" 2>/dev/null)
+              if [ -z "$registry_data" ]; then
+                # Fall back to the dist-tags / versions map from the full metadata
+                registry_data=$(curl -sf "https://registry.npmjs.org/${name}" 2>/dev/null)
+                publish_time=$(echo "$registry_data" | node -e "
+                  const data = require('fs').readFileSync('/dev/stdin', 'utf8');
+                  const pkg = JSON.parse(data);
+                  const time = pkg.time || {};
+                  const ver = pkg['dist-tags'] && pkg['dist-tags']['$clean_version']
+                    ? pkg['dist-tags']['$clean_version']
+                    : '$clean_version';
+                  console.log(time[ver] || '');
+                " 2>/dev/null)
+              else
+                publish_time=$(echo "$registry_data" | node -e "
+                  const data = require('fs').readFileSync('/dev/stdin', 'utf8');
+                  try {
+                    const pkg = JSON.parse(data);
+                    // version-specific endpoint wraps metadata in the version object
+                    console.log(pkg.time || '');
+                  } catch(e) { console.log(''); }
+                " 2>/dev/null)
+
+                if [ -z "$publish_time" ]; then
+                  # The version endpoint returns a version manifest; fetch time from full package
+                  full_data=$(curl -sf "https://registry.npmjs.org/${name}" 2>/dev/null)
+                  publish_time=$(echo "$full_data" | node -e "
+                    const data = require('fs').readFileSync('/dev/stdin', 'utf8');
+                    const pkg = JSON.parse(data);
+                    const time = pkg.time || {};
+                    console.log(time['$clean_version'] || '');
+                  " 2>/dev/null)
+                fi
+              fi
+
+              if [ -z "$publish_time" ]; then
+                echo "  ERROR: Could not determine publish time for $name@$clean_version"
+                FAILED=1
+                continue
+              fi
+
+              publish_epoch=$(date -d "$publish_time" +%s 2>/dev/null || date -j -f "%Y-%m-%dT%H:%M:%S" "${publish_time%%.*}" +%s 2>/dev/null)
+              age_seconds=$(( NOW - publish_epoch ))
+              age_days=$(( age_seconds / 86400 ))
+
+              if [ "$age_seconds" -lt "$MIN_AGE_SECONDS" ]; then
+                echo "  FAIL: $name@$clean_version was published $age_days day(s) ago (minimum: $MIN_AGE_DAYS days)"
+                FAILED=1
+              else
+                echo "  OK:   $name@$clean_version is $age_days day(s) old"
+              fi
+            done <<< "$HEAD_DEPS"
+          }
+
+          check_deps "dependencies"
+          check_deps "devDependencies"
+          check_deps "peerDependencies"
+          check_deps "optionalDependencies"
+
+          if [ "$FAILED" -ne 0 ]; then
+            echo ""
+            echo "One or more changed packages were published less than $MIN_AGE_DAYS days ago."
+            echo "Wait for the packages to age before merging into main."
+            exit 1
+          fi
+
+          echo ""
+          echo "All changed packages are at least $MIN_AGE_DAYS days old."
