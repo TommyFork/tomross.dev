@@ -1,9 +1,7 @@
-My name is Tommy. I’m a full-stack engineer based in Boston, MA.
+I’m Tommy, a product engineer based in Boston. I work at [Vendr](https://www.vendr.com/), where I build AI agents that autonomously negotiate enterprise SaaS deals.
 
-I started coding in middle school, making Minecraft plugins for my friends. That pulled me into Java, then PHP and the web, and by [high school](https://archive.ph/oe9mp) I switched to primarily using Node.js. Since then, I’ve built everything from small automations to full-stack web apps to a couple of failed startups, most recently [BrightBook](/work#brightbook), which I started in college: a platform for personalizing lessons to individual students that I took from idea to prototype to pilots in the [Boston Public Schools](https://www.bostonpublicschools.org/).
+I started coding in middle school, building Minecraft plugins for my friends. Since then, I’ve built everything from small automations to full-stack web apps to a couple of startups. In college, I started [BrightBook](/work#brightbook), an [award-winning](https://www.bu.edu/innovate/success-at-innovators-night-2025-80k-in-prize-money-student-awards-and-a-visit-from-president-gilliam/) platform for personalizing lessons to each student’s needs. I led the [venture](https://www.bu.edu/innovate/brightbook-is-turning-the-page-on-teacher-burnout-with-help-from-ai/) from idea to prototype to pilots with [the Boston Public Schools](https://www.bostonpublicschools.org/).
 
-Today, I’m an engineer at [Vendr](https://www.vendr.com/), building AI agents that negotiate enterprise SaaS deals autonomously.
+I like thinking about self-evolving software, always-on background AI agents, and the history of major technological revolutions. I also love my dog, getting out in nature, and cooking for the people I love.
 
-I like thinking about where technology, education, and the economy are headed. Lately, I’ve been particularly interested in self-evolving software, measuring technological progress against historical shifts, and always-on background AI agents.
-
-I also love my dog, getting out in nature, and cooking for the people I love. I graduated cum laude from Boston University’s Questrom School of Business, where I concentrated in Business Analytics.
+Want to chat? [Get in touch](/connect).
