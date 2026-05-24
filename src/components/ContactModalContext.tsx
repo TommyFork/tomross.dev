@@ -65,6 +65,8 @@ export function ContactModalProvider({ children }: { children: ReactNode }) {
       setLastTrigger(options.trigger);
     }
 
+    // Always true because callers (ContactModalLink) write #contact to the URL
+    // via replaceState before calling openModal, so closeModal can safely clean it up.
     openedFromUrlRef.current = true;
     setOpen(true);
   }, [setAnchorFromRect]);

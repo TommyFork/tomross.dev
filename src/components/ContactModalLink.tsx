@@ -41,7 +41,9 @@ export default function ContactModalLink({
       onKeyDown={(e: KeyboardEvent<HTMLAnchorElement>) => {
         if (e.key === " ") {
           e.preventDefault();
-          handleClick(e as unknown as MouseEvent<HTMLAnchorElement>);
+          const trigger = e.currentTarget;
+          window.history.replaceState(window.history.state, "", href ?? "#contact");
+          openModal({ triggerRect: trigger.getBoundingClientRect(), trigger });
         }
       }}
       aria-haspopup="dialog"
