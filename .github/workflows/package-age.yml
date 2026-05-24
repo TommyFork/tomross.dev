@@ -6,6 +6,9 @@ on:
     paths:
       - package.json
 
+permissions:
+  contents: read
+
 jobs:
   package-age:
     runs-on: ubuntu-latest
@@ -15,9 +18,11 @@ jobs:
           fetch-depth: 0
 
       - name: Check package versions are at least 7 days old
+        env:
+          BASE_REF: ${{ github.base_ref }}
         run: |
           # Compare package.json to the base branch to find changed packages
-          BASE_PACKAGE=$(git show origin/${{ github.base_ref }}:package.json)
+          BASE_PACKAGE=$(git show "origin/${BASE_REF}:package.json")
           HEAD_PACKAGE=$(cat package.json)
 
           MIN_AGE_DAYS=7
@@ -43,13 +48,21 @@ jobs:
             ")
 
             while IFS='=' read -r name version; do
-              # Strip semver range prefix (^, ~, >=, etc.) to get the declared version specifier
+              # Strip semver range prefix (^, ~, >=, <=, >, <) to get an exact version.
+              # Skip non-registry specifiers (workspace:, file:, npm:alias, wildcards).
               clean_version="${version#^}"
               clean_version="${clean_version#~}"
               clean_version="${clean_version#>=}"
-              clean_version="${clean_version#>}"
               clean_version="${clean_version#<=}"
+              clean_version="${clean_version#>}"
               clean_version="${clean_version#<}"
+
+              case "$clean_version" in
+                workspace:*|file:*|npm:*|"*"|""|*x*)
+                  echo "Skipping non-registry specifier: $name@$version"
+                  continue
+                  ;;
+              esac
 
               # Find what this package was on the base branch
               base_version=$(echo "$BASE_DEPS" | grep "^${name}=" | cut -d= -f2-)
@@ -60,41 +73,18 @@ jobs:
 
               echo "Package changed: $name  $base_version → $version"
 
-              # Query npm registry for the exact published version
-              registry_data=$(curl -sf "https://registry.npmjs.org/${name}/${clean_version}" 2>/dev/null)
-              if [ -z "$registry_data" ]; then
-                # Fall back to the dist-tags / versions map from the full metadata
-                registry_data=$(curl -sf "https://registry.npmjs.org/${name}" 2>/dev/null)
-                publish_time=$(echo "$registry_data" | node -e "
-                  const data = require('fs').readFileSync('/dev/stdin', 'utf8');
-                  const pkg = JSON.parse(data);
-                  const time = pkg.time || {};
-                  const ver = pkg['dist-tags'] && pkg['dist-tags']['$clean_version']
-                    ? pkg['dist-tags']['$clean_version']
-                    : '$clean_version';
-                  console.log(time[ver] || '');
-                " 2>/dev/null)
-              else
-                publish_time=$(echo "$registry_data" | node -e "
-                  const data = require('fs').readFileSync('/dev/stdin', 'utf8');
-                  try {
-                    const pkg = JSON.parse(data);
-                    // version-specific endpoint wraps metadata in the version object
-                    console.log(pkg.time || '');
-                  } catch(e) { console.log(''); }
-                " 2>/dev/null)
-
-                if [ -z "$publish_time" ]; then
-                  # The version endpoint returns a version manifest; fetch time from full package
-                  full_data=$(curl -sf "https://registry.npmjs.org/${name}" 2>/dev/null)
-                  publish_time=$(echo "$full_data" | node -e "
-                    const data = require('fs').readFileSync('/dev/stdin', 'utf8');
-                    const pkg = JSON.parse(data);
-                    const time = pkg.time || {};
-                    console.log(time['$clean_version'] || '');
-                  " 2>/dev/null)
-                fi
-              fi
+              # The version-specific endpoint (/pkg/1.2.3) does not include a time field;
+              # always fetch publish time from the full package metadata endpoint.
+              registry_data=$(curl --max-time 10 -sf "https://registry.npmjs.org/${name}" 2>/dev/null)
+              publish_time=$(echo "$registry_data" | node -e "
+                const data = require('fs').readFileSync('/dev/stdin', 'utf8');
+                const pkg = JSON.parse(data);
+                const time = pkg.time || {};
+                const ver = pkg['dist-tags'] && pkg['dist-tags']['$clean_version']
+                  ? pkg['dist-tags']['$clean_version']
+                  : '$clean_version';
+                console.log(time[ver] || '');
+              " 2>/dev/null)
 
               if [ -z "$publish_time" ]; then
                 echo "  ERROR: Could not determine publish time for $name@$clean_version"
