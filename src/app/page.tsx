@@ -15,7 +15,7 @@ export const metadata: Metadata = {
     "Get to know me—I'm Tommy Ross, a full-stack developer focused on building thoughtful, user-centered products.",
 };
 
-export default async function About() {
+export default async function Home() {
   const filePath = path.join(process.cwd(), "public", "content", "about.md");
   const markdown = await fs.readFile(filePath, "utf8");
 
