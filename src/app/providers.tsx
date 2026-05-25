@@ -3,7 +3,12 @@
 import type { ReactNode } from "react";
 
 import { ContactModalProvider } from "@/components/ContactModalContext";
+import { ThemeProvider } from "@/components/ThemeContext";
 
 export function Providers({ children }: { children: ReactNode }) {
-  return <ContactModalProvider>{children}</ContactModalProvider>;
+  return (
+    <ThemeProvider>
+      <ContactModalProvider>{children}</ContactModalProvider>
+    </ThemeProvider>
+  );
 }

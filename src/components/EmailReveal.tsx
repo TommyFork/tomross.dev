@@ -19,10 +19,10 @@ export default function EmailReveal({ label = "Email me" }: Props) {
       <button
         type="button"
         onClick={() => setRevealed(true)}
-        className="group relative overflow-hidden rounded-full border border-neutral-300 px-4 py-2 text-sm bg-white transition-all hover:shadow-sm active:translate-y-[1px] active:shadow-none cursor-pointer"
+        className="group relative overflow-hidden rounded-full border border-neutral-300 dark:border-neutral-600 px-4 py-2 text-sm bg-white dark:bg-neutral-800 text-neutral-700 dark:text-neutral-300 transition-all hover:shadow-sm active:translate-y-[1px] active:shadow-none cursor-pointer"
       >
         <span className="relative z-10">{label}</span>
-        <span className="absolute inset-0 translate-y-full group-hover:translate-y-0 bg-neutral-50 transition-transform"></span>
+        <span className="absolute inset-0 translate-y-full group-hover:translate-y-0 bg-neutral-50 dark:bg-neutral-700 transition-transform"></span>
       </button>
     );
   }

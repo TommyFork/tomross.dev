@@ -5,6 +5,7 @@ import Image from "next/image";
 
 interface ProjectPortfolioCardProps {
   logoUrl: string;
+  logoDarkUrl?: string;
   logoAlt: string;
   description: ReactNode;
   scopeText: ReactNode;
@@ -17,6 +18,7 @@ interface ProjectPortfolioCardProps {
 
 export default function ProjectPortfolioCard({
   logoUrl,
+  logoDarkUrl,
   logoAlt,
   description,
   scopeText,
@@ -30,7 +32,7 @@ export default function ProjectPortfolioCard({
   const easing: [number, number, number, number] = [0.33, 1, 0.68, 1];
 
   const gradientStyle = {
-    background: `linear-gradient(to right, color-mix(in srgb, var(${projectColor}) 16%, transparent), #ffffff)`,
+    background: `linear-gradient(to right, color-mix(in srgb, var(${projectColor}) 16%, transparent), var(--background))`,
   } as const;
 
   const headingStyle = { color: `var(${projectDarkColor})` } as const;
@@ -66,13 +68,23 @@ export default function ProjectPortfolioCard({
               src={logoUrl}
               alt={logoAlt}
               fill
-              className="object-contain object-left"
+              className={`object-contain object-left ${logoDarkUrl ? "dark:hidden" : ""}`}
               sizes="(min-width: 640px) 280px, 240px"
               priority
             />
+            {logoDarkUrl && (
+              <Image
+                src={logoDarkUrl}
+                alt={logoAlt}
+                fill
+                className="object-contain object-left hidden dark:block"
+                sizes="(min-width: 640px) 280px, 240px"
+                priority
+              />
+            )}
           </motion.div>
           <motion.p
-            className="text-base leading-relaxed text-gray-700 md:text-[15px]"
+            className="text-base leading-relaxed text-gray-700 dark:text-neutral-300 md:text-[15px]"
             variants={{
               hidden: { opacity: 0 },
               visible: {
@@ -87,7 +99,7 @@ export default function ProjectPortfolioCard({
 
         {/* Technical & Venture Scope */}
         <motion.div
-          className="rounded-2xl border border-[#393976]/[0.1] px-6 py-7 shadow-[0_16px_60px_rgba(57,57,118,0.08)] sm:px-8 sm:py-8 md:px-10 md:py-9"
+          className="rounded-2xl border border-[#393976]/[0.1] dark:border-neutral-700/50 px-6 py-7 shadow-[0_16px_60px_rgba(57,57,118,0.08)] dark:shadow-[0_16px_60px_rgba(0,0,0,0.3)] sm:px-8 sm:py-8 md:px-10 md:py-9"
           style={gradientStyle}
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
@@ -106,7 +118,7 @@ export default function ProjectPortfolioCard({
             >
               Project Role
             </motion.h3>
-            <motion.p className="text-base leading-7 text-black md:text-[15px]">
+            <motion.p className="text-base leading-7 text-black dark:text-neutral-200 md:text-[15px]">
               {scopeText}
             </motion.p>
           </motion.div>
@@ -127,13 +139,13 @@ export default function ProjectPortfolioCard({
 
         {footerNote && (
           <motion.div
-            className="mt-12 border-t border-gray-200/70 pt-9 md:mt-14 md:pt-11 lg:mt-20 lg:pt-14 xl:mt-24 xl:pt-16"
+            className="mt-12 border-t border-gray-200/70 dark:border-neutral-700/70 pt-9 md:mt-14 md:pt-11 lg:mt-20 lg:pt-14 xl:mt-24 xl:pt-16"
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 1 }}
             viewport={viewport}
             transition={{ duration: 0.5, ease: easing, delay: 0.1 }}
           >
-            <p className="text-xs text-gray-500 md:text-sm">{footerNote}</p>
+            <p className="text-xs text-gray-500 dark:text-neutral-400 md:text-sm">{footerNote}</p>
           </motion.div>
         )}
       </div>

@@ -20,8 +20,9 @@ export default async function About() {
   const markdown = await fs.readFile(filePath, "utf8");
 
   const MarkdownLink = (props: AnchorHTMLAttributes<HTMLAnchorElement> & { node?: unknown }) => {
-    const { href, children, node: _node, ...rest } = props;
-    const className = `text-blue-500 hover:underline hover:opacity-70 transition-smooth duration-200 ease-in-out ${props.className ?? ""}`;
+    const { href, children, node: _node, className: passedClassName, ...rest } = props;
+    void _node;
+    const className = `text-blue-500 dark:text-blue-400 hover:underline hover:opacity-70 transition-smooth duration-200 ease-in-out ${passedClassName ?? ""}`;
     if (href && /^https?:\/\//.test(href)) {
       return (
         <a
@@ -84,7 +85,7 @@ export default async function About() {
           <div className="space-y-4">
             <ReactMarkdown
               remarkPlugins={[remarkGfm]}
-              className="text-neutral-700"
+              className="text-neutral-700 dark:text-neutral-300"
               components={{ a: MarkdownLink, p: Paragraph }}
             >
               {markdown}

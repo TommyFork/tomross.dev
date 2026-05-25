@@ -7,6 +7,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
+import { useTheme } from "@/components/ThemeContext";
 import ContactModalLink from "@/components/ContactModalLink";
 
 const links = [
@@ -17,8 +18,26 @@ const links = [
 
 const hamburgerTransition = { duration: 0.24, ease: [0.22, 0.61, 0.36, 1] } as const;
 
+function SunIcon() {
+  return (
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <circle cx="12" cy="12" r="4" />
+      <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41" />
+    </svg>
+  );
+}
+
+function MoonIcon() {
+  return (
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
+    </svg>
+  );
+}
+
 export default function Nav() {
   const pathname = usePathname();
+  const { theme, toggle, mounted } = useTheme();
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const headerRef = useRef<HTMLElement | null>(null);
@@ -101,16 +120,20 @@ export default function Nav() {
   }, [isMenuOpen]);
 
   const headerClassName = isScrolled
-    ? "mt-6 sticky top-4 z-50 w-full rounded-3xl border border-white/30 bg-white/40 px-5 py-3 shadow-[0_8px_32px_0_rgba(31,38,135,0.15)] backdrop-blur-[20px] backdrop-saturate-[180%] before:absolute before:inset-0 before:rounded-3xl before:border before:border-white/40 before:shadow-[inset_0_1px_1px_0_rgba(255,255,255,0.5)] before:pointer-events-none sm:px-6 sm:py-4"
+    ? "mt-6 sticky top-4 z-50 w-full rounded-3xl border border-white/30 dark:border-white/10 bg-white/40 dark:bg-neutral-900/40 px-5 py-3 shadow-[0_8px_32px_0_rgba(31,38,135,0.15)] dark:shadow-[0_8px_32px_0_rgba(0,0,0,0.4)] backdrop-blur-[20px] backdrop-saturate-[180%] before:absolute before:inset-0 before:rounded-3xl before:border before:border-white/40 dark:before:border-white/5 before:shadow-[inset_0_1px_1px_0_rgba(255,255,255,0.5)] dark:before:shadow-none before:pointer-events-none sm:px-6 sm:py-4"
     : "mt-6 w-full border border-transparent px-0 py-6";
 
   const brandClassName = isScrolled
-    ? "text-base font-semibold tracking-tight text-slate-900 transition-all duration-300"
-    : "text-xl font-semibold tracking-tight text-slate-900 transition-all duration-300";
+    ? "text-base font-semibold tracking-tight text-slate-900 dark:text-white transition-all duration-300"
+    : "text-xl font-semibold tracking-tight text-slate-900 dark:text-white transition-all duration-300";
 
-  const menuButtonClassName = isScrolled
-    ? "inline-flex h-11 w-11 items-center justify-center rounded-full border border-white/45 bg-white/70 text-slate-900 shadow-sm transition-all duration-200 hover:-translate-y-[1px] hover:border-white/70 hover:bg-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-200 active:scale-95"
-    : "inline-flex h-11 w-11 items-center justify-center rounded-full border border-transparent bg-white text-slate-600 shadow-sm transition-all duration-200 hover:-translate-y-[1px] hover:border-slate-200/80 hover:bg-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-400 active:scale-95";
+  const iconButtonClassName = isScrolled
+    ? "inline-flex h-11 w-11 items-center justify-center rounded-full border border-white/45 dark:border-white/10 bg-white/70 dark:bg-neutral-800/70 text-slate-900 dark:text-neutral-200 shadow-sm transition-all duration-200 hover:-translate-y-[1px] hover:border-white/70 dark:hover:border-white/20 hover:bg-white dark:hover:bg-neutral-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-200 active:scale-95"
+    : "inline-flex h-11 w-11 items-center justify-center rounded-full border border-transparent bg-white dark:bg-neutral-800 text-slate-600 dark:text-neutral-300 shadow-sm transition-all duration-200 hover:-translate-y-[1px] hover:border-slate-200/80 dark:hover:border-neutral-600 hover:bg-white dark:hover:bg-neutral-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-400 active:scale-95";
+
+  const themeSwitchClassName = isScrolled
+    ? "group relative inline-flex h-8 w-14 shrink-0 cursor-pointer items-center rounded-full border border-white/45 dark:border-white/10 bg-white/70 dark:bg-neutral-800/70 p-1 text-slate-900 dark:text-neutral-200 shadow-sm transition-colors duration-200 hover:border-white/70 dark:hover:border-white/20 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-200 active:scale-95"
+    : "group relative inline-flex h-8 w-14 shrink-0 cursor-pointer items-center rounded-full border border-transparent bg-white dark:bg-neutral-800 p-1 text-slate-600 dark:text-neutral-300 shadow-sm transition-colors duration-200 hover:border-slate-200/80 dark:hover:border-neutral-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-400 active:scale-95";
 
   const navLinkBaseClassName = "transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-200";
 
@@ -118,32 +141,31 @@ export default function Nav() {
     isScrolled
       ? `${navLinkBaseClassName} ${
           active
-            ? "text-slate-900"
-            : "text-slate-600 hover:text-slate-900"
+            ? "text-slate-900 dark:text-white"
+            : "text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white"
         }`
-      : `${navLinkBaseClassName} focus-visible:ring-offset-2 focus-visible:ring-offset-white ${
+      : `${navLinkBaseClassName} focus-visible:ring-offset-2 focus-visible:ring-offset-white dark:focus-visible:ring-offset-neutral-950 ${
           active
-            ? "text-neutral-900 visited:text-neutral-900"
-            : "text-neutral-500 hover:text-neutral-700 visited:text-neutral-500"
+            ? "text-neutral-900 dark:text-white visited:text-neutral-900 dark:visited:text-white"
+            : "text-neutral-500 dark:text-neutral-400 hover:text-neutral-700 dark:hover:text-neutral-200 visited:text-neutral-500 dark:visited:text-neutral-400"
         }`;
 
   const mobileNavLinkClassName = (active: boolean) =>
-    `group flex w-full items-center gap-3 rounded-xl px-4 py-3 text-left text-base font-medium tracking-tight transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neutral-900 focus-visible:ring-offset-2 focus-visible:ring-offset-white ${
+    `group flex w-full items-center gap-3 rounded-xl px-4 py-3 text-left text-base font-medium tracking-tight transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neutral-900 dark:focus-visible:ring-neutral-100 focus-visible:ring-offset-2 focus-visible:ring-offset-white dark:focus-visible:ring-offset-neutral-900 ${
       active
-        ? "bg-neutral-900/5 text-neutral-900"
-        : "text-neutral-500 hover:bg-neutral-900/5 hover:text-neutral-900"
+        ? "bg-neutral-900/5 dark:bg-white/10 text-neutral-900 dark:text-white"
+        : "text-neutral-500 dark:text-neutral-400 hover:bg-neutral-900/5 dark:hover:bg-white/5 hover:text-neutral-900 dark:hover:text-white"
     }`;
 
-  const mobileContactButtonClassName = isScrolled
-    ? "inline-flex w-full cursor-pointer items-center justify-center rounded-full border border-white/45 bg-white/75 px-5 py-2.5 text-sm font-semibold text-slate-900 shadow-sm transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-200 hover:-translate-y-[0.5px] hover:bg-black hover:text-white hover:border-black"
-    : "inline-flex w-full cursor-pointer items-center justify-center rounded-full border border-transparent bg-white px-5 py-2.5 text-sm font-medium text-neutral-600 shadow-sm transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-400 hover:-translate-y-[0.5px] hover:bg-black hover:text-white hover:border-black";
+  const mobileContactButtonClassName =
+    "inline-flex w-full cursor-pointer items-center justify-center rounded-full border border-neutral-200 dark:border-neutral-700 bg-white dark:bg-neutral-800 px-5 py-2.5 text-sm font-medium text-neutral-600 dark:text-neutral-300 shadow-sm transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-400 hover:-translate-y-[0.5px] hover:bg-black hover:text-white hover:border-black dark:hover:bg-white dark:hover:text-black dark:hover:border-white";
 
   const contactButtonClassName = isScrolled
-    ? "inline-flex w-full cursor-pointer items-center justify-center gap-2 rounded-full border border-white/45 bg-white/70 px-4 py-2 text-sm font-semibold text-slate-900 shadow-sm transition-all duration-200 sm:w-auto hover:-translate-y-[0.5px] hover:bg-black hover:text-white hover:border-black focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-200 active:scale-95"
-    : "inline-flex w-full cursor-pointer items-center justify-center gap-2 rounded-full border border-transparent bg-white px-4 py-2 text-sm font-medium text-neutral-600 shadow-sm transition-all duration-200 sm:w-auto hover:-translate-y-[0.5px] hover:bg-black hover:text-white hover:border-black focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-400 active:scale-95";
+    ? "inline-flex w-full cursor-pointer items-center justify-center gap-2 rounded-full border border-white/45 dark:border-white/10 bg-white/70 dark:bg-neutral-800/70 px-4 py-2 text-sm font-semibold text-slate-900 dark:text-neutral-200 shadow-sm transition-all duration-200 sm:w-auto hover:-translate-y-[0.5px] hover:bg-black hover:text-white hover:border-black dark:hover:bg-white dark:hover:text-black dark:hover:border-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-200 active:scale-95"
+    : "inline-flex w-full cursor-pointer items-center justify-center gap-2 rounded-full border border-transparent bg-white dark:bg-neutral-800 px-4 py-2 text-sm font-medium text-neutral-600 dark:text-neutral-300 shadow-sm transition-all duration-200 sm:w-auto hover:-translate-y-[0.5px] hover:bg-black hover:text-white hover:border-black dark:hover:bg-white dark:hover:text-black dark:hover:border-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-400 active:scale-95";
 
   const mobileMenu =
-    menuPortalTarget && typeof window !== "undefined"
+    menuPortalTarget
       ? createPortal(
           <AnimatePresence>
             {isMenuOpen && (
@@ -159,7 +181,7 @@ export default function Nav() {
                   type="button"
                   aria-hidden="true"
                   tabIndex={-1}
-                  className="absolute inset-0 h-full w-full bg-white/60 backdrop-blur-[2px]"
+                  className="absolute inset-0 h-full w-full bg-white/60 dark:bg-black/60 backdrop-blur-[2px]"
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   exit={{ opacity: 0 }}
@@ -176,7 +198,7 @@ export default function Nav() {
                   className="absolute inset-x-3 flex justify-end"
                   style={{ top: menuOffset }}
                 >
-                  <div className="w-full max-w-sm overflow-hidden rounded-2xl border border-neutral-200 bg-white shadow-xl">
+                  <div className="w-full max-w-sm overflow-hidden rounded-2xl border border-neutral-200 dark:border-neutral-700 bg-white dark:bg-neutral-900 shadow-xl dark:shadow-2xl">
                     <ul className="flex flex-col gap-1.5 px-3 py-3">
                       {links.map((item) => {
                         const active = pathname === item.href;
@@ -244,7 +266,35 @@ export default function Nav() {
           </div>
           <button
             type="button"
-            className={`${menuButtonClassName} relative z-[120] sm:hidden`}
+            onClick={toggle}
+            role="switch"
+            aria-checked={mounted ? theme === "dark" : undefined}
+            aria-label={mounted ? (theme === "dark" ? "Switch to light mode" : "Switch to dark mode") : "Toggle theme"}
+            className={themeSwitchClassName}
+          >
+            <span className="sr-only">{mounted ? (theme === "dark" ? "Switch to light mode" : "Switch to dark mode") : "Toggle theme"}</span>
+            <span
+              aria-hidden="true"
+              className="absolute left-2 text-[10px] text-amber-400 opacity-100 drop-shadow-[0_0_5px_rgba(251,191,36,0.65)] transition-opacity duration-200 dark:text-amber-300 dark:opacity-35"
+            >
+              <SunIcon />
+            </span>
+            <span
+              aria-hidden="true"
+              className="absolute right-2 text-[10px] text-neutral-400 opacity-90 transition-opacity duration-200 dark:text-neutral-200 dark:opacity-100"
+            >
+              <MoonIcon />
+            </span>
+            <span
+              aria-hidden="true"
+              className="relative z-10 inline-flex h-6 w-6 translate-x-0 items-center justify-center rounded-full bg-white text-amber-400 shadow-sm ring-1 ring-black/5 transition-transform duration-200 ease-out dark:translate-x-6 dark:bg-neutral-950 dark:text-neutral-200 dark:ring-white/10"
+            >
+              {mounted ? (theme === "dark" ? <MoonIcon /> : <SunIcon />) : null}
+            </span>
+          </button>
+          <button
+            type="button"
+            className={`${iconButtonClassName} relative z-[120] sm:hidden`}
             onClick={() => setIsMenuOpen((open) => !open)}
             aria-expanded={isMenuOpen}
             aria-controls="mobile-navigation"
@@ -280,4 +330,3 @@ export default function Nav() {
     </header>
   );
 }
-

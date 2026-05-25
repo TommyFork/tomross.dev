@@ -127,11 +127,16 @@ export default function DogRunnerGame({ onExit }: { onExit: () => void }) {
     const width = canvas.clientWidth;
     ctx.clearRect(0, 0, width, CANVAS_HEIGHT);
 
+    const isDark = document.documentElement.classList.contains("dark");
+    const textPrimary = isDark ? "rgba(237,237,237,0.9)" : "rgba(15,23,42,0.88)";
+    const textSecondary = isDark ? "rgba(237,237,237,0.55)" : "rgba(15,23,42,0.55)";
+    const textMuted = isDark ? "rgba(237,237,237,0.6)" : "rgba(15,23,42,0.6)";
+
     const assets = assetsRef.current;
     if (!assets) {
       ctx.save();
       ctx.font = "600 22px 'Pixelify Sans', system-ui";
-      ctx.fillStyle = "rgba(15,23,42,0.8)";
+      ctx.fillStyle = textPrimary;
       ctx.textAlign = "center";
       ctx.fillText("Loading…", width / 2, CANVAS_HEIGHT / 2);
       ctx.restore();
@@ -165,10 +170,10 @@ export default function DogRunnerGame({ onExit }: { onExit: () => void }) {
 
     ctx.save();
     ctx.textAlign = "right";
-    ctx.fillStyle = "rgba(15,23,42,0.88)";
+    ctx.fillStyle = textPrimary;
     ctx.font = "700 22px 'Pixelify Sans', system-ui";
     ctx.fillText(`SCORE ${formatScore(score)}`, width - 18, 34);
-    ctx.fillStyle = "rgba(15,23,42,0.55)";
+    ctx.fillStyle = textSecondary;
     ctx.font = "600 17px 'Pixelify Sans', system-ui";
     ctx.fillText(`HI ${formatScore(highScore)}`, width - 18, 58);
     ctx.restore();
@@ -177,18 +182,18 @@ export default function DogRunnerGame({ onExit }: { onExit: () => void }) {
     if (gameState === "ready") {
       ctx.save();
       ctx.font = "600 20px 'Pixelify Sans', system-ui";
-      ctx.fillStyle = "rgba(15,23,42,0.55)";
+      ctx.fillStyle = textSecondary;
       ctx.textAlign = "center";
       ctx.fillText("Tap or press space to start", width / 2, CANVAS_HEIGHT - 72);
       ctx.restore();
     } else if (gameState === "over") {
       ctx.save();
       ctx.font = "700 26px 'Pixelify Sans', system-ui";
-      ctx.fillStyle = "rgba(15,23,42,0.9)";
+      ctx.fillStyle = textPrimary;
       ctx.textAlign = "center";
       ctx.fillText("Game Over", width / 2, CANVAS_HEIGHT / 2 - 10);
       ctx.font = "600 18px 'Pixelify Sans', system-ui";
-      ctx.fillStyle = "rgba(15,23,42,0.6)";
+      ctx.fillStyle = textMuted;
       ctx.fillText(
         "Tap or press space to try again",
         width / 2,
@@ -673,8 +678,14 @@ export default function DogRunnerGame({ onExit }: { onExit: () => void }) {
     const canvas = canvasRef.current;
     canvas?.addEventListener("pointerdown", onPointerDown);
 
+    const themeObserver = new MutationObserver(() => {
+      if (gameStateRef.current !== "running") renderScene();
+    });
+    themeObserver.observe(document.documentElement, { attributes: true, attributeFilter: ["class"] });
+
     return () => {
       resizeObserver.disconnect();
+      themeObserver.disconnect();
       cancelAnimation();
       window.removeEventListener("keydown", onKeyDown);
       canvas?.removeEventListener("pointerdown", onPointerDown);
