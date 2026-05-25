@@ -384,7 +384,6 @@ export default function WorkContent() {
             >
               <ProjectPortfolioCard
                 logoUrl="/brightbook/BrightBook-Logo.svg"
-                logoDarkUrl="/brightbook/BrightBook-Logo-Dark.svg"
                 logoAlt="BrightBook"
                 description={
                   <>
@@ -494,7 +493,6 @@ export default function WorkContent() {
             >
               <ProjectPortfolioCard
                 logoUrl="/stumped/Stumped-Logo.svg"
-                logoDarkUrl="/stumped/Stumped-Logo-Dark.svg"
                 logoAlt="Stumped"
                 description="Stumped gamified student-teacher relationships, creating a school-wide scavenger hunt that built a stronger and more connected community. The successful competition turned faculty members into collectible characters, motivating hundreds of students to forge new bonds outside the classroom."
                 scopeText="Architected and engineered the software that powered Stumped. A fast and easy-to-use web app, it allowed students to view and guess riddles, redeem their points, and see the overall leaderboard. I built the entire backend and API infrastructure, implementing PII mitigation, FAFSA-compliant data policies, secure authentication, and analytics pipelines for engagement and performance."
