@@ -18,7 +18,7 @@ bun run typecheck    # TypeScript check (tsc --noEmit)
 
 ## Architecture
 
-**Routing**: Next.js App Router in `src/app/`. Two pages: `/about` (default, redirected from `/`), `/work`. Contact is a modal (`#contact` hash / `?contact=modal` query), redirected from the old `/contact` route.
+**Routing**: Next.js App Router in `src/app/`. Two pages: `/` (about/home), `/portfolio`. Contact is a modal (`#contact` hash / `?contact=modal` query), redirected from the old `/contact` route. `/about` permanently redirects to `/`.
 
 **Server vs Client**: Components are server components by default. Interactive components use `"use client"` directive — notably Nav, WorkContent, ContactModal, and the Providers wrapper.
 
@@ -39,4 +39,4 @@ bun run typecheck    # TypeScript check (tsc --noEmit)
 - `src/components/ContactModal.tsx` — Portal-based modal with animation anchoring
 - `src/components/ContactModalContext.tsx` — Context + custom hook `useContactModal()`
 - `src/components/Nav.tsx` — Responsive nav with scroll-aware sticky header
-- `src/app/work/WorkContent.tsx` — Portfolio showcase with section tracking, animated counters, image galleries
+- `src/app/portfolio/WorkContent.tsx` — Portfolio showcase with section tracking, animated counters, image galleries

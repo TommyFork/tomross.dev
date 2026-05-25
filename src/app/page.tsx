@@ -10,67 +10,59 @@ import remarkGfm from "remark-gfm";
 import type { AnchorHTMLAttributes, HTMLAttributes } from "react";
 
 export const metadata: Metadata = {
-  title: "About",
   description:
     "Get to know me—I'm Tommy Ross, a full-stack developer focused on building thoughtful, user-centered products.",
 };
+
+const markdownLinkClassName =
+  "text-blue-500 dark:text-blue-400 hover:underline hover:opacity-70 transition-smooth duration-200 ease-in-out";
+
+function MarkdownLink(props: AnchorHTMLAttributes<HTMLAnchorElement> & { node?: unknown }) {
+  const { href, children, node: _node, className: passedClassName, ...rest } = props;
+  void _node;
+  const className = `${markdownLinkClassName} ${passedClassName ?? ""}`;
+  if (href && /^https?:\/\//.test(href)) {
+    return (
+      <a {...rest} href={href} target="_blank" rel="noopener noreferrer" className={className}>
+        {children}
+      </a>
+    );
+  }
+  if (href === "#contact" || href === "#contact-modal") {
+    return (
+      <ContactModalLink
+        href={href}
+        className={className}
+        {...(rest as Omit<AnchorHTMLAttributes<HTMLAnchorElement>, "href">)}
+      >
+        {children}
+      </ContactModalLink>
+    );
+  }
+  if (href) {
+    return (
+      <Link
+        href={href}
+        className={className}
+        {...(rest as Omit<AnchorHTMLAttributes<HTMLAnchorElement>, "href">)}
+      >
+        {children}
+      </Link>
+    );
+  }
+  return <a {...rest} className={className}>{children}</a>;
+}
+
+function Paragraph(props: HTMLAttributes<HTMLParagraphElement>) {
+  return (
+    <p {...props} className={`mb-4 last:mb-0 leading-relaxed ${props.className ?? ""}`} />
+  );
+}
 
 export default async function Home() {
   const filePath = path.join(process.cwd(), "public", "content", "about.md");
   const markdown = await fs.readFile(filePath, "utf8");
 
-  const MarkdownLink = (props: AnchorHTMLAttributes<HTMLAnchorElement> & { node?: unknown }) => {
-    const { href, children, node: _node, className: passedClassName, ...rest } = props;
-    void _node;
-    const className = `text-blue-500 dark:text-blue-400 hover:underline hover:opacity-70 transition-smooth duration-200 ease-in-out ${passedClassName ?? ""}`;
-    if (href && /^https?:\/\//.test(href)) {
-      return (
-        <a
-          {...rest}
-          href={href}
-          target="_blank"
-          rel="noopener noreferrer"
-          className={className}
-        >
-          {children}
-        </a>
-      );
-    }
-    if (href === "#contact" || href === "#contact-modal") {
-      return (
-        <ContactModalLink
-          href={href}
-          className={className}
-          {...(rest as Omit<AnchorHTMLAttributes<HTMLAnchorElement>, "href">)}
-        >
-          {children}
-        </ContactModalLink>
-      );
-    }
-    if (href) {
-      return (
-        <Link
-          href={href}
-          className={className}
-          {...(rest as Omit<AnchorHTMLAttributes<HTMLAnchorElement>, "href">)}
-        >
-          {children}
-        </Link>
-      );
-    }
-    return (
-      <a {...rest} className={className}>
-        {children}
-      </a>
-    );
-  };
-
-  const Paragraph = (props: HTMLAttributes<HTMLParagraphElement>) => (
-    <p
-      {...props}
-      className={`mb-4 last:mb-0 leading-relaxed ${props.className ?? ""}`}
-    />
-  );
   return (
     <div className="py-10">
       <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
