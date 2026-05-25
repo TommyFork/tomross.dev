@@ -17,6 +17,8 @@ export default function ImageCard({ src, alt, children }: ImageCardProps) {
             src={src}
             alt={alt}
             fill
+            sizes="(min-width: 1024px) 420px, (min-width: 640px) 576px, calc(100vw - 48px)"
+            loading="lazy"
             className="object-cover"
           />
         </div>

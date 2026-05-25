@@ -3,9 +3,8 @@
 import { useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 
-import { AnimatePresence, motion } from "framer-motion";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 
 import { useTheme } from "@/components/ThemeContext";
 import ContactModalLink from "@/components/ContactModalLink";
@@ -15,8 +14,6 @@ const links = [
   { href: "/work", label: "Work" },
   // { href: "/writing", label: "Writing" },
 ];
-
-const hamburgerTransition = { duration: 0.24, ease: [0.22, 0.61, 0.36, 1] } as const;
 
 function SunIcon() {
   return (
@@ -37,6 +34,7 @@ function MoonIcon() {
 
 export default function Nav() {
   const pathname = usePathname();
+  const router = useRouter();
   const { theme, toggle, mounted } = useTheme();
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -164,38 +162,30 @@ export default function Nav() {
     ? "inline-flex w-full cursor-pointer items-center justify-center gap-2 rounded-full border border-white/45 dark:border-white/10 bg-white/70 dark:bg-neutral-800/70 px-4 py-2 text-sm font-semibold text-slate-900 dark:text-neutral-200 shadow-sm transition-all duration-200 sm:w-auto hover:-translate-y-[0.5px] hover:bg-black hover:text-white hover:border-black dark:hover:bg-white dark:hover:text-black dark:hover:border-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-200 active:scale-95"
     : "inline-flex w-full cursor-pointer items-center justify-center gap-2 rounded-full border border-transparent bg-white dark:bg-neutral-800 px-4 py-2 text-sm font-medium text-neutral-600 dark:text-neutral-300 shadow-sm transition-all duration-200 sm:w-auto hover:-translate-y-[0.5px] hover:bg-black hover:text-white hover:border-black dark:hover:bg-white dark:hover:text-black dark:hover:border-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-400 active:scale-95";
 
+  const prefetchRoute = (href: string) => {
+    router.prefetch(href);
+  };
+
   const mobileMenu =
     menuPortalTarget
       ? createPortal(
-          <AnimatePresence>
-            {isMenuOpen && (
-              <motion.div
+          <>
+            {isMenuOpen ? (
+              <div
                 key="mobile-menu"
                 className="fixed inset-0 z-[80] sm:hidden"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                transition={{ duration: 0.2 }}
               >
-                <motion.button
+                <button
                   type="button"
                   aria-hidden="true"
                   tabIndex={-1}
                   className="absolute inset-0 h-full w-full bg-white/60 dark:bg-black/60 backdrop-blur-[2px]"
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  exit={{ opacity: 0 }}
-                  transition={{ duration: 0.2 }}
                   onClick={() => setIsMenuOpen(false)}
                 />
-                <motion.div
+                <div
                   key="mobile-menu-panel"
                   id="mobile-navigation"
-                  initial={{ opacity: 0, y: -12 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: -12 }}
-                  transition={{ duration: 0.28, ease: [0.22, 0.61, 0.36, 1] }}
-                  className="absolute inset-x-3 flex justify-end"
+                  className="absolute inset-x-3 flex justify-end animate-[mobileMenuIn_180ms_ease-out]"
                   style={{ top: menuOffset }}
                 >
                   <div className="w-full max-w-sm overflow-hidden rounded-2xl border border-neutral-200 dark:border-neutral-700 bg-white dark:bg-neutral-900 shadow-xl dark:shadow-2xl">
@@ -207,6 +197,8 @@ export default function Nav() {
                             <Link
                               href={item.href}
                               aria-current={active ? "page" : undefined}
+                              onPointerEnter={() => prefetchRoute(item.href)}
+                              onFocus={() => prefetchRoute(item.href)}
                               onClick={() => setIsMenuOpen(false)}
                               className={mobileNavLinkClassName(active)}
                             >
@@ -216,7 +208,7 @@ export default function Nav() {
                         );
                       })}
                       <li className="pt-1.5">
-                        <motion.div whileTap={{ scale: 0.97 }}>
+                        <div>
                           <ContactModalLink
                             href={contactHref}
                             onClick={() => setIsMenuOpen(false)}
@@ -224,14 +216,14 @@ export default function Nav() {
                           >
                             Let’s chat
                           </ContactModalLink>
-                        </motion.div>
+                        </div>
                       </li>
                     </ul>
                   </div>
-                </motion.div>
-              </motion.div>
-            )}
-          </AnimatePresence>,
+                </div>
+              </div>
+            ) : null}
+          </>,
           menuPortalTarget,
         )
       : null;
@@ -239,7 +231,12 @@ export default function Nav() {
   return (
     <header ref={headerRef} className={`relative transition-all duration-300 ${headerClassName}`}>
       <nav className="relative z-10 flex items-center justify-between gap-4 sm:gap-6">
-        <Link href="/" className={`${brandClassName} whitespace-nowrap`}>
+        <Link
+          href="/about"
+          className={`${brandClassName} whitespace-nowrap`}
+          onPointerEnter={() => prefetchRoute("/about")}
+          onFocus={() => prefetchRoute("/about")}
+        >
           Tommy Ross
         </Link>
         <div className="flex items-center gap-3 sm:gap-5">
@@ -252,6 +249,8 @@ export default function Nav() {
                     <Link
                       href={item.href}
                       aria-current={active ? "page" : undefined}
+                      onPointerEnter={() => prefetchRoute(item.href)}
+                      onFocus={() => prefetchRoute(item.href)}
                       className={navLinkClassName(active)}
                     >
                       {item.label}
@@ -301,26 +300,23 @@ export default function Nav() {
             aria-label={isMenuOpen ? "Close navigation" : "Open navigation"}
           >
             <span className="relative block h-5 w-5 text-current">
-              <motion.span
+              <span
                 aria-hidden
-                initial={false}
-                animate={isMenuOpen ? { y: 6, rotate: 45 } : { y: 0, rotate: 0 }}
-                transition={hamburgerTransition}
-                className="absolute left-0 top-1 block h-0.5 w-5 origin-center rounded-full bg-current"
+                className={`absolute left-0 top-1 block h-0.5 w-5 origin-center rounded-full bg-current transition-transform duration-200 ease-out ${
+                  isMenuOpen ? "translate-y-[6px] rotate-45" : ""
+                }`}
               />
-              <motion.span
+              <span
                 aria-hidden
-                initial={false}
-                animate={isMenuOpen ? { opacity: 0 } : { opacity: 1 }}
-                transition={{ duration: 0.18, ease: [0.22, 0.61, 0.36, 1] }}
-                className="absolute left-0 top-[10px] block h-0.5 w-5 rounded-full bg-current"
+                className={`absolute left-0 top-[10px] block h-0.5 w-5 rounded-full bg-current transition-opacity duration-150 ease-out ${
+                  isMenuOpen ? "opacity-0" : "opacity-100"
+                }`}
               />
-              <motion.span
+              <span
                 aria-hidden
-                initial={false}
-                animate={isMenuOpen ? { y: -6, rotate: -45 } : { y: 0, rotate: 0 }}
-                transition={hamburgerTransition}
-                className="absolute left-0 top-[16px] block h-0.5 w-5 origin-center rounded-full bg-current"
+                className={`absolute left-0 top-[16px] block h-0.5 w-5 origin-center rounded-full bg-current transition-transform duration-200 ease-out ${
+                  isMenuOpen ? "-translate-y-[6px] -rotate-45" : ""
+                }`}
               />
             </span>
           </button>

@@ -9,7 +9,14 @@ export default function ProfileCard() {
   return (
     <div className="rounded-lg border border-neutral-200 dark:border-neutral-700 bg-white dark:bg-neutral-900 p-6 flex flex-col items-center gap-4">
       <div className="rounded-full overflow-hidden w-32 h-32 border border-neutral-200 dark:border-neutral-700">
-        <Image src="/headshot.jpeg" alt="Headshot" width={128} height={128} />
+        <Image
+          src="/headshot.jpeg"
+          alt="Headshot"
+          width={128}
+          height={128}
+          sizes="128px"
+          priority
+        />
       </div>
       <div className="text-center">
         <div className="font-medium">Tommy Ross</div>
