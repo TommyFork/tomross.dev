@@ -149,7 +149,7 @@ function TechStackLogo({ src, label }: TechStackLogoProps) {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: 4 }}
             transition={{ duration: 0.18 }}
-            className="pointer-events-none absolute -bottom-12 left-1/2 -translate-x-1/2 whitespace-nowrap rounded-md bg-white px-3 py-1.5 text-xs font-medium text-gray-600 shadow-sm z-[999]"
+            className="pointer-events-none absolute -bottom-12 left-1/2 -translate-x-1/2 whitespace-nowrap rounded-md bg-white dark:bg-neutral-800 px-3 py-1.5 text-xs font-medium text-gray-600 dark:text-neutral-300 shadow-sm z-[999]"
           >
             {label}
           </motion.span>
@@ -281,7 +281,7 @@ export default function WorkContent() {
           transition={{ duration: 0.5, ease: [0.33, 1, 0.68, 1] }}
         >
           <div className="pointer-events-auto fixed left-5 top-1/2 z-20 -translate-y-1/2">
-            <div className="flex flex-col items-center gap-5 rounded-full bg-white/95 px-4 py-6 shadow-[0_24px_60px_rgba(57,57,118,0.14)] backdrop-blur">
+            <div className="flex flex-col items-center gap-5 rounded-full bg-white/95 dark:bg-neutral-900/95 px-4 py-6 shadow-[0_24px_60px_rgba(57,57,118,0.14)] dark:shadow-[0_24px_60px_rgba(0,0,0,0.4)] backdrop-blur">
               {PROJECT_SECTIONS.map((section, index) => {
                 const isActive = index === activeSection;
                 return (
@@ -296,7 +296,7 @@ export default function WorkContent() {
                     className={`relative flex h-12 w-12 items-center justify-center rounded-full ${
                       isActive
                         ? "cursor-default"
-                        : "cursor-pointer hover:bg-slate-100/70"
+                        : "cursor-pointer hover:bg-slate-100/70 dark:hover:bg-neutral-700/50"
                     }`}
                     onMouseEnter={() => setHoveredDesktopIndex(index)}
                     onMouseLeave={() => setHoveredDesktopIndex(-1)}
@@ -335,7 +335,7 @@ export default function WorkContent() {
           animate={{ opacity: 1 }}
           transition={{ duration: 0.5, ease: [0.33, 1, 0.68, 1] }}
         >
-          <div className="pointer-events-auto flex items-center gap-3 rounded-full bg-white/95 px-5 py-2.5 shadow-[0_16px_44px_rgba(57,57,118,0.16)] backdrop-blur">
+          <div className="pointer-events-auto flex items-center gap-3 rounded-full bg-white/95 dark:bg-neutral-900/95 px-5 py-2.5 shadow-[0_16px_44px_rgba(57,57,118,0.16)] dark:shadow-[0_16px_44px_rgba(0,0,0,0.4)] backdrop-blur">
             {PROJECT_SECTIONS.map((section, index) => {
               const isActive = index === activeSection;
               return (
@@ -418,7 +418,7 @@ export default function WorkContent() {
                   <>
                     <Reveal>
                       <Card className="flex flex-col items-center justify-center gap-3 px-6 py-8 text-center">
-                        <p className="text-base font-medium text-gray-700">
+                        <p className="text-base font-medium text-gray-700 dark:text-neutral-300">
                           Piloted in the
                         </p>
                         <div className="relative h-24 w-48 sm:h-28 sm:w-60">
@@ -426,7 +426,13 @@ export default function WorkContent() {
                             src="/brightbook/BPS-Logo.svg"
                             alt="Boston Public Schools"
                             fill
-                            className="object-contain"
+                            className="object-contain dark:hidden"
+                          />
+                          <Image
+                            src="/brightbook/BPS-Logo-Dark.svg"
+                            alt="Boston Public Schools"
+                            fill
+                            className="object-contain hidden dark:block"
                           />
                         </div>
                       </Card>
@@ -457,7 +463,7 @@ export default function WorkContent() {
                           suffix="+"
                           className="text-4xl font-bold text-[var(--brightbook-blue)] md:text-5xl"
                         />
-                        <p className="text-base font-medium text-gray-700">
+                        <p className="text-base font-medium text-gray-700 dark:text-neutral-300">
                           raised in non–dilutive funding
                         </p>
                       </Card>
@@ -501,7 +507,7 @@ export default function WorkContent() {
                           suffix="+"
                           className="text-4xl font-bold text-[var(--stumped-blue)] md:text-5xl"
                         />
-                        <p className="text-base font-medium text-gray-700">
+                        <p className="text-base font-medium text-gray-700 dark:text-neutral-300">
                           students reached
                         </p>
                       </Card>
@@ -513,7 +519,7 @@ export default function WorkContent() {
                           suffix="+"
                           className="text-4xl font-bold text-[var(--stumped-blue)] md:text-5xl"
                         />
-                        <p className="text-base font-medium text-gray-700">
+                        <p className="text-base font-medium text-gray-700 dark:text-neutral-300">
                           Stumped Cards produced
                         </p>
                       </Card>
@@ -525,11 +531,19 @@ export default function WorkContent() {
                             src="/stumped/NYSSBA-Logo.svg"
                             alt="New York State School Boards Association"
                             fill
-                            className="object-contain"
+                            className="object-contain dark:hidden"
+                          />
+                          <Image
+                            src="/stumped/NYSSBA-Logo-Dark.svg"
+                            alt="New York State School Boards Association"
+                            fill
+                            className="object-contain hidden dark:block"
                           />
                         </div>
-                        <p className="text-base font-medium text-gray-700">
-                          Awarded Champions of Change by the NYSSBA
+                        <p className="max-w-sm text-balance text-base font-medium leading-snug text-gray-700 dark:text-neutral-300">
+                          Awarded Champions of Change
+                          <br />
+                          by the NYSSBA
                         </p>
                       </Card>
                     </Reveal>
@@ -559,6 +573,7 @@ export default function WorkContent() {
             >
               <ProjectPortfolioCard
                 logoUrl="/next-step/NextStep-Logo.svg"
+                logoDarkUrl="/next-step/NextStep-Logo-Dark.svg"
                 logoAlt="NextStep"
                 description={
                   <>
@@ -582,7 +597,7 @@ export default function WorkContent() {
                           suffix="%"
                           className="text-4xl font-bold text-[var(--next-step-blue)] md:text-5xl"
                         />
-                        <p className="text-base font-medium text-gray-700 leading-tight">
+                        <p className="text-base font-medium text-gray-700 dark:text-neutral-300 leading-tight">
                           accuracy in data extraction
                           <br />
                           and document classification*
@@ -591,7 +606,7 @@ export default function WorkContent() {
                     </Reveal>
                     <Reveal>
                       <Card className="relative overflow-visible px-8 py-8 sm:py-10 md:py-12">
-                        <h3 className="mb-6 text-center text-xl font-medium text-[var(--next-step-dark-blue)] md:text-lg">
+                        <h3 className="mb-6 text-center text-xl font-medium text-[var(--next-step-dark-blue)] dark:text-blue-400 md:text-lg">
                           Tech Stack
                         </h3>
                         <div className="mx-auto grid max-w-sm grid-cols-2 gap-x-8 gap-y-16 sm:grid-cols-3">

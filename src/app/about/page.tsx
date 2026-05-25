@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import ProfileCard from "@/components/ProfileCard";
 import AnimatedWorkLink from "@/components/AnimatedWorkLink";
+import ContactModalLink from "@/components/ContactModalLink";
 import fs from "fs/promises";
 import path from "path";
 import ReactMarkdown from "react-markdown";
@@ -18,9 +19,10 @@ export default async function About() {
   const filePath = path.join(process.cwd(), "public", "content", "about.md");
   const markdown = await fs.readFile(filePath, "utf8");
 
-  const MarkdownLink = (props: AnchorHTMLAttributes<HTMLAnchorElement>) => {
-    const { href, children, ...rest } = props;
-    const className = `text-blue-500 hover:underline hover:opacity-70 transition-smooth duration-200 ease-in-out ${props.className ?? ""}`;
+  const MarkdownLink = (props: AnchorHTMLAttributes<HTMLAnchorElement> & { node?: unknown }) => {
+    const { href, children, node: _node, className: passedClassName, ...rest } = props;
+    void _node;
+    const className = `text-blue-500 dark:text-blue-400 hover:underline hover:opacity-70 transition-smooth duration-200 ease-in-out ${passedClassName ?? ""}`;
     if (href && /^https?:\/\//.test(href)) {
       return (
         <a
@@ -32,6 +34,17 @@ export default async function About() {
         >
           {children}
         </a>
+      );
+    }
+    if (href === "#contact" || href === "#contact-modal") {
+      return (
+        <ContactModalLink
+          href={href}
+          className={className}
+          {...(rest as Omit<AnchorHTMLAttributes<HTMLAnchorElement>, "href">)}
+        >
+          {children}
+        </ContactModalLink>
       );
     }
     if (href) {
@@ -70,7 +83,7 @@ export default async function About() {
             It&apos;s nice to meet you! 👋
           </h1>
           <div className="space-y-4">
-            <div className="text-neutral-700">
+            <div className="text-neutral-700 dark:text-neutral-300">
               <ReactMarkdown
                 remarkPlugins={[remarkGfm]}
                 components={{ a: MarkdownLink, p: Paragraph }}

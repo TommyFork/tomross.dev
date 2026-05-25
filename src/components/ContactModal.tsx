@@ -1,6 +1,5 @@
 "use client";
 
-import Link from "next/link";
 import {
   useCallback,
   useEffect,
@@ -11,17 +10,12 @@ import {
 } from "react";
 import { createPortal } from "react-dom";
 
+import type { AnchorRect } from "@/components/ContactModalContext";
+
 const ANIMATION_DURATION = 420;
 const ANIMATION_EASING = "cubic-bezier(0.24, 0.94, 0.32, 1)";
 const BACKDROP_DURATION = 300;
 const MASK_SEQUENCE = [71, 18, 112, 5, 209, 88, 44];
-
-type AnchorRect = {
-  left: number;
-  top: number;
-  width: number;
-  height: number;
-};
 
 type ContactModalProps = {
   open: boolean;
@@ -327,14 +321,14 @@ export default function ContactModal({
     >
       <div
         ref={backdropRef}
-        className="absolute inset-0 bg-white/60 backdrop-blur-[2px] transition-opacity duration-200"
+        className="absolute inset-0 bg-white/60 dark:bg-black/60 backdrop-blur-[2px] transition-opacity duration-200"
         style={{ opacity: displayState === "open" ? 1 : 0.2 }}
         aria-hidden="true"
         onClick={onClose}
       />
       <div
         ref={modalRef}
-        className="contact-genie relative w-full max-w-lg overflow-hidden rounded-2xl border border-neutral-200 bg-white shadow-xl"
+        className="contact-genie relative w-full max-w-lg overflow-hidden rounded-2xl border border-neutral-200 dark:border-neutral-700 bg-white dark:bg-neutral-900 shadow-xl dark:shadow-2xl"
         data-state={displayState}
         role="dialog"
         aria-modal="true"
@@ -343,16 +337,16 @@ export default function ContactModal({
         <button
           type="button"
           onClick={onClose}
-          className="absolute right-4 top-4 inline-flex h-8 w-8 items-center justify-center rounded-full border border-neutral-200 text-neutral-500 transition hover:border-neutral-300 hover:text-neutral-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-neutral-900"
+          className="absolute right-4 top-4 inline-flex h-8 w-8 items-center justify-center rounded-full border border-neutral-200 dark:border-neutral-700 text-neutral-500 dark:text-neutral-400 transition hover:border-neutral-300 dark:hover:border-neutral-500 hover:text-neutral-900 dark:hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-white dark:focus-visible:ring-offset-neutral-900 focus-visible:ring-neutral-900 dark:focus-visible:ring-neutral-100"
           aria-label="Close contact dialog"
         >
           <span className="text-lg leading-none">×</span>
         </button>
         <div className="p-6 sm:p-8">
-          <h2 id="contact-modal-title" className="text-2xl font-medium tracking-tight text-neutral-900">
+          <h2 id="contact-modal-title" className="text-2xl font-medium tracking-tight text-neutral-900 dark:text-white">
             Want to chat?
           </h2>
-          <p className="mt-3 text-sm leading-relaxed text-neutral-600">
+          <p className="mt-3 text-sm leading-relaxed text-neutral-600 dark:text-neutral-400">
             Send me a note and let&apos;s make something happen.
           </p>
           <div className="mt-6 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
@@ -361,7 +355,7 @@ export default function ContactModal({
               ref={focusRef}
               onClick={handleRevealOrCopy}
               onMouseEnter={revealEmail}
-              className="inline-flex items-center justify-center rounded-full bg-neutral-900 px-6 py-2.5 text-sm font-medium text-white transition hover:bg-neutral-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-neutral-900 disabled:cursor-not-allowed disabled:opacity-60"
+              className="inline-flex items-center justify-center rounded-full bg-neutral-900 dark:bg-white px-6 py-2.5 text-sm font-medium text-white dark:text-neutral-900 transition hover:bg-neutral-700 dark:hover:bg-neutral-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-white dark:focus-visible:ring-offset-neutral-900 focus-visible:ring-neutral-900 dark:focus-visible:ring-neutral-100 disabled:cursor-not-allowed disabled:opacity-60"
               disabled={status === "blocked"}
             >
               {status === "blocked"
@@ -376,7 +370,7 @@ export default function ContactModal({
               <a
                 href={`mailto:${email}`}
                 onFocus={revealEmail}
-                className="select-all text-sm font-mono tracking-tight text-neutral-500 underline-offset-4 transition hover:text-neutral-900 hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-neutral-900"
+                className="select-all text-sm font-mono tracking-tight text-neutral-500 dark:text-neutral-400 underline-offset-4 transition hover:text-neutral-900 dark:hover:text-white hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-white dark:focus-visible:ring-offset-neutral-900 focus-visible:ring-neutral-900 dark:focus-visible:ring-neutral-100"
               >
                 {email}
               </a>
@@ -384,21 +378,14 @@ export default function ContactModal({
           </div>
           {notice === "blocked" ? (
             <p className="mt-4 text-xs leading-relaxed text-rose-500" aria-live="assertive">
-              Email protected — reach out via the {" "}
-              <Link
-                href="/contact"
-                className="underline underline-offset-2 transition hover:text-rose-600"
-              >
-                contact page
-              </Link>
-              .
+              Email protected. Our bot check blocked this request — please reach out through another channel.
             </p>
           ) : notice === "clipboard-unavailable" ? (
-            <p className="mt-4 text-xs leading-relaxed text-neutral-500" aria-live="polite">
+            <p className="mt-4 text-xs leading-relaxed text-neutral-500 dark:text-neutral-400" aria-live="polite">
               Clipboard unavailable — highlight the address to copy it manually.
             </p>
           ) : notice === "clipboard-failed" ? (
-            <p className="mt-4 text-xs leading-relaxed text-neutral-500" aria-live="polite">
+            <p className="mt-4 text-xs leading-relaxed text-neutral-500 dark:text-neutral-400" aria-live="polite">
               Copy failed — highlight the address if you still need it.
             </p>
           ) : null}

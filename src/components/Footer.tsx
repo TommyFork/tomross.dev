@@ -4,7 +4,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { usePathname } from "next/navigation";
-import { GitHubIcon, LinkedInIcon, XIcon } from "@/components/icons/SocialIcons";
+import { GitHubIcon, LinkedInIcon } from "@/components/icons/SocialIcons";
 import DogRunnerGame from "@/components/DogRunnerGame";
 
 const GAME_WRAPPER_HEIGHT = 210; // matches DogRunnerGame CANVAS_HEIGHT
@@ -51,7 +51,7 @@ export default function Footer() {
   return (
     <footer
       ref={footerRef}
-      className="relative py-10 text-sm text-neutral-500"
+      className="relative py-10 text-sm text-neutral-500 dark:text-neutral-400"
     >
       {isAboutPage && showGame ? (
         <div
@@ -65,17 +65,17 @@ export default function Footer() {
       ) : null}
       <div
         className={`flex items-center justify-between ${
-          isAboutPage ? "border-t border-neutral-200/70 pt-10" : ""
+          isAboutPage ? "border-t border-neutral-200/70 dark:border-neutral-700/70 pt-10" : ""
         }`}
       >
         <p>© {new Date().getFullYear()} Tommy Ross</p>
-        <div className="flex items-center gap-5 text-neutral-700">
+        <div className="flex items-center gap-5 text-neutral-700 dark:text-neutral-300">
           <Link
             href="https://github.com/TommyFork"
             target="_blank"
             rel="noreferrer noopener"
             aria-label="GitHub"
-            className="transition-colors duration-150 hover:text-neutral-900"
+            className="transition-colors duration-150 hover:text-neutral-900 dark:hover:text-white"
           >
             <GitHubIcon width={20} height={20} />
           </Link>
@@ -84,18 +84,9 @@ export default function Footer() {
             target="_blank"
             rel="noreferrer noopener"
             aria-label="LinkedIn"
-            className="transition-colors duration-150 hover:text-neutral-900"
+            className="transition-colors duration-150 hover:text-neutral-900 dark:hover:text-white"
           >
             <LinkedInIcon width={20} height={20} />
-          </Link>
-          <Link
-            href="https://x.com/tommytelos"
-            target="_blank"
-            rel="noreferrer noopener"
-            aria-label="X"
-            className="transition-colors duration-150 hover:text-neutral-900"
-          >
-            <XIcon width={20} height={20} />
           </Link>
           {isAboutPage ? (
             <div className="relative group">
@@ -111,7 +102,7 @@ export default function Footer() {
                 }}
                 aria-label={showGame ? "Hide dog runner" : "Play dog runner"}
                 aria-pressed={showGame}
-                className="inline-flex h-8 w-8 items-center justify-center rounded-full text-neutral-700 transition-all duration-200 hover:-translate-y-[1px] hover:text-neutral-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-400 active:scale-95 cursor-pointer"
+                className="inline-flex h-8 w-8 items-center justify-center rounded-full text-neutral-700 dark:text-neutral-300 transition-all duration-200 hover:-translate-y-[1px] hover:text-neutral-900 dark:hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-400 active:scale-95 cursor-pointer"
               >
                 <Image
                   src="/dino/dog.png"
@@ -121,7 +112,7 @@ export default function Footer() {
                   className="pointer-events-none"
                 />
               </button>
-              <span className="pointer-events-none absolute -top-9 left-1/2 -translate-x-1/2 translate-y-1 whitespace-nowrap rounded-md bg-white px-2.5 py-1 text-[11px] font-medium text-neutral-500 opacity-0 shadow-sm transition-all duration-150 group-hover:translate-y-0 group-hover:opacity-100 group-focus-within:translate-y-0 group-focus-within:opacity-100">
+              <span className="pointer-events-none absolute -top-9 left-1/2 -translate-x-1/2 translate-y-1 whitespace-nowrap rounded-md bg-white dark:bg-neutral-800 px-2.5 py-1 text-[11px] font-medium text-neutral-500 dark:text-neutral-400 opacity-0 shadow-sm dark:shadow-neutral-900 transition-all duration-150 group-hover:translate-y-0 group-hover:opacity-100 group-focus-within:translate-y-0 group-focus-within:opacity-100">
                 Click me!
               </span>
             </div>
