@@ -17,6 +17,19 @@ const nextConfig: NextConfig = {
       { source: "/about", destination: "/", permanent: true },
     ];
   },
+  async headers() {
+    return [
+      {
+        source: "/resume.pdf",
+        headers: [
+          {
+            key: "X-Robots-Tag",
+            value: "noindex, nofollow, noarchive, nosnippet",
+          },
+        ],
+      },
+    ];
+  },
 };
 
 export default withMDX(nextConfig);
