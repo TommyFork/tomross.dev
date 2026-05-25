@@ -20,7 +20,6 @@ export default function AnimatedWorkLink() {
         fill
         sizes="(min-width: 768px) 320px, calc(100vw - 48px)"
         priority
-        fetchPriority="high"
         className={`object-cover transition-transform duration-700 ease-out ${
           isHovered ? "scale-125 translate-x-5" : "scale-105"
         }`}

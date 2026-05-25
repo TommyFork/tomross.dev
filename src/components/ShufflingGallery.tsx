@@ -72,7 +72,8 @@ export default function ShufflingGallery({
       className={`relative w-full ${className ? className : ""} mx-auto`}
       style={{ height: galleryHeight }}
     >
-      {images.slice(0, 3).map((image, i) => {
+      {images.map((image, i) => {
+        const visible = i < 3;
         const isTop = i === 0;
         const isSecond = i === 1;
         const isThird = i === 2;
@@ -90,10 +91,15 @@ export default function ShufflingGallery({
         return (
           <div
             key={image.src}
-            className="absolute h-full w-full origin-bottom transition-transform duration-500 ease-out"
+            className="absolute h-full w-full origin-bottom"
             style={{
               zIndex: images.length - i,
-              transform: `translate3d(${translateX}px, ${translateY}px, 0) rotate(${rotate}deg) scale(${scale})`,
+              transform: visible
+                ? `translate3d(${translateX}px, ${translateY}px, 0) rotate(${rotate}deg) scale(${scale})`
+                : `translate3d(0, 60px, 0) scale(0.85)`,
+              opacity: visible ? 1 : 0,
+              transition: "transform 500ms ease-out, opacity 400ms ease-out",
+              pointerEvents: visible ? undefined : "none",
             }}
           >
             <Image
