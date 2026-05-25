@@ -58,10 +58,12 @@ export default function ContactModal({
     null | "blocked" | "clipboard-unavailable" | "clipboard-failed"
   >(null);
 
-  if (typeof document !== "undefined" && portalRef.current === null) {
-    portalRef.current = document.createElement("div");
-    portalRef.current.setAttribute("id", "contact-modal-root");
-  }
+  useLayoutEffect(() => {
+    if (portalRef.current === null) {
+      portalRef.current = document.createElement("div");
+      portalRef.current.setAttribute("id", "contact-modal-root");
+    }
+  }, []);
 
   useEffect(() => {
     latestOpenRef.current = open;
