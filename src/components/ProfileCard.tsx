@@ -1,5 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
+import ContactModalLink from "@/components/ContactModalLink";
 import {
   GitHubIcon,
   LinkedInIcon,
@@ -14,7 +15,7 @@ export default function ProfileCard() {
       </div>
       <div className="text-center">
         <div className="font-medium">Tommy Ross</div>
-        <div className="text-sm text-neutral-500 dark:text-neutral-400">Full‑Stack Developer</div>
+        <div className="text-sm text-neutral-500 dark:text-neutral-400">Full‑Stack Product Engineer</div>
       </div>
       <div className="flex items-center gap-4 text-sm text-neutral-700 dark:text-neutral-300">
         <Link
@@ -35,13 +36,13 @@ export default function ProfileCard() {
         >
           <LinkedInIcon />
         </Link>
-        <Link
+        <ContactModalLink
           href="#contact"
           className="hover:text-neutral-900 dark:hover:text-white"
           aria-label="Contact"
         >
           <EnvelopeIcon />
-        </Link>
+        </ContactModalLink>
       </div>
     </div>
   );
