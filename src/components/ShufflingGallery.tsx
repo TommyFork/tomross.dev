@@ -93,7 +93,7 @@ export default function ShufflingGallery({
             key={image.src}
             className="absolute h-full w-full origin-bottom"
             style={{
-              zIndex: images.length - i,
+              zIndex: visible ? images.length - i : 0,
               transform: visible
                 ? `translate3d(${translateX}px, ${translateY}px, 0) rotate(${rotate}deg) scale(${scale})`
                 : `translate3d(0, 60px, 0) scale(0.85)`,

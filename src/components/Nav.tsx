@@ -165,7 +165,6 @@ export default function Nav() {
     menuPortalTarget
       ? createPortal(
           <div
-            key="mobile-menu"
             className={`fixed inset-0 z-[80] sm:hidden transition-opacity duration-150 ease-in ${
               isMenuOpen ? "opacity-100" : "opacity-0 pointer-events-none"
             }`}
