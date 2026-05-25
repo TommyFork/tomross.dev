@@ -1,5 +1,7 @@
 @import "tailwindcss";
 
+@custom-variant dark (&:where(.dark, .dark *));
+
 :root {
   --background: #ffffff;
   --foreground: #171717;
@@ -11,6 +13,11 @@
   --next-step-blue: #0075FE;
   --next-step-dark-blue: #074B9C;
   --next-step-gold: #F4C430;
+}
+
+.dark {
+  --background: #0a0a0a;
+  --foreground: #ededed;
 }
 
 @theme inline {
@@ -28,7 +35,7 @@ body {
   background: var(--background);
   color: var(--foreground);
   font-family: var(--font-geist-sans), ui-sans-serif, system-ui, -apple-system;
-  color-scheme: light;
+  color-scheme: light dark;
 }
 
 /* Minimal animation utilities */

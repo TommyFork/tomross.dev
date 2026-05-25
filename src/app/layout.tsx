@@ -71,8 +71,15 @@ export default function RootLayout({
   const gaId = process.env.NEXT_PUBLIC_GA_ID;
   const isProd = process.env.NODE_ENV === "production";
   return (
-    <html lang="en" className={`${geistSans.variable} ${geistMono.variable}`}>
-      <body className="light antialiased">
+    <html lang="en" className={`${geistSans.variable} ${geistMono.variable}`} suppressHydrationWarning>
+      <head>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `(function(){var s=localStorage.getItem('theme');var d=window.matchMedia('(prefers-color-scheme:dark)').matches;if(s==='dark'||(s===null&&d))document.documentElement.classList.add('dark');})();`,
+          }}
+        />
+      </head>
+      <body className="antialiased">
         {isProd && (
           <>
             {gaId && (

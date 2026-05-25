@@ -72,7 +72,7 @@ export default async function About() {
           <div className="space-y-4">
             <ReactMarkdown
               remarkPlugins={[remarkGfm]}
-              className="text-neutral-700"
+              className="text-neutral-700 dark:text-neutral-300"
               components={{ a: MarkdownLink, p: Paragraph }}
             >
               {markdown}
