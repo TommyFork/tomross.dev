@@ -606,7 +606,7 @@ export default function WorkContent() {
                     </Reveal>
                     <Reveal>
                       <Card className="relative overflow-visible px-8 py-8 sm:py-10 md:py-12">
-                        <h3 className="mb-6 text-center text-xl font-medium text-[var(--next-step-dark-blue)] md:text-lg">
+                        <h3 className="mb-6 text-center text-xl font-medium text-[var(--next-step-dark-blue)] dark:text-blue-400 md:text-lg">
                           Tech Stack
                         </h3>
                         <div className="mx-auto grid max-w-sm grid-cols-2 gap-x-8 gap-y-16 sm:grid-cols-3">
