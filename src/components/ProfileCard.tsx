@@ -36,7 +36,7 @@ export default function ProfileCard() {
           <LinkedInIcon />
         </Link>
         <Link
-          href="?contact=modal"
+          href="#contact"
           className="hover:text-neutral-900 dark:hover:text-white"
           aria-label="Contact"
         >
