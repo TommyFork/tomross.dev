@@ -11,7 +11,7 @@ import type { AnchorHTMLAttributes, HTMLAttributes } from "react";
 
 export const metadata: Metadata = {
   description:
-    "Get to know me—I'm Tommy Ross, a full-stack developer focused on building thoughtful, user-centered products.",
+    "Get to know me—I'm Tommy Ross, a full-stack engineer focused on building thoughtful, user-centered products.",
 };
 
 const markdownLinkClassName =

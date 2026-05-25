@@ -20,14 +20,14 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   metadataBase: new URL("https://tomross.dev"),
   title: {
-    default: "Tommy Ross — Full‑Stack Developer",
+    default: "Tommy Ross — Full‑Stack Product Engineer",
     template: "%s — Tommy Ross",
   },
   description:
-    "I'm a full-stack developer building polished, data-driven products and experiences.",
+    "I'm a full-stack engineer  building polished, data-driven products and experiences.",
   keywords: [
     "Tommy Ross",
-    "Full-stack developer",
+    "Full-stack engineer",
     "Product engineer",
     "React",
     "Next.js",
@@ -35,7 +35,7 @@ export const metadata: Metadata = {
   ],
   authors: [{ name: "Tommy Ross", url: "https://tomross.dev" }],
   openGraph: {
-    title: "Tommy Ross — Full‑Stack Developer",
+    title: "Tommy Ross — Full‑Stack Product Engineer",
     description:
       "Explore my portfolio of full-stack product work, writing, and ways to get in touch.",
     url: "https://tomross.dev",
