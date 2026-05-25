@@ -23,7 +23,7 @@ export default function ImageCard({ src, alt, children }: ImageCardProps) {
       </Card>
       <div className="relative z-10 -mt-8">
         <Card className="rounded border-blue-200 dark:border-blue-900/60 bg-white/90 dark:bg-neutral-900/90 backdrop-blur px-6 py-5 text-center">
-          <p className="text-[var(--brightbook-dark-blue)] text-lg md:text-xl font-medium">
+          <p className="text-[var(--brightbook-dark-blue)] dark:text-blue-300 text-lg md:text-xl font-medium">
             {children}
           </p>
         </Card>

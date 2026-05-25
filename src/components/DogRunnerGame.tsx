@@ -678,8 +678,14 @@ export default function DogRunnerGame({ onExit }: { onExit: () => void }) {
     const canvas = canvasRef.current;
     canvas?.addEventListener("pointerdown", onPointerDown);
 
+    const themeObserver = new MutationObserver(() => {
+      if (gameStateRef.current !== "running") renderScene();
+    });
+    themeObserver.observe(document.documentElement, { attributes: true, attributeFilter: ["class"] });
+
     return () => {
       resizeObserver.disconnect();
+      themeObserver.disconnect();
       cancelAnimation();
       window.removeEventListener("keydown", onKeyDown);
       canvas?.removeEventListener("pointerdown", onPointerDown);

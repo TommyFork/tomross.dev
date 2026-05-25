@@ -4,9 +4,10 @@ import { createContext, useContext, useEffect, useState, type ReactNode } from "
 
 type Theme = "light" | "dark";
 
-const ThemeContext = createContext<{ theme: Theme; toggle: () => void }>({
+const ThemeContext = createContext<{ theme: Theme; toggle: () => void; mounted: boolean }>({
   theme: "light",
   toggle: () => {},
+  mounted: false,
 });
 
 export function ThemeProvider({ children }: { children: ReactNode }) {
@@ -34,7 +35,7 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
 
   const toggle = () => setTheme((t) => (t === "dark" ? "light" : "dark"));
 
-  return <ThemeContext.Provider value={{ theme, toggle }}>{children}</ThemeContext.Provider>;
+  return <ThemeContext.Provider value={{ theme, toggle, mounted }}>{children}</ThemeContext.Provider>;
 }
 
 export function useTheme() {

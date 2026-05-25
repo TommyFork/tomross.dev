@@ -37,7 +37,7 @@ function MoonIcon() {
 
 export default function Nav() {
   const pathname = usePathname();
-  const { theme, toggle } = useTheme();
+  const { theme, toggle, mounted } = useTheme();
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const headerRef = useRef<HTMLElement | null>(null);
@@ -289,7 +289,7 @@ export default function Nav() {
               aria-hidden="true"
               className="relative z-10 inline-flex h-6 w-6 translate-x-0 items-center justify-center rounded-full bg-white text-amber-400 shadow-sm ring-1 ring-black/5 transition-transform duration-200 ease-out dark:translate-x-6 dark:bg-neutral-950 dark:text-neutral-200 dark:ring-white/10"
             >
-              {theme === "dark" ? <MoonIcon /> : <SunIcon />}
+              {mounted ? (theme === "dark" ? <MoonIcon /> : <SunIcon />) : null}
             </span>
           </button>
           <button
