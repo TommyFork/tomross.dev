@@ -46,6 +46,12 @@ export default function ContactModal({
   );
   const [prefersReducedMotion, setPrefersReducedMotion] = useState(false);
   const [copied, setCopied] = useState(false);
+  const idleLabelRef = useRef<HTMLSpanElement | null>(null);
+  const copiedLabelRef = useRef<HTMLSpanElement | null>(null);
+  const [labelWidths, setLabelWidths] = useState<{ idle: number; copied: number }>({
+    idle: 0,
+    copied: 0,
+  });
   const [email, setEmail] = useState<string | null>(null);
   const [status, setStatus] = useState<"idle" | "revealed" | "blocked">("idle");
   const [notice, setNotice] = useState<
@@ -136,6 +142,17 @@ export default function ContactModal({
       portalRef.current?.remove();
     };
   }, [mounted]);
+
+  useLayoutEffect(() => {
+    if (!render) return;
+    const idle = idleLabelRef.current?.offsetWidth ?? 0;
+    const copiedW = copiedLabelRef.current?.offsetWidth ?? 0;
+    if (idle && copiedW) {
+      setLabelWidths((prev) =>
+        prev.idle === idle && prev.copied === copiedW ? prev : { idle, copied: copiedW },
+      );
+    }
+  }, [render, status]);
 
   useEffect(() => {
     return () => {
@@ -348,21 +365,89 @@ export default function ContactModal({
             Send me a note and let&apos;s make something happen.
           </p>
           <div className="mt-6 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+            {/* Off-flow measurement nodes — same font/size as the button labels */}
+            <span
+              aria-hidden="true"
+              className="pointer-events-none invisible fixed -left-[9999px] top-0 text-sm font-medium"
+            >
+              <span ref={idleLabelRef} className="inline-block whitespace-nowrap">
+                {status === "blocked"
+                  ? "Email protected"
+                  : status === "revealed"
+                    ? "Copy email"
+                    : "Reveal email"}
+              </span>
+              <span
+                ref={copiedLabelRef}
+                className="inline-flex items-center gap-2 whitespace-nowrap"
+              >
+                <svg width="16" height="16" aria-hidden="true" />
+                <span>Email copied</span>
+              </span>
+            </span>
             <button
               type="button"
               ref={focusRef}
               onClick={handleRevealOrCopy}
               onMouseEnter={revealEmail}
-              className="inline-flex items-center justify-center rounded-full bg-neutral-900 dark:bg-white px-6 py-2.5 text-sm font-medium text-white dark:text-neutral-900 transition hover:bg-neutral-700 dark:hover:bg-neutral-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-white dark:focus-visible:ring-offset-neutral-900 focus-visible:ring-neutral-900 dark:focus-visible:ring-neutral-100 disabled:cursor-not-allowed disabled:opacity-60"
+              className={`relative w-fit cursor-pointer self-start overflow-hidden rounded-full px-6 py-2.5 text-sm font-medium transition-[background-color,color,width] duration-[420ms] ease-[cubic-bezier(0.22,1,0.36,1)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-white dark:focus-visible:ring-offset-neutral-900 focus-visible:ring-neutral-900 dark:focus-visible:ring-neutral-100 disabled:cursor-not-allowed disabled:opacity-60 ${
+                copied
+                  ? "bg-emerald-600 text-white hover:bg-emerald-600 dark:bg-emerald-500 dark:text-white dark:hover:bg-emerald-500 copy-pulse"
+                  : "bg-neutral-900 text-white hover:bg-neutral-700 dark:bg-white dark:text-neutral-900 dark:hover:bg-neutral-200"
+              }`}
+              style={
+                labelWidths.idle && labelWidths.copied
+                  ? {
+                      width: `calc(${copied ? labelWidths.copied : labelWidths.idle}px + 3rem)`,
+                    }
+                  : undefined
+              }
               disabled={status === "blocked"}
+              aria-live="polite"
             >
-              {status === "blocked"
-                ? "Email protected"
-                : status === "revealed"
-                  ? copied
-                    ? "Email copied"
-                    : "Copy email"
-                  : "Reveal email"}
+              {/* Invisible sizer keeps the button height stable */}
+              <span className="invisible whitespace-nowrap" aria-hidden="true">
+                Email copied
+              </span>
+              <span
+                className="absolute inset-0 flex items-center justify-center whitespace-nowrap"
+                style={{
+                  opacity: copied ? 0 : 1,
+                  transition: copied
+                    ? "opacity 160ms ease"
+                    : "opacity 220ms ease 180ms",
+                }}
+              >
+                {status === "blocked"
+                  ? "Email protected"
+                  : status === "revealed"
+                    ? "Copy email"
+                    : "Reveal email"}
+              </span>
+              <span
+                className="absolute inset-0 flex items-center justify-center gap-2 whitespace-nowrap"
+                style={{
+                  opacity: copied ? 1 : 0,
+                  transition: copied
+                    ? "opacity 220ms ease 180ms"
+                    : "opacity 160ms ease",
+                }}
+              >
+                <svg
+                  width="16"
+                  height="16"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="3"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  aria-hidden="true"
+                >
+                  {copied ? <path className="copy-check-path" d="M5 12.5l4.5 4.5L19 7" /> : null}
+                </svg>
+                <span>Email copied</span>
+              </span>
             </button>
             {status === "revealed" && email ? (
               <a
