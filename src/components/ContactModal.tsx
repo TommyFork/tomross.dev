@@ -1,6 +1,5 @@
 "use client";
 
-import Link from "next/link";
 import {
   useCallback,
   useEffect,
@@ -11,17 +10,12 @@ import {
 } from "react";
 import { createPortal } from "react-dom";
 
+import type { AnchorRect } from "@/components/ContactModalContext";
+
 const ANIMATION_DURATION = 420;
 const ANIMATION_EASING = "cubic-bezier(0.24, 0.94, 0.32, 1)";
 const BACKDROP_DURATION = 300;
 const MASK_SEQUENCE = [71, 18, 112, 5, 209, 88, 44];
-
-type AnchorRect = {
-  left: number;
-  top: number;
-  width: number;
-  height: number;
-};
 
 type ContactModalProps = {
   open: boolean;
@@ -382,14 +376,7 @@ export default function ContactModal({
           </div>
           {notice === "blocked" ? (
             <p className="mt-4 text-xs leading-relaxed text-rose-500" aria-live="assertive">
-              Email protected — reach out via the {" "}
-              <Link
-                href="/contact"
-                className="underline underline-offset-2 transition hover:text-rose-600"
-              >
-                contact page
-              </Link>
-              .
+              Email protected. Our bot check blocked this request — please reach out through another channel.
             </p>
           ) : notice === "clipboard-unavailable" ? (
             <p className="mt-4 text-xs leading-relaxed text-neutral-500 dark:text-neutral-400" aria-live="polite">

@@ -1,14 +1,14 @@
 "use client";
 
-import { useEffect, useRef, useState, type MouseEvent } from "react";
+import { useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 
 import { AnimatePresence, motion } from "framer-motion";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
-import { useContactModal } from "@/components/ContactModalContext";
 import { useTheme } from "@/components/ThemeContext";
+import ContactModalLink from "@/components/ContactModalLink";
 
 const links = [
   { href: "/about", label: "About" },
@@ -37,7 +37,6 @@ function MoonIcon() {
 
 export default function Nav() {
   const pathname = usePathname();
-  const { openModal } = useContactModal();
   const { theme, toggle } = useTheme();
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -73,11 +72,7 @@ export default function Nav() {
     };
   }, []);
 
-  const handleOpenModal = (event: MouseEvent<HTMLButtonElement>) => {
-    setIsMenuOpen(false);
-    const trigger = event.currentTarget;
-    openModal({ triggerRect: trigger.getBoundingClientRect(), trigger });
-  };
+  const contactHref = `${pathname === "/" ? "/about" : pathname}#contact`;
 
   useEffect(() => {
     setIsMenuOpen(false);
@@ -221,14 +216,15 @@ export default function Nav() {
                         );
                       })}
                       <li className="pt-1.5">
-                        <motion.button
-                          type="button"
-                          onClick={handleOpenModal}
-                          whileTap={{ scale: 0.97 }}
-                          className={mobileContactButtonClassName}
+                        <motion.div whileTap={{ scale: 0.97 }}>
+                          <ContactModalLink
+                            href={contactHref}
+                            onClick={() => setIsMenuOpen(false)}
+                            className={mobileContactButtonClassName}
                           >
-                          Let&apos;s chat
-                        </motion.button>
+                            Let’s chat
+                          </ContactModalLink>
+                        </motion.div>
                       </li>
                     </ul>
                   </div>
@@ -264,9 +260,9 @@ export default function Nav() {
                 );
               })}
             </ul>
-            <button type="button" onClick={handleOpenModal} className={contactButtonClassName}>
-              Let&apos;s chat
-            </button>
+            <ContactModalLink href={contactHref} className={contactButtonClassName}>
+              Let’s chat
+            </ContactModalLink>
           </div>
           <button
             type="button"
