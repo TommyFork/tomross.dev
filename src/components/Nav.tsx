@@ -131,7 +131,7 @@ export default function Nav() {
     : "inline-flex h-11 w-11 items-center justify-center rounded-full border border-transparent bg-white dark:bg-neutral-800 text-slate-600 dark:text-neutral-300 shadow-sm transition-all duration-200 hover:-translate-y-[1px] hover:border-slate-200/80 dark:hover:border-neutral-600 hover:bg-white dark:hover:bg-neutral-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-400 active:scale-95";
 
   const themeToggleClassName = isScrolled
-    ? "group relative inline-flex h-9 w-9 shrink-0 cursor-pointer items-center justify-center rounded-full text-sky-500 dark:text-amber-300 transition-all duration-300 ease-out hover:bg-sky-400/15 dark:hover:bg-amber-300/15 hover:scale-110 active:scale-90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-200"
+    ? "group relative inline-flex h-9 w-9 shrink-0 cursor-pointer items-center justify-center rounded-full text-sky-500 dark:text-amber-300 transition-all duration-300 ease-out hover:bg-sky-400/15 dark:hover:bg-amber-300/15 hover:scale-110 active:scale-90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-200 focus-visible:ring-offset-2 focus-visible:ring-offset-white dark:focus-visible:ring-offset-neutral-950"
     : "group relative inline-flex h-9 w-9 shrink-0 cursor-pointer items-center justify-center rounded-full text-sky-500 dark:text-amber-300 transition-all duration-300 ease-out hover:bg-sky-400/15 dark:hover:bg-amber-300/15 hover:scale-110 active:scale-90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-400 focus-visible:ring-offset-2 focus-visible:ring-offset-white dark:focus-visible:ring-offset-neutral-950";
 
   const navLinkBaseClassName = "transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-200";
@@ -280,11 +280,11 @@ export default function Nav() {
             onClick={toggle}
             role="switch"
             aria-checked={mounted ? theme === "dark" : undefined}
-            aria-label={mounted ? (theme === "dark" ? "Switch to light mode" : "Switch to dark mode") : "Toggle theme"}
+            aria-label="Dark mode"
             className={themeToggleClassName}
           >
             <span aria-hidden="true" className="relative inline-flex h-4 w-4 items-center justify-center transition-transform duration-500 ease-[cubic-bezier(0.34,1.56,0.64,1)] group-hover:rotate-[20deg] group-hover:drop-shadow-[0_0_6px_currentColor] group-active:scale-75">
-              {mounted ? (theme === "dark" ? <SunIcon /> : <MoonIcon />) : null}
+              {mounted ? (theme === "dark" ? <SunIcon /> : <MoonIcon />) : <span className="invisible" aria-hidden="true"><MoonIcon /></span>}
             </span>
           </button>
           <button
