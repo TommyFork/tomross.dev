@@ -268,11 +268,11 @@ export default function Nav() {
             type="button"
             onClick={toggle}
             role="switch"
-            aria-checked={theme === "dark"}
-            aria-label={theme === "dark" ? "Switch to light mode" : "Switch to dark mode"}
+            aria-checked={mounted ? theme === "dark" : undefined}
+            aria-label={mounted ? (theme === "dark" ? "Switch to light mode" : "Switch to dark mode") : "Toggle theme"}
             className={themeSwitchClassName}
           >
-            <span className="sr-only">{theme === "dark" ? "Switch to light mode" : "Switch to dark mode"}</span>
+            <span className="sr-only">{mounted ? (theme === "dark" ? "Switch to light mode" : "Switch to dark mode") : "Toggle theme"}</span>
             <span
               aria-hidden="true"
               className="absolute left-2 text-[10px] text-amber-400 opacity-100 drop-shadow-[0_0_5px_rgba(251,191,36,0.65)] transition-opacity duration-200 dark:text-amber-300 dark:opacity-35"
