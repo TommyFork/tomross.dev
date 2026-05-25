@@ -83,13 +83,14 @@ export default async function About() {
             It&apos;s nice to meet you! 👋
           </h1>
           <div className="space-y-4">
-            <ReactMarkdown
-              remarkPlugins={[remarkGfm]}
-              className="text-neutral-700 dark:text-neutral-300"
-              components={{ a: MarkdownLink, p: Paragraph }}
-            >
-              {markdown}
-            </ReactMarkdown>
+            <div className="text-neutral-700 dark:text-neutral-300">
+              <ReactMarkdown
+                remarkPlugins={[remarkGfm]}
+                components={{ a: MarkdownLink, p: Paragraph }}
+              >
+                {markdown}
+              </ReactMarkdown>
+            </div>
           </div>
         </div>
       </div>
