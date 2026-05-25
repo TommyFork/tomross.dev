@@ -403,7 +403,6 @@ export default function ContactModal({
                   : undefined
               }
               disabled={status === "blocked"}
-              aria-live="polite"
             >
               {/* Invisible sizer keeps the button height stable */}
               <span className="invisible whitespace-nowrap" aria-hidden="true">
