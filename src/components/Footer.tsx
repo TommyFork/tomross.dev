@@ -12,7 +12,7 @@ const TRANSITION_DURATION = 300;
 
 export default function Footer() {
   const pathname = usePathname();
-  const isAboutPage = pathname === "/about";
+  const isAboutPage = pathname === "/";
   const [showGame, setShowGame] = useState(false);
   const [gameExpanded, setGameExpanded] = useState(false);
   const [animateHeight, setAnimateHeight] = useState(false);

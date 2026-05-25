@@ -11,7 +11,7 @@ import { useTheme } from "@/components/ThemeContext";
 import ContactModalLink from "@/components/ContactModalLink";
 
 const links = [
-  { href: "/about", label: "About" },
+  { href: "/", label: "About" },
   { href: "/portfolio", label: "Portfolio" },
   // { href: "/writing", label: "Writing" },
 ];
@@ -72,7 +72,7 @@ export default function Nav() {
     };
   }, []);
 
-  const contactHref = `${pathname === "/" ? "/about" : pathname}#contact`;
+  const contactHref = `${pathname}#contact`;
 
   useEffect(() => {
     setIsMenuOpen(false);
