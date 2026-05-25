@@ -8,7 +8,7 @@ export default function AnimatedWorkLink() {
 
   return (
     <Link
-      href="/work"
+      href="/portfolio"
       className="rounded-lg border border-neutral-200 dark:border-neutral-700 p-4 hover:shadow-sm hover:-translate-y-[1px] transition-all block relative overflow-hidden"
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}

@@ -12,7 +12,7 @@ import ContactModalLink from "@/components/ContactModalLink";
 
 const links = [
   { href: "/about", label: "About" },
-  { href: "/work", label: "Work" },
+  { href: "/portfolio", label: "Portfolio" },
   // { href: "/writing", label: "Writing" },
 ];
 
