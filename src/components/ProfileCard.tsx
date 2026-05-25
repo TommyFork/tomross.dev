@@ -3,6 +3,7 @@ import Link from "next/link";
 import {
   GitHubIcon,
   LinkedInIcon,
+  EnvelopeIcon,
 } from "@/components/icons/SocialIcons";
 
 export default function ProfileCard() {
@@ -33,6 +34,13 @@ export default function ProfileCard() {
           aria-label="LinkedIn"
         >
           <LinkedInIcon />
+        </Link>
+        <Link
+          href="#contact"
+          className="hover:text-neutral-900 dark:hover:text-white"
+          aria-label="Contact"
+        >
+          <EnvelopeIcon />
         </Link>
       </div>
     </div>
