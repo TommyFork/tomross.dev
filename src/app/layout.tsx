@@ -75,20 +75,18 @@ export default function RootLayout({
       <body className="antialiased">
         {isProd && (
           <>
+            <Analytics />
             {gaId && (
               <>
-                <Analytics />
                 <Script
                   src={`https://www.googletagmanager.com/gtag/js?id=${gaId}`}
                   strategy="afterInteractive"
                 />
                 <Script id="google-analytics" strategy="afterInteractive">
-                  {`
-                  window.dataLayer = window.dataLayer || [];
-                  function gtag(){dataLayer.push(arguments);} 
-                  gtag('js', new Date());
-                  gtag('config', '${gaId}');
-                `}
+                  {`window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+gtag('js', new Date());
+gtag('config', '${gaId}');`}
                 </Script>
               </>
             )}

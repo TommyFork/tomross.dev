@@ -1,7 +1,6 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
 
 type ShufflingImage = {
@@ -73,69 +72,48 @@ export default function ShufflingGallery({
       className={`relative w-full ${className ? className : ""} mx-auto`}
       style={{ height: galleryHeight }}
     >
-      <AnimatePresence>
-        {images.map((image, i) => {
-          if (i > 2) return null;
+      {images.map((image, i) => {
+        const visible = i < 3;
+        const isTop = i === 0;
+        const isSecond = i === 1;
+        const isThird = i === 2;
 
-          const isTop = i === 0;
-          const isSecond = i === 1;
-          const isThird = i === 2;
-
-          const baseScale = isTop
-            ? 1
-            : isSecond
+        const baseScale = isTop
+          ? 1
+          : isSecond
             ? secondScale
             : thirdScale;
-          const scale = baseScale * (image.scaleModifier || 1);
+        const scale = baseScale * (image.scaleModifier || 1);
+        const translateY = isTop ? 0 : -i * verticalOffset;
+        const translateX = isSecond ? -horizontalOffset : isThird ? horizontalOffset : 0;
+        const rotate = isSecond ? -rotation : isThird ? rotation : 0;
 
-          return (
-            <motion.div
-              key={image.src}
-              className="absolute w-full h-full origin-bottom"
-              style={{
-                zIndex: images.length - i,
-              }}
-              initial={{
-                opacity: 0,
-                y: 0,
-                scale: 1,
-                rotate: 0,
-              }}
-              animate={{
-                opacity: 1,
-                y: isTop ? 0 : -i * verticalOffset,
-                x: isSecond ? -horizontalOffset : isThird ? horizontalOffset : 0,
-                scale,
-                rotate: isSecond ? -rotation : isThird ? rotation : 0,
-                transition: {
-                  type: "spring",
-                  stiffness: 110,
-                  damping: 20,
-                },
-              }}
-              exit={{
-                y: 60,
-                scale: 0.85,
-                rotate: isTop ? rotation + 2.5 : 0,
-                opacity: 0,
-                transition: {
-                  duration: 0.6,
-                  ease: [0.22, 1, 0.36, 1], // easeOutQuint
-                },
-              }}
-            >
-              <Image
-                src={image.src}
-                alt={image.alt}
-                width={image.width}
-                height={image.height}
-                className="w-full h-auto object-cover rounded-xl shadow-2xl"
-                priority={i < 2}
-              />
-            </motion.div>
-          );
-        })}
-      </AnimatePresence>
+        return (
+          <div
+            key={image.src}
+            className="absolute h-full w-full origin-bottom"
+            style={{
+              zIndex: visible ? images.length - i : 0,
+              transform: visible
+                ? `translate3d(${translateX}px, ${translateY}px, 0) rotate(${rotate}deg) scale(${scale})`
+                : `translate3d(0, 60px, 0) scale(0.85)`,
+              opacity: visible ? 1 : 0,
+              transition: "transform 500ms ease-out, opacity 400ms ease-out",
+              pointerEvents: visible ? undefined : "none",
+            }}
+          >
+            <Image
+              src={image.src}
+              alt={image.alt}
+              width={image.width}
+              height={image.height}
+              sizes="(min-width: 768px) 576px, calc(100vw - 48px)"
+              loading={i === 0 ? "eager" : "lazy"}
+              className="h-auto w-full rounded-xl object-cover shadow-2xl"
+            />
+          </div>
+        );
+      })}
     </div>
   );
 }
