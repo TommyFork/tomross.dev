@@ -2,26 +2,16 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
 import { useState } from "react";
 
 export default function AnimatedWorkLink() {
   const [isHovered, setIsHovered] = useState(false);
-  const router = useRouter();
-
-  const prefetchWork = () => {
-    router.prefetch("/work");
-  };
 
   return (
     <Link
       href="/work"
       className="group rounded-lg border border-neutral-200 dark:border-neutral-700 p-4 hover:shadow-sm hover:-translate-y-[1px] transition-all block relative overflow-hidden"
-      onMouseEnter={() => {
-        setIsHovered(true);
-        prefetchWork();
-      }}
-      onFocus={prefetchWork}
+      onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
       <Image
@@ -39,7 +29,7 @@ export default function AnimatedWorkLink() {
 
       <div className="relative z-10">
         <div className="text-sm text-white/80">Explore</div>
-        <div className="text-base text-lg font-medium mt-1 text-white">
+        <div className="text-lg font-medium mt-1 text-white">
           See my work
         </div>
       </div>

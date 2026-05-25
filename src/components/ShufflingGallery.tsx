@@ -102,7 +102,7 @@ export default function ShufflingGallery({
               width={image.width}
               height={image.height}
               sizes="(min-width: 768px) 576px, calc(100vw - 48px)"
-              loading="lazy"
+              loading={i === 0 ? "eager" : "lazy"}
               className="h-auto w-full rounded-xl object-cover shadow-2xl"
             />
           </div>

@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 
 import Link from "next/link";
-import { usePathname, useRouter } from "next/navigation";
+import { usePathname } from "next/navigation";
 
 import { useTheme } from "@/components/ThemeContext";
 import ContactModalLink from "@/components/ContactModalLink";
@@ -34,7 +34,6 @@ function MoonIcon() {
 
 export default function Nav() {
   const pathname = usePathname();
-  const router = useRouter();
   const { theme, toggle, mounted } = useTheme();
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -162,10 +161,6 @@ export default function Nav() {
     ? "inline-flex w-full cursor-pointer items-center justify-center gap-2 rounded-full border border-white/45 dark:border-white/10 bg-white/70 dark:bg-neutral-800/70 px-4 py-2 text-sm font-semibold text-slate-900 dark:text-neutral-200 shadow-sm transition-all duration-200 sm:w-auto hover:-translate-y-[0.5px] hover:bg-black hover:text-white hover:border-black dark:hover:bg-white dark:hover:text-black dark:hover:border-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-200 active:scale-95"
     : "inline-flex w-full cursor-pointer items-center justify-center gap-2 rounded-full border border-transparent bg-white dark:bg-neutral-800 px-4 py-2 text-sm font-medium text-neutral-600 dark:text-neutral-300 shadow-sm transition-all duration-200 sm:w-auto hover:-translate-y-[0.5px] hover:bg-black hover:text-white hover:border-black dark:hover:bg-white dark:hover:text-black dark:hover:border-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-400 active:scale-95";
 
-  const prefetchRoute = (href: string) => {
-    router.prefetch(href);
-  };
-
   const mobileMenu =
     menuPortalTarget
       ? createPortal(
@@ -197,8 +192,6 @@ export default function Nav() {
                             <Link
                               href={item.href}
                               aria-current={active ? "page" : undefined}
-                              onPointerEnter={() => prefetchRoute(item.href)}
-                              onFocus={() => prefetchRoute(item.href)}
                               onClick={() => setIsMenuOpen(false)}
                               className={mobileNavLinkClassName(active)}
                             >
@@ -234,8 +227,6 @@ export default function Nav() {
         <Link
           href="/about"
           className={`${brandClassName} whitespace-nowrap`}
-          onPointerEnter={() => prefetchRoute("/about")}
-          onFocus={() => prefetchRoute("/about")}
         >
           Tommy Ross
         </Link>
@@ -249,8 +240,6 @@ export default function Nav() {
                     <Link
                       href={item.href}
                       aria-current={active ? "page" : undefined}
-                      onPointerEnter={() => prefetchRoute(item.href)}
-                      onFocus={() => prefetchRoute(item.href)}
                       className={navLinkClassName(active)}
                     >
                       {item.label}
