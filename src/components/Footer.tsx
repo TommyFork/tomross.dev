@@ -4,7 +4,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { usePathname } from "next/navigation";
-import { GitHubIcon, LinkedInIcon, XIcon } from "@/components/icons/SocialIcons";
+import { GitHubIcon, LinkedInIcon } from "@/components/icons/SocialIcons";
 import DogRunnerGame from "@/components/DogRunnerGame";
 
 const GAME_WRAPPER_HEIGHT = 210; // matches DogRunnerGame CANVAS_HEIGHT
@@ -87,15 +87,6 @@ export default function Footer() {
             className="transition-colors duration-150 hover:text-neutral-900 dark:hover:text-white"
           >
             <LinkedInIcon width={20} height={20} />
-          </Link>
-          <Link
-            href="https://x.com/tommytelos"
-            target="_blank"
-            rel="noreferrer noopener"
-            aria-label="X"
-            className="transition-colors duration-150 hover:text-neutral-900 dark:hover:text-white"
-          >
-            <XIcon width={20} height={20} />
           </Link>
           {isAboutPage ? (
             <div className="relative group">

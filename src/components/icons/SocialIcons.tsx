@@ -14,12 +14,3 @@ export function LinkedInIcon(props: React.SVGProps<SVGSVGElement>) {
   );
 }
 
-export function XIcon(props: React.SVGProps<SVGSVGElement>) {
-  return (
-    <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden {...props}>
-      <path fill="currentColor" d="M18.9 2.5h3.1l-6.78 7.75L23 21.5h-6.07l-4.75-6.24-5.43 6.24H3.56l7.26-8.35L2.5 2.5h6.24l4.3 5.74 5.86-5.74Zm-2.13 17.07h1.72L7.3 4.35H5.46l11.3 15.22Z"/>
-    </svg>
-  );
-}
-
-

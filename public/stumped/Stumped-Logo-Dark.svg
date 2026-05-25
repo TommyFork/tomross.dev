@@ -1,0 +1,8 @@
+<svg width="1338" height="378" viewBox="0 0 1338 378" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <filter id="dark-logo-boost" color-interpolation-filters="sRGB">
+      <feColorMatrix type="matrix" values="-0.78 0 0 0 0.92 0 -0.78 0 0 0.92 0 0 -0.78 0 0.92 0 0 0 1 0"/>
+    </filter>
+  </defs>
+  <image href="/stumped/Stumped-Logo.svg" width="1338" height="378" preserveAspectRatio="xMidYMid meet" filter="url(#dark-logo-boost)"/>
+</svg>

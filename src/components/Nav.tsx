@@ -165,7 +165,7 @@ export default function Nav() {
     : "inline-flex w-full cursor-pointer items-center justify-center gap-2 rounded-full border border-transparent bg-white dark:bg-neutral-800 px-4 py-2 text-sm font-medium text-neutral-600 dark:text-neutral-300 shadow-sm transition-all duration-200 sm:w-auto hover:-translate-y-[0.5px] hover:bg-black hover:text-white hover:border-black dark:hover:bg-white dark:hover:text-black dark:hover:border-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-400 active:scale-95";
 
   const mobileMenu =
-    menuPortalTarget && typeof window !== "undefined"
+    menuPortalTarget
       ? createPortal(
           <AnimatePresence>
             {isMenuOpen && (
@@ -275,13 +275,13 @@ export default function Nav() {
             <span className="sr-only">{theme === "dark" ? "Switch to light mode" : "Switch to dark mode"}</span>
             <span
               aria-hidden="true"
-              className="absolute left-2 text-[10px] text-amber-400 opacity-100 drop-shadow-[0_0_5px_rgba(251,191,36,0.65)] transition-opacity duration-200 dark:text-amber-300 dark:opacity-100"
+              className="absolute left-2 text-[10px] text-amber-400 opacity-100 drop-shadow-[0_0_5px_rgba(251,191,36,0.65)] transition-opacity duration-200 dark:text-amber-300 dark:opacity-35"
             >
               <SunIcon />
             </span>
             <span
               aria-hidden="true"
-              className="absolute right-2 text-[10px] text-neutral-500 opacity-35 transition-opacity duration-200 dark:text-neutral-200 dark:opacity-100"
+              className="absolute right-2 text-[10px] text-neutral-400 opacity-90 transition-opacity duration-200 dark:text-neutral-200 dark:opacity-100"
             >
               <MoonIcon />
             </span>
