@@ -12,6 +12,7 @@ concurrency:
 
 jobs:
   claude-review:
+    if: ${{ github.event.pull_request.state == 'open' && github.event.pull_request.draft == false }}
     runs-on: ubuntu-latest
     permissions:
       contents: read
