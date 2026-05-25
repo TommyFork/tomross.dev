@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
+import Script from "next/script";
 import "./globals.css";
 import Nav from "../components/Nav";
 import Footer from "../components/Footer";
@@ -60,6 +61,7 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const gaId = process.env.NEXT_PUBLIC_GA_ID;
   const isProd = process.env.NODE_ENV === "production";
   return (
     <html lang="en" className={`${geistSans.variable} ${geistMono.variable}`} suppressHydrationWarning>
@@ -71,7 +73,25 @@ export default function RootLayout({
         />
       </head>
       <body className="antialiased">
-        {isProd && <Analytics />}
+        {isProd && (
+          <>
+            <Analytics />
+            {gaId && (
+              <>
+                <Script
+                  src={`https://www.googletagmanager.com/gtag/js?id=${gaId}`}
+                  strategy="afterInteractive"
+                />
+                <Script id="google-analytics" strategy="afterInteractive">
+                  {`window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+gtag('js', new Date());
+gtag('config', '${gaId}');`}
+                </Script>
+              </>
+            )}
+          </>
+        )}
         <Providers>
           <div className="min-h-screen flex flex-col">
             <div className="mx-auto w-full max-w-5xl px-6 flex-1 flex flex-col">

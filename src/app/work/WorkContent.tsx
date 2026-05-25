@@ -65,7 +65,7 @@ function AnimatedNumber({
       node.textContent = prefix + Math.round(latest).toLocaleString() + suffix;
     };
 
-    format(value);
+    format(value / 2);
 
     let frameId = 0;
     let startTime = 0;

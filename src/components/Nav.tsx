@@ -164,59 +164,58 @@ export default function Nav() {
   const mobileMenu =
     menuPortalTarget
       ? createPortal(
-          <>
-            {isMenuOpen ? (
-              <div
-                key="mobile-menu"
-                className="fixed inset-0 z-[80] sm:hidden"
-              >
-                <button
-                  type="button"
-                  aria-hidden="true"
-                  tabIndex={-1}
-                  className="absolute inset-0 h-full w-full bg-white/60 dark:bg-black/60 backdrop-blur-[2px]"
-                  onClick={() => setIsMenuOpen(false)}
-                />
-                <div
-                  key="mobile-menu-panel"
-                  id="mobile-navigation"
-                  className="absolute inset-x-3 flex justify-end animate-[mobileMenuIn_180ms_ease-out]"
-                  style={{ top: menuOffset }}
-                >
-                  <div className="w-full max-w-sm overflow-hidden rounded-2xl border border-neutral-200 dark:border-neutral-700 bg-white dark:bg-neutral-900 shadow-xl dark:shadow-2xl">
-                    <ul className="flex flex-col gap-1.5 px-3 py-3">
-                      {links.map((item) => {
-                        const active = pathname === item.href;
-                        return (
-                          <li key={`${item.href}-mobile`}>
-                            <Link
-                              href={item.href}
-                              aria-current={active ? "page" : undefined}
-                              onClick={() => setIsMenuOpen(false)}
-                              className={mobileNavLinkClassName(active)}
-                            >
-                              {item.label}
-                            </Link>
-                          </li>
-                        );
-                      })}
-                      <li className="pt-1.5">
-                        <div>
-                          <ContactModalLink
-                            href={contactHref}
-                            onClick={() => setIsMenuOpen(false)}
-                            className={mobileContactButtonClassName}
-                          >
-                            Let’s chat
-                          </ContactModalLink>
-                        </div>
+          <div
+            key="mobile-menu"
+            className={`fixed inset-0 z-[80] sm:hidden transition-opacity duration-150 ease-in ${
+              isMenuOpen ? "opacity-100" : "opacity-0 pointer-events-none"
+            }`}
+          >
+            <button
+              type="button"
+              aria-hidden="true"
+              tabIndex={-1}
+              className="absolute inset-0 h-full w-full bg-white/60 dark:bg-black/60 backdrop-blur-[2px]"
+              onClick={() => setIsMenuOpen(false)}
+            />
+            <div
+              id="mobile-navigation"
+              className={`absolute inset-x-3 flex justify-end transition-all duration-150 ease-in ${
+                isMenuOpen ? "opacity-100 translate-y-0" : "opacity-0 -translate-y-2"
+              }`}
+              style={{ top: menuOffset }}
+            >
+              <div className="w-full max-w-sm overflow-hidden rounded-2xl border border-neutral-200 dark:border-neutral-700 bg-white dark:bg-neutral-900 shadow-xl dark:shadow-2xl">
+                <ul className="flex flex-col gap-1.5 px-3 py-3">
+                  {links.map((item) => {
+                    const active = pathname === item.href;
+                    return (
+                      <li key={`${item.href}-mobile`}>
+                        <Link
+                          href={item.href}
+                          aria-current={active ? "page" : undefined}
+                          onClick={() => setIsMenuOpen(false)}
+                          className={mobileNavLinkClassName(active)}
+                        >
+                          {item.label}
+                        </Link>
                       </li>
-                    </ul>
-                  </div>
-                </div>
+                    );
+                  })}
+                  <li className="pt-1.5">
+                    <div>
+                      <ContactModalLink
+                        href={contactHref}
+                        onClick={() => setIsMenuOpen(false)}
+                        className={mobileContactButtonClassName}
+                      >
+                        Let’s chat
+                      </ContactModalLink>
+                    </div>
+                  </li>
+                </ul>
               </div>
-            ) : null}
-          </>,
+            </div>
+          </div>,
           menuPortalTarget,
         )
       : null;
