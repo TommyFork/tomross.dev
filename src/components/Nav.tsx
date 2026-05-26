@@ -130,8 +130,9 @@ export default function Nav() {
     ? "inline-flex h-11 w-11 items-center justify-center rounded-full border border-white/45 dark:border-white/10 bg-white/70 dark:bg-neutral-800/70 text-slate-900 dark:text-neutral-200 shadow-sm transition-all duration-200 hover:-translate-y-[1px] hover:border-white/70 dark:hover:border-white/20 hover:bg-white dark:hover:bg-neutral-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-200 active:scale-95"
     : "inline-flex h-11 w-11 items-center justify-center rounded-full border border-transparent bg-white dark:bg-neutral-800 text-slate-600 dark:text-neutral-300 shadow-sm transition-all duration-200 hover:-translate-y-[1px] hover:border-slate-200/80 dark:hover:border-neutral-600 hover:bg-white dark:hover:bg-neutral-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-400 active:scale-95";
 
-  const themeToggleClassName =
-    "group relative inline-flex h-9 w-9 shrink-0 cursor-pointer items-center justify-center rounded-full text-sky-500 dark:text-amber-300 transition-all duration-300 ease-out hover:bg-sky-400/15 dark:hover:bg-amber-300/15 hover:scale-110 active:scale-90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-400 focus-visible:ring-offset-2 focus-visible:ring-offset-white dark:focus-visible:ring-offset-neutral-950";
+  const themeToggleClassName = isScrolled
+    ? "group relative inline-flex h-9 w-9 shrink-0 cursor-pointer items-center justify-center rounded-full text-sky-500 dark:text-amber-300 transition-all duration-300 ease-out hover:bg-sky-400/15 dark:hover:bg-amber-300/15 hover:scale-110 active:scale-90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-200 focus-visible:ring-offset-2 focus-visible:ring-offset-white dark:focus-visible:ring-offset-neutral-950"
+    : "group relative inline-flex h-9 w-9 shrink-0 cursor-pointer items-center justify-center rounded-full text-sky-500 dark:text-amber-300 transition-all duration-300 ease-out hover:bg-sky-400/15 dark:hover:bg-amber-300/15 hover:scale-110 active:scale-90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-400 focus-visible:ring-offset-2 focus-visible:ring-offset-white dark:focus-visible:ring-offset-neutral-950";
 
   const navLinkBaseClassName = "transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-200";
 
@@ -159,7 +160,7 @@ export default function Nav() {
     "inline-flex w-full cursor-pointer items-center justify-center rounded-full border border-neutral-200 dark:border-neutral-700 bg-white dark:bg-neutral-800 px-5 py-2.5 text-sm font-medium text-neutral-600 dark:text-neutral-300 shadow-sm transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-400 hover:-translate-y-[0.5px] hover:bg-black hover:text-white hover:border-black dark:hover:bg-white dark:hover:text-black dark:hover:border-white";
 
   const contactButtonClassName = isScrolled
-    ? "inline-flex cursor-pointer items-center rounded-full border border-slate-900/15 dark:border-white/20 px-3.5 py-1.5 text-sm tracking-normal text-slate-900 dark:text-white transition-[background-color,color,border-color,letter-spacing] duration-300 ease-out hover:border-slate-900 hover:bg-slate-900 hover:tracking-[0.02em] hover:text-white dark:hover:border-white dark:hover:bg-white dark:hover:text-black active:scale-[0.97] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-200"
+    ? "inline-flex cursor-pointer items-center rounded-full border border-slate-900/15 dark:border-white/20 px-3.5 py-1.5 text-sm tracking-normal text-slate-900 dark:text-white transition-[background-color,color,border-color,letter-spacing] duration-300 ease-out hover:border-slate-900 hover:bg-slate-900 hover:tracking-[0.02em] hover:text-white dark:hover:border-white dark:hover:bg-white dark:hover:text-black active:scale-[0.97] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-200 focus-visible:ring-offset-2 focus-visible:ring-offset-white dark:focus-visible:ring-offset-neutral-950"
     : "inline-flex cursor-pointer items-center rounded-full border border-neutral-300 dark:border-neutral-700 px-3.5 py-1.5 text-sm tracking-normal text-neutral-700 dark:text-neutral-200 transition-[background-color,color,border-color,letter-spacing] duration-300 ease-out hover:border-neutral-900 hover:bg-neutral-900 hover:tracking-[0.02em] hover:text-white dark:hover:border-white dark:hover:bg-white dark:hover:text-black active:scale-[0.97] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-400 focus-visible:ring-offset-2 focus-visible:ring-offset-white dark:focus-visible:ring-offset-neutral-950";
 
   const mobileMenu =
@@ -277,11 +278,13 @@ export default function Nav() {
           <button
             type="button"
             onClick={toggle}
-            aria-label={mounted ? (theme === "dark" ? "Switch to light mode" : "Switch to dark mode") : "Toggle theme"}
+            role="switch"
+            aria-checked={mounted ? theme === "dark" : false}
+            aria-label="Dark mode"
             className={themeToggleClassName}
           >
             <span aria-hidden="true" className="relative inline-flex h-4 w-4 items-center justify-center transition-transform duration-500 ease-[cubic-bezier(0.34,1.56,0.64,1)] group-hover:rotate-[20deg] group-hover:drop-shadow-[0_0_6px_currentColor] group-active:scale-75">
-              {mounted ? (theme === "dark" ? <SunIcon /> : <MoonIcon />) : <MoonIcon />}
+              {mounted ? (theme === "dark" ? <SunIcon /> : <MoonIcon />) : <span className="invisible" aria-hidden="true"><MoonIcon /></span>}
             </span>
           </button>
           <button
