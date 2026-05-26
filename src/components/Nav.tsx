@@ -279,7 +279,7 @@ export default function Nav() {
             type="button"
             onClick={toggle}
             role="switch"
-            aria-checked={mounted ? theme === "dark" : undefined}
+            aria-checked={mounted ? theme === "dark" : false}
             aria-label="Dark mode"
             className={themeToggleClassName}
           >
