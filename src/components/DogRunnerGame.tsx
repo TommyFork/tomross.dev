@@ -77,6 +77,7 @@ const loadAssets = async (): Promise<Assets> => {
 };
 
 const formatScore = (value: number) => value.toString().padStart(5, "0");
+const randomBetween = (min: number, max: number) => min + Math.random() * (max - min);
 
 export default function DogRunnerGame({ onExit }: { onExit: () => void }) {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -306,9 +307,6 @@ export default function DogRunnerGame({ onExit }: { onExit: () => void }) {
         return;
       }
 
-      const randomBetween = (min: number, max: number) =>
-        min + Math.random() * (max - min);
-
       const difficultyNormalized = Math.min(scoreRef.current / 900, 1);
       const currentSpeed =
         BASE_SPEED + difficultyNormalized * (MAX_SPEED - BASE_SPEED);
@@ -510,9 +508,7 @@ export default function DogRunnerGame({ onExit }: { onExit: () => void }) {
 
         const shouldSkip =
           backgroundsRef.current.length > 0 && Math.random() < 0.45;
-        if (shouldSkip) {
-          // Skip this spawn to keep mountains feeling special.
-        } else {
+        if (!shouldSkip) {
           const scale = randomBetween(0.52, 0.78);
           const widthScaled = assets.mountain.width * scale;
           const heightScaled = assets.mountain.height * scale;

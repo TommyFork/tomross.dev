@@ -11,6 +11,7 @@ import {
 import { createPortal } from "react-dom";
 
 import type { AnchorRect } from "@/components/ContactModalContext";
+import { getEmailAddress } from "@/lib/email";
 
 const ANIMATION_DURATION = 420;
 const ANIMATION_EASING = "cubic-bezier(0.24, 0.94, 0.32, 1)";
@@ -243,10 +244,7 @@ export default function ContactModal({
   }, [open, render, mounted, anchorRect, prefersReducedMotion, onExited]);
 
   const encodedEmail = useMemo(() => {
-    const user = process.env.NEXT_PUBLIC_EMAIL_USER || "tommyross";
-    const domain = process.env.NEXT_PUBLIC_EMAIL_DOMAIN || "me.com";
-    const complete = `${user}@${domain}`;
-
+    const complete = getEmailAddress();
     return complete.split("").map((char, index) => {
       const key = MASK_SEQUENCE[index % MASK_SEQUENCE.length];
       return char.charCodeAt(0) ^ key;

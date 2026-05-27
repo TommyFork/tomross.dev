@@ -41,6 +41,13 @@ export function ContactModalProvider({ children }: { children: ReactNode }) {
   const openedFromUrlRef = useRef(false);
   const clearAnchorTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
+  const cancelAnchorTimeout = () => {
+    if (clearAnchorTimeoutRef.current) {
+      clearTimeout(clearAnchorTimeoutRef.current);
+      clearAnchorTimeoutRef.current = null;
+    }
+  };
+
   const setAnchorFromRect = useCallback((rect: DOMRect | null | undefined) => {
     if (!rect) {
       setAnchorRect(null);
@@ -52,10 +59,7 @@ export function ContactModalProvider({ children }: { children: ReactNode }) {
   }, []);
 
   const openModal = useCallback((options?: ModalTriggerOptions) => {
-    if (clearAnchorTimeoutRef.current) {
-      clearTimeout(clearAnchorTimeoutRef.current);
-      clearAnchorTimeoutRef.current = null;
-    }
+    cancelAnchorTimeout();
 
     if (options?.triggerRect) {
       setAnchorFromRect(options.triggerRect);
@@ -94,9 +98,7 @@ export function ContactModalProvider({ children }: { children: ReactNode }) {
       openedFromUrlRef.current = false;
     }
 
-    if (clearAnchorTimeoutRef.current) {
-      clearTimeout(clearAnchorTimeoutRef.current);
-    }
+    cancelAnchorTimeout();
 
     clearAnchorTimeoutRef.current = setTimeout(() => {
       setAnchorRect(null);
@@ -110,10 +112,7 @@ export function ContactModalProvider({ children }: { children: ReactNode }) {
         const next = !prev;
 
         if (next) {
-          if (clearAnchorTimeoutRef.current) {
-            clearTimeout(clearAnchorTimeoutRef.current);
-            clearAnchorTimeoutRef.current = null;
-          }
+          cancelAnchorTimeout();
 
           if (options?.triggerRect) {
             setAnchorFromRect(options.triggerRect);
@@ -193,9 +192,7 @@ export function ContactModalProvider({ children }: { children: ReactNode }) {
 
   useEffect(
     () => () => {
-      if (clearAnchorTimeoutRef.current) {
-        clearTimeout(clearAnchorTimeoutRef.current);
-      }
+      cancelAnchorTimeout();
     },
     [],
   );
@@ -219,10 +216,7 @@ export function ContactModalProvider({ children }: { children: ReactNode }) {
         anchorRect={anchorRect}
         onExited={() => {
           setAnchorRect(null);
-          if (clearAnchorTimeoutRef.current) {
-            clearTimeout(clearAnchorTimeoutRef.current);
-            clearAnchorTimeoutRef.current = null;
-          }
+          cancelAnchorTimeout();
         }}
       />
     </ContactModalContext.Provider>
