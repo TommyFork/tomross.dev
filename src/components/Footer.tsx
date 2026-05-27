@@ -6,6 +6,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { usePathname } from "next/navigation";
 import { GitHubIcon, LinkedInIcon } from "@/components/icons/SocialIcons";
 import DogRunnerGame from "@/components/DogRunnerGame";
+import { SOCIAL_LINKS } from "@/lib/social-links";
 
 const GAME_WRAPPER_HEIGHT = 210; // matches DogRunnerGame CANVAS_HEIGHT
 const TRANSITION_DURATION = 300;
@@ -71,7 +72,7 @@ export default function Footer() {
         <p>© {new Date().getFullYear()} Tommy Ross</p>
         <div className="flex items-center gap-5 text-neutral-700 dark:text-neutral-300">
           <Link
-            href="https://github.com/TommyFork"
+            href={SOCIAL_LINKS.github}
             target="_blank"
             rel="noreferrer noopener"
             aria-label="GitHub"
@@ -80,7 +81,7 @@ export default function Footer() {
             <GitHubIcon width={20} height={20} />
           </Link>
           <Link
-            href="https://www.linkedin.com/in/rosstommy/"
+            href={SOCIAL_LINKS.linkedin}
             target="_blank"
             rel="noreferrer noopener"
             aria-label="LinkedIn"

@@ -19,7 +19,6 @@ const markdownLinkClassName =
 
 function MarkdownLink(props: AnchorHTMLAttributes<HTMLAnchorElement> & { node?: unknown }) {
   const { href, children, node: _node, className: passedClassName, ...rest } = props;
-  void _node;
   const className = `${markdownLinkClassName} ${passedClassName ?? ""}`;
   if (href && /^https?:\/\//.test(href)) {
     return (
@@ -33,7 +32,7 @@ function MarkdownLink(props: AnchorHTMLAttributes<HTMLAnchorElement> & { node?: 
       <ContactModalLink
         href={href}
         className={className}
-        {...(rest as Omit<AnchorHTMLAttributes<HTMLAnchorElement>, "href">)}
+        {...(rest as Omit<AnchorHTMLAttributes<HTMLAnchorElement>, "href" | "onClick">)}
       >
         {children}
       </ContactModalLink>

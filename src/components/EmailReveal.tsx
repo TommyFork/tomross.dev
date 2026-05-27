@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { getEmailAddress } from "@/lib/email";
 
 type Props = { label?: string };
 
@@ -9,9 +10,7 @@ export default function EmailReveal({ label = "Email me" }: Props) {
   const [email, setEmail] = useState<string | null>(null);
 
   useEffect(() => {
-    const user = process.env.NEXT_PUBLIC_EMAIL_USER || "tommyross";
-    const domain = process.env.NEXT_PUBLIC_EMAIL_DOMAIN || "me.com";
-    setEmail(`${user}@${domain}`);
+    setEmail(getEmailAddress());
   }, []);
 
   if (!revealed) {

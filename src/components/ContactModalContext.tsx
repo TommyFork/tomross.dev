@@ -41,6 +41,13 @@ export function ContactModalProvider({ children }: { children: ReactNode }) {
   const openedFromUrlRef = useRef(false);
   const clearAnchorTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
+  const cancelAnchorTimeout = useCallback(() => {
+    if (clearAnchorTimeoutRef.current) {
+      clearTimeout(clearAnchorTimeoutRef.current);
+      clearAnchorTimeoutRef.current = null;
+    }
+  }, []);
+
   const setAnchorFromRect = useCallback((rect: DOMRect | null | undefined) => {
     if (!rect) {
       setAnchorRect(null);
@@ -52,10 +59,7 @@ export function ContactModalProvider({ children }: { children: ReactNode }) {
   }, []);
 
   const openModal = useCallback((options?: ModalTriggerOptions) => {
-    if (clearAnchorTimeoutRef.current) {
-      clearTimeout(clearAnchorTimeoutRef.current);
-      clearAnchorTimeoutRef.current = null;
-    }
+    cancelAnchorTimeout();
 
     if (options?.triggerRect) {
       setAnchorFromRect(options.triggerRect);
@@ -69,7 +73,7 @@ export function ContactModalProvider({ children }: { children: ReactNode }) {
     // via replaceState before calling openModal, so closeModal can safely clean it up.
     openedFromUrlRef.current = true;
     setOpen(true);
-  }, [setAnchorFromRect]);
+  }, [cancelAnchorTimeout, setAnchorFromRect]);
 
   const closeModal = useCallback(() => {
     setOpen(false);
@@ -94,15 +98,13 @@ export function ContactModalProvider({ children }: { children: ReactNode }) {
       openedFromUrlRef.current = false;
     }
 
-    if (clearAnchorTimeoutRef.current) {
-      clearTimeout(clearAnchorTimeoutRef.current);
-    }
+    cancelAnchorTimeout();
 
     clearAnchorTimeoutRef.current = setTimeout(() => {
       setAnchorRect(null);
       clearAnchorTimeoutRef.current = null;
     }, 600);
-  }, []);
+  }, [cancelAnchorTimeout]);
 
   const toggleModal = useCallback(
     (options?: ModalTriggerOptions) => {
@@ -110,10 +112,7 @@ export function ContactModalProvider({ children }: { children: ReactNode }) {
         const next = !prev;
 
         if (next) {
-          if (clearAnchorTimeoutRef.current) {
-            clearTimeout(clearAnchorTimeoutRef.current);
-            clearAnchorTimeoutRef.current = null;
-          }
+          cancelAnchorTimeout();
 
           if (options?.triggerRect) {
             setAnchorFromRect(options.triggerRect);
@@ -127,7 +126,7 @@ export function ContactModalProvider({ children }: { children: ReactNode }) {
         return next;
       });
     },
-    [setAnchorFromRect],
+    [cancelAnchorTimeout, setAnchorFromRect],
   );
 
   useEffect(() => {
@@ -193,11 +192,9 @@ export function ContactModalProvider({ children }: { children: ReactNode }) {
 
   useEffect(
     () => () => {
-      if (clearAnchorTimeoutRef.current) {
-        clearTimeout(clearAnchorTimeoutRef.current);
-      }
+      cancelAnchorTimeout();
     },
-    [],
+    [cancelAnchorTimeout],
   );
 
   const value = useMemo(
@@ -219,10 +216,7 @@ export function ContactModalProvider({ children }: { children: ReactNode }) {
         anchorRect={anchorRect}
         onExited={() => {
           setAnchorRect(null);
-          if (clearAnchorTimeoutRef.current) {
-            clearTimeout(clearAnchorTimeoutRef.current);
-            clearAnchorTimeoutRef.current = null;
-          }
+          cancelAnchorTimeout();
         }}
       />
     </ContactModalContext.Provider>

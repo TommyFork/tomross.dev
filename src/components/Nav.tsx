@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 
 import Link from "next/link";
@@ -12,7 +12,6 @@ import ContactModalLink from "@/components/ContactModalLink";
 const links = [
   { href: "/", label: "About" },
   { href: "/portfolio", label: "Portfolio" },
-  // { href: "/writing", label: "Writing" },
 ];
 
 const resumeLink = { href: "/resume.pdf", label: "Resume" };
@@ -70,6 +69,8 @@ export default function Nav() {
       window.removeEventListener("scroll", handleScroll);
     };
   }, []);
+
+  const closeMenu = useCallback(() => setIsMenuOpen(false), []);
 
   const contactHref = `${pathname}#contact`;
 
@@ -176,7 +177,7 @@ export default function Nav() {
               aria-hidden="true"
               tabIndex={-1}
               className="absolute inset-0 h-full w-full bg-white/60 dark:bg-black/60 backdrop-blur-[2px]"
-              onClick={() => setIsMenuOpen(false)}
+              onClick={closeMenu}
             />
             <div
               id="mobile-navigation"
@@ -194,7 +195,7 @@ export default function Nav() {
                         <Link
                           href={item.href}
                           aria-current={active ? "page" : undefined}
-                          onClick={() => setIsMenuOpen(false)}
+                          onClick={closeMenu}
                           className={mobileNavLinkClassName(active)}
                         >
                           {item.label}
@@ -208,7 +209,7 @@ export default function Nav() {
                       target="_blank"
                       rel="noopener noreferrer nofollow"
                       aria-label={`${resumeLink.label} (opens in a new tab)`}
-                      onClick={() => setIsMenuOpen(false)}
+                      onClick={closeMenu}
                       className={mobileNavLinkClassName(false)}
                     >
                       {resumeLink.label}
@@ -218,7 +219,7 @@ export default function Nav() {
                     <div>
                       <ContactModalLink
                         href={contactHref}
-                        onClick={() => setIsMenuOpen(false)}
+                        onClick={closeMenu}
                         className={mobileContactButtonClassName}
                       >
                         Let’s chat

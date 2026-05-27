@@ -6,6 +6,7 @@ import {
   LinkedInIcon,
   EnvelopeIcon,
 } from "@/components/icons/SocialIcons";
+import { SOCIAL_LINKS } from "@/lib/social-links";
 
 export default function ProfileCard() {
   return (
@@ -26,7 +27,7 @@ export default function ProfileCard() {
       </div>
       <div className="flex items-center gap-4 text-sm text-neutral-700 dark:text-neutral-300">
         <Link
-          href="https://github.com/TommyFork"
+          href={SOCIAL_LINKS.github}
           target="_blank"
           rel="noreferrer noopener"
           className="hover:text-neutral-900 dark:hover:text-white"
@@ -35,7 +36,7 @@ export default function ProfileCard() {
           <GitHubIcon />
         </Link>
         <Link
-          href="https://www.linkedin.com/in/rosstommy/"
+          href={SOCIAL_LINKS.linkedin}
           target="_blank"
           rel="noreferrer noopener"
           className="hover:text-neutral-900 dark:hover:text-white"

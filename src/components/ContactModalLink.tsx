@@ -4,8 +4,9 @@ import type { AnchorHTMLAttributes, KeyboardEvent, MouseEvent } from "react";
 
 import { useContactModal } from "@/components/ContactModalContext";
 
-type ContactModalLinkProps = AnchorHTMLAttributes<HTMLAnchorElement> & {
+type ContactModalLinkProps = Omit<AnchorHTMLAttributes<HTMLAnchorElement>, "onClick"> & {
   href?: string;
+  onClick?: (e: MouseEvent<HTMLAnchorElement> | KeyboardEvent<HTMLAnchorElement>) => void;
 };
 
 export default function ContactModalLink({
@@ -40,7 +41,7 @@ export default function ContactModalLink({
       onClick={handleClick}
       onKeyDown={(e: KeyboardEvent<HTMLAnchorElement>) => {
         if (e.key === " ") {
-          onClick?.(e as unknown as MouseEvent<HTMLAnchorElement>);
+          onClick?.(e);
           e.preventDefault();
           const trigger = e.currentTarget;
           window.history.replaceState(window.history.state, "", href ?? "#contact");
