@@ -14,8 +14,6 @@ const links = [
   { href: "/portfolio", label: "Portfolio" },
 ];
 
-const resumeLink = { href: "/resume.pdf", label: "Resume" };
-
 function SunIcon() {
   return (
     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
@@ -203,18 +201,6 @@ export default function Nav() {
                       </li>
                     );
                   })}
-                  <li>
-                    <a
-                      href={resumeLink.href}
-                      target="_blank"
-                      rel="noopener noreferrer nofollow"
-                      aria-label={`${resumeLink.label} (opens in a new tab)`}
-                      onClick={closeMenu}
-                      className={mobileNavLinkClassName(false)}
-                    >
-                      {resumeLink.label}
-                    </a>
-                  </li>
                   <li className="pt-1.5">
                     <div>
                       <ContactModalLink
@@ -260,17 +246,6 @@ export default function Nav() {
                   </li>
                 );
               })}
-              <li>
-                <a
-                  href={resumeLink.href}
-                  target="_blank"
-                  rel="noopener noreferrer nofollow"
-                  aria-label={`${resumeLink.label} (opens in a new tab)`}
-                  className={navLinkClassName(false)}
-                >
-                  {resumeLink.label}
-                </a>
-              </li>
             </ul>
             <ContactModalLink href={contactHref} className={contactButtonClassName}>
               Let’s chat
