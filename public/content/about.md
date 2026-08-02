@@ -1,4 +1,4 @@
-I’m Tommy, a software engineer and builder based in Boston. 
+I'm Tommy, a software engineer and builder based in Boston.
 
 I work at [Pryzm](https://pryzm.io/), where I build AI-native software for government contractors pursuing federal opportunities. Previously, I worked at [Vendr](https://www.vendr.com/), building AI to autonomously negotiate enterprise SaaS deals.
 
