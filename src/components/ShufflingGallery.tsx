@@ -91,7 +91,7 @@ export default function ShufflingGallery({
         return (
           <div
             key={image.src}
-            className="absolute h-full w-full origin-bottom"
+            className="absolute inset-0 flex origin-bottom items-center justify-center"
             style={{
               zIndex: visible ? images.length - i : 0,
               transform: visible
@@ -102,14 +102,19 @@ export default function ShufflingGallery({
               pointerEvents: visible ? undefined : "none",
             }}
           >
+            {/*
+             * The previews range from portrait to landscape, so each one is
+             * capped on both axes and keeps its own aspect ratio — that way the
+             * rounded corners and shadow hug the artwork rather than a letterbox.
+             */}
             <Image
               src={image.src}
               alt={image.alt}
               width={image.width}
               height={image.height}
-              sizes="(min-width: 768px) 576px, calc(100vw - 48px)"
+              sizes="(min-width: 768px) 672px, calc(100vw - 48px)"
               loading={i === 0 ? "eager" : "lazy"}
-              className="h-auto w-full rounded-xl object-cover shadow-2xl"
+              className="h-auto max-h-full w-auto max-w-full rounded-xl object-contain shadow-2xl"
             />
           </div>
         );

@@ -13,11 +13,28 @@
   --next-step-blue: #0075FE;
   --next-step-dark-blue: #074B9C;
   --next-step-gold: #F4C430;
+
+  /* Neutral surface scale shared by the portfolio case studies */
+  --surface: #ffffff;
+  --surface-raised: #fbfbfd;
+  --hairline: rgba(15, 23, 42, 0.09);
+  --hairline-strong: rgba(15, 23, 42, 0.16);
+  --muted: #5b6478;
+  --shadow-card: 0 1px 2px rgba(15, 23, 42, 0.04), 0 12px 32px -18px rgba(15, 23, 42, 0.28);
+  --shadow-lifted: 0 2px 4px rgba(15, 23, 42, 0.05), 0 32px 64px -32px rgba(15, 23, 42, 0.32);
 }
 
 .dark {
   --background: #0a0a0a;
   --foreground: #ededed;
+
+  --surface: #101013;
+  --surface-raised: #17171b;
+  --hairline: rgba(255, 255, 255, 0.09);
+  --hairline-strong: rgba(255, 255, 255, 0.18);
+  --muted: #9ba1ae;
+  --shadow-card: 0 1px 2px rgba(0, 0, 0, 0.5), 0 12px 32px -18px rgba(0, 0, 0, 0.8);
+  --shadow-lifted: 0 2px 4px rgba(0, 0, 0, 0.55), 0 32px 64px -32px rgba(0, 0, 0, 0.9);
 }
 
 @theme inline {
@@ -96,4 +113,66 @@ body {
 @media (prefers-reduced-motion: reduce) {
   .copy-check-path { animation: none; stroke-dashoffset: 0; }
   .copy-pulse { animation: none; }
+}
+
+/*
+ * Per-project accents. `--accent` drives fills and glows, `--accent-ink` is the
+ * text-safe variant and brightens in dark mode.
+ */
+.accent-brightbook { --accent: #0099ff; --accent-ink: #0066cc; }
+.accent-stumped    { --accent: #0094e9; --accent-ink: #0060b6; }
+.accent-nextstep   { --accent: #0075fe; --accent-ink: #074b9c; }
+
+.dark .accent-brightbook { --accent-ink: #5cbcff; }
+.dark .accent-stumped    { --accent-ink: #4fb6f2; }
+.dark .accent-nextstep   { --accent-ink: #64a6ff; }
+
+/* Scroll-triggered reveal used across the portfolio case studies */
+.reveal {
+  opacity: 0;
+  transform: translateY(20px);
+}
+
+.reveal[data-visible="true"] {
+  opacity: 1;
+  transform: none;
+  transition:
+    opacity 750ms cubic-bezier(0.22, 1, 0.36, 1),
+    transform 750ms cubic-bezier(0.22, 1, 0.36, 1);
+  transition-delay: var(--reveal-delay, 0ms);
+}
+
+/* Soft accent wash behind the top of a case study, keyed off --accent */
+/* Stays inside the content box — bleeding wider would add horizontal scroll. */
+.accent-wash::before {
+  content: "";
+  position: absolute;
+  top: -96px;
+  left: 0;
+  right: 0;
+  height: 460px;
+  z-index: -1;
+  pointer-events: none;
+  background: radial-gradient(
+    95% 60% at 50% 25%,
+    color-mix(in srgb, var(--accent) 14%, transparent) 0%,
+    transparent 72%
+  );
+}
+
+.dark .accent-wash::before {
+  background: radial-gradient(
+    95% 60% at 50% 25%,
+    color-mix(in srgb, var(--accent) 20%, transparent) 0%,
+    transparent 72%
+  );
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .reveal,
+  .reveal[data-visible="true"] {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
 }
