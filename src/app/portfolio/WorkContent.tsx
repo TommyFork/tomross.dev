@@ -258,67 +258,98 @@ export default function WorkContent() {
       <div className="pb-24 pt-6 sm:pt-8 md:pt-10 xl:pb-16">
         {/* Hero */}
         <header className="border-b border-[var(--hairline)] pb-14 md:pb-16">
-          <Reveal>
-            <Eyebrow className="flex items-center gap-2">
-              <span
-                aria-hidden="true"
-                className="h-1.5 w-1.5 rounded-full bg-emerald-500"
-              />
-              Selected work
-            </Eyebrow>
+          <Reveal className="flex items-center gap-4">
+            <Eyebrow>Selected work</Eyebrow>
+            <span
+              aria-hidden="true"
+              className="h-px flex-1 bg-gradient-to-r from-[var(--hairline-strong)] to-transparent"
+            />
+            <span className="text-[11px] font-semibold uppercase tracking-[0.12em] text-[var(--muted)]">
+              {PROJECT_NAV.length} case studies
+            </span>
           </Reveal>
 
           <Reveal delay={80}>
-            <h1 className="mt-5 max-w-3xl text-balance text-[2.25rem] font-semibold leading-[1.08] tracking-[-0.03em] sm:text-[3rem] md:text-[3.5rem]">
+            <h1 className="mt-7 max-w-4xl text-balance text-[2.5rem] font-semibold leading-[1.03] tracking-[-0.035em] sm:text-[3.25rem] md:text-[4rem]">
               Products I designed, built, and shipped.
             </h1>
           </Reveal>
 
-          <Reveal delay={140}>
-            <p className="mt-6 max-w-2xl text-[17px] leading-[1.75] text-[var(--muted)] md:text-[18px]">
-              Three education products — from a Boston Public Schools pilot to
-              two acquisitions. Below is what each one was, what it achieved,
-              and exactly which parts I owned.
-            </p>
-          </Reveal>
+          {/* Lede and headline numbers share a row so the fold isn't half empty. */}
+          <div className="mt-10 grid grid-cols-1 gap-y-10 md:mt-14 md:grid-cols-12 md:gap-x-12">
+            <Reveal delay={140} className="md:col-span-7">
+              <p className="text-[17px] leading-[1.75] text-[var(--muted)] md:text-[18px]">
+                Three education products — from a Boston Public Schools pilot to
+                two acquisitions. Below is what each one was, what it achieved,
+                and exactly which parts I owned.
+              </p>
+            </Reveal>
 
-          <Reveal delay={200}>
-            <dl className="mt-12 grid grid-cols-2 gap-x-6 gap-y-8 sm:grid-cols-4">
-              {HERO_STATS.map((stat) => (
-                <div key={stat.label} className="border-l border-[var(--hairline-strong)] pl-4">
-                  <dd className="text-[1.75rem] font-semibold tracking-tight md:text-[2rem]">
-                    {stat.value}
-                  </dd>
-                  <dt className="mt-1 text-[13px] leading-snug text-[var(--muted)]">
-                    {stat.label}
-                  </dt>
-                </div>
-              ))}
-            </dl>
-          </Reveal>
+            <Reveal delay={200} className="md:col-span-5">
+              <dl className="grid grid-cols-2 gap-x-6 gap-y-7">
+                {HERO_STATS.map((stat) => (
+                  <div
+                    key={stat.label}
+                    className="border-t border-[var(--hairline-strong)] pt-3"
+                  >
+                    <dd className="text-[1.75rem] font-semibold leading-none tracking-tight">
+                      {stat.value}
+                    </dd>
+                    <dt className="mt-2 text-[13px] leading-snug text-[var(--muted)]">
+                      {stat.label}
+                    </dt>
+                  </div>
+                ))}
+              </dl>
+            </Reveal>
+          </div>
 
           {/* Contents */}
           <Reveal delay={260}>
             <nav aria-label="Jump to a case study" className="mt-14 md:mt-16">
-              <Eyebrow>Contents</Eyebrow>
-              <ul className="mt-4 border-t border-[var(--hairline)]">
+              <div className="flex items-center gap-4">
+                <Eyebrow>Contents</Eyebrow>
+                <span
+                  aria-hidden="true"
+                  className="h-px flex-1 bg-[var(--hairline)]"
+                />
+              </div>
+              <ul className="mt-5 border-t border-[var(--hairline)]">
                 {PROJECT_NAV.map((section, index) => (
                   <li key={section.id}>
                     <button
                       type="button"
                       onClick={() => jumpTo(index)}
-                      className="group flex w-full cursor-pointer items-center gap-4 border-b border-[var(--hairline)] py-5 text-left transition-colors duration-200 hover:bg-[var(--surface-raised)] sm:gap-6"
+                      className={`group flex w-full cursor-pointer items-center gap-4 border-b border-[var(--hairline)] py-4 text-left transition-colors duration-200 hover:bg-[var(--surface-raised)] sm:gap-6 ${section.accentClass}`}
                     >
                       <span className="font-mono text-xs tabular-nums text-[var(--muted)]">
                         {String(index + 1).padStart(2, "0")}
                       </span>
-                      <span className="w-[7.5rem] shrink-0 text-[17px] font-semibold tracking-tight transition-transform duration-300 group-hover:translate-x-1">
-                        {section.name}
+                      <span
+                        aria-hidden="true"
+                        className="relative hidden h-14 w-20 shrink-0 overflow-hidden rounded-lg border border-[var(--hairline)] sm:block"
+                        style={{
+                          background:
+                            "color-mix(in srgb, var(--accent) 8%, var(--surface))",
+                        }}
+                      >
+                        <Image
+                          src={section.thumbnail}
+                          alt=""
+                          fill
+                          sizes="80px"
+                          className="object-cover object-top transition-transform duration-500 ease-out group-hover:scale-105"
+                        />
                       </span>
-                      <span className="hidden flex-1 truncate text-[15px] text-[var(--muted)] md:block">
-                        {section.tagline}
+                      <span className="min-w-0 flex-1">
+                        <span className="block text-[17px] font-semibold tracking-tight transition-transform duration-300 group-hover:translate-x-1">
+                          {section.name}
+                        </span>
+                        <span className="mt-0.5 block truncate text-[14px] text-[var(--muted)]">
+                          {section.tagline}
+                        </span>
                       </span>
-                      <span className="ml-auto flex items-center gap-4 md:ml-0">
+                      <span className="flex shrink-0 items-center gap-4">
                         {section.status && (
                           <span className="hidden text-[11px] font-semibold uppercase tracking-[0.12em] text-[var(--muted)] sm:block">
                             {section.status}

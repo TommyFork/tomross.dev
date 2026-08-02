@@ -155,10 +155,21 @@ export const PROJECTS: readonly CaseStudyData[] = [
   },
 ];
 
-/** Compact metadata for the section rail and mobile switcher. */
-export const PROJECT_NAV = PROJECTS.map(({ id, name, tagline, status }) => ({
-  id,
-  name,
-  tagline,
-  status,
-}));
+/** Thumbnails for the hero index. All are cropped from the top of the preview. */
+const THUMBNAILS: Record<string, string> = {
+  brightbook: "/brightbook/BrightBook-Preview.jpg",
+  stumped: "/stumped/Stumped-Preview.png",
+  nextstep: "/next-step/NextStep-Preview-1.png",
+};
+
+/** Compact metadata for the hero index, section rail and mobile switcher. */
+export const PROJECT_NAV = PROJECTS.map(
+  ({ id, name, tagline, status, accentClass }) => ({
+    id,
+    name,
+    tagline,
+    status,
+    accentClass,
+    thumbnail: THUMBNAILS[id],
+  }),
+);
