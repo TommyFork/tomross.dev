@@ -106,11 +106,12 @@ export default function Footer() {
                 className="inline-flex h-8 w-8 items-center justify-center rounded-full text-neutral-700 dark:text-neutral-300 transition-all duration-200 hover:-translate-y-[1px] hover:text-neutral-900 dark:hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-400 active:scale-95 cursor-pointer"
               >
                 <Image
-                  src="/dino/dog.png"
+                  src="/dino/dog-run-a.svg"
                   alt="Dog runner"
-                  width={20}
-                  height={20}
-                  className="pointer-events-none"
+                  width={22}
+                  height={18}
+                  unoptimized
+                  className="pointer-events-none [image-rendering:pixelated]"
                 />
               </button>
               <span className="pointer-events-none absolute -top-9 left-1/2 -translate-x-1/2 translate-y-1 whitespace-nowrap rounded-md bg-white dark:bg-neutral-800 px-2.5 py-1 text-[11px] font-medium text-neutral-500 dark:text-neutral-400 opacity-0 shadow-sm dark:shadow-neutral-900 transition-all duration-150 group-hover:translate-y-0 group-hover:opacity-100 group-focus-within:translate-y-0 group-focus-within:opacity-100">
