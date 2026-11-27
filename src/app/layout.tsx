@@ -5,7 +5,6 @@ import "./globals.css";
 import Nav from "../components/Nav";
 import Footer from "../components/Footer";
 import { Providers } from "./providers";
-import { Analytics } from "@vercel/analytics/next";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -74,23 +73,18 @@ export default function RootLayout({
         />
       </head>
       <body className="antialiased">
-        {isProd && (
+        {isProd && gaId && (
           <>
-            <Analytics />
-            {gaId && (
-              <>
-                <Script
-                  src={`https://www.googletagmanager.com/gtag/js?id=${gaId}`}
-                  strategy="afterInteractive"
-                />
-                <Script id="google-analytics" strategy="afterInteractive">
-                  {`window.dataLayer = window.dataLayer || [];
+            <Script
+              src={`https://www.googletagmanager.com/gtag/js?id=${gaId}`}
+              strategy="afterInteractive"
+            />
+            <Script id="google-analytics" strategy="afterInteractive">
+              {`window.dataLayer = window.dataLayer || [];
 function gtag(){dataLayer.push(arguments);}
 gtag('js', new Date());
 gtag('config', '${gaId}');`}
-                </Script>
-              </>
-            )}
+            </Script>
           </>
         )}
         <Providers>

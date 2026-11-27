@@ -5,30 +5,9 @@ const withMDX = createMDX({});
 
 const nextConfig: NextConfig = {
   pageExtensions: ["ts", "tsx", "md", "mdx"],
+  output: "export",
   images: {
-    formats: ["image/avif", "image/webp"],
-    minimumCacheTTL: 31_536_000,
-    deviceSizes: [360, 414, 640, 768, 1024, 1280],
-    imageSizes: [64, 96, 128, 192, 256, 384, 512],
-  },
-  async redirects() {
-    return [
-      { source: "/contact", destination: "/#contact", permanent: true },
-      { source: "/about", destination: "/", permanent: true },
-    ];
-  },
-  async headers() {
-    return [
-      {
-        source: "/resume.pdf",
-        headers: [
-          {
-            key: "X-Robots-Tag",
-            value: "noindex, nofollow, noarchive, nosnippet",
-          },
-        ],
-      },
-    ];
+    unoptimized: true,
   },
 };
 
